@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<!-- This file is just used in the Playwright test, to check your answers! You shouldn't make edits here. -->
+
+<html lang="en">
+  <head>
+    <script src="js/jquery.js"></script>
+    <script src="js/levels.js"></script>
+    <script>
+      function checkResults(rule, correctSelector) {
+        const correctTable = $(".table").clone();
+        correctTable.find(correctSelector).addClass("strobe");
+
+        const ruleTable = $(".table").clone();
+        ruleTable.find(rule).addClass("strobe");
+
+        return ruleTable.html() === correctTable.html();
+      }
+
+      window.checkSelector = (rule, levelIndex) => {
+        var baseTable = $(".table");
+
+        baseTable.html(levels[levelIndex].boardMarkup);
+
+        console.log('bt html', baseTable.html());
+
+        // Check if jQuery will throw an error trying the mystery rule
+        // If it errors out, change the rule to null
+        try {
+          $(".table").find(rule).not(baseTable);
+        } catch (err) {
+          rule = null;
+        }
+
+        var ruleSelected = $(".table").find(rule).not(baseTable); // What the person finds
+        var levelSelected = $(".table")
+          .find(levels[levelIndex].selector)
+          .not(baseTable); // What the correct rule finds
+
+        console.log("Rule selected: ", ruleSelected);
+        console.log("Level selected: ", levelSelected);
+
+        if (
+          ruleSelected.length == levelSelected.length &&
+          ruleSelected.length > 0
+        ) {
+          // (yes, the answers are in the source code! but you shouldn't look at them! then you wouldn't learn!)
+          return checkResults(rule, levels[levelIndex].selector);
+        }
+
+        return false;
+      };
+    </script>
+  </head>
+  <body>
+    <div class="table"></div>
+  </body>
+</html>
