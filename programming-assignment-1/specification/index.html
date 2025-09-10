@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Programming Assignment 1: Web frontend technologies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <meta charset="UTF-8" />
+
+    <script>
+      const createHeader = () => {
+        const headerBg = document.getElementById("header-bg");
+        headerBg.innerHTML = "";
+
+        // https://materialui.co/colors
+        const colors = [
+          "#FFEBEE",
+          "#FCE4EC",
+          "#F3E5F5",
+          "#EDE7F6",
+          "#E8EAF6",
+          "#E3F2FD",
+          "#E1F5FE",
+          "#E0F7FA",
+          "#E0F2F1",
+          "#E8F5E9",
+          "#F1F8E9",
+          "#F9FBE7",
+          "#FFFDE7",
+          "#FFF8E1",
+          "#FFF3E0",
+          "#FBE9E7",
+          "#EFEBE9",
+          "#FAFAFA",
+          "#ECEFF1",
+        ];
+
+        for (let i = 0; i < 6; i++) {
+          const pillContainer = document.createElement("div");
+          pillContainer.classList.add("pill-container");
+          headerBg.appendChild(pillContainer);
+
+          const totalWidth = headerBg.offsetWidth;
+
+          const initialOffset = -Math.random() * 100;
+          pillContainer.style.transform = `translateX(${initialOffset}px)`;
+          let pillsWidth = initialOffset;
+          let iters = 0;
+          while (pillsWidth < totalWidth + 300 && iters < 100) {
+            const pill = document.createElement("div");
+            pill.classList.add("pill");
+            pill.style.width = `${Math.random() * 100 + 20}px`;
+            pill.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            pillContainer.appendChild(pill);
+
+            pillsWidth += pill.offsetWidth;
+
+            iters++;
+          }
+        }
+      };
+
+      const debounce = (func, wait, immediate) => {
+        let timeout;
+        return function () {
+          const context = this,
+            args = arguments;
+          const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          const callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };
+
+      const createHeaderDebounced = debounce(createHeader, 500);
+
+      window.addEventListener("DOMContentLoaded", createHeader);
+      window.addEventListener("resize", createHeaderDebounced);
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div id="header-bg" class="header-bg" aria-hidden></div>
+      <h1>
+        <span class="pre-header">CS 160/260A Programming Assignment 1</span
+        ><br />Web frontend technologies
+      </h1>
+    </header>
+    <main>
+      <p>Welcome to CS 160’s first programming assignment!</p>
+
+      <p>
+        By the end of this course, you’ll be designing and implementing
+        prototypes of Web applications that solve real problems you discover
+        from interviewing target users.
+      </p>
+
+      <p>
+        Whether you've built with Web technologies before or you’re just
+        starting out, these programming assignments will give you practice
+        designed to prepare you for your final project.
+      </p>
+
+      <p>In this three-part programming assignment, you will:</p>
+
+      <ul>
+        <li>Practice adding structure to pages using HTML</li>
+        <li>Practice writing CSS selectors</li>
+        <li>
+          Write JavaScript that interacts with the Document Object Model (the
+          DOM)
+        </li>
+      </ul>
+
+      <p>Let’s dive in!</p>
+
+      <h2>Contents</h2>
+
+      <ul>
+        <li>
+          <a href="#Collaboration">Collaboration policy</a>
+        </li>
+        <li>
+          <a href="#Starter_code">Starter code</a>
+        </li>
+        <li>
+          <a href="#Submission">Submission</a>
+        </li>
+        <li>
+          <a href="#Development_environment">Development environment</a>
+        </li>
+        <li>
+          <a href="#Autograder">Autograder</a>
+        </li>
+
+        <li>
+          <a href="#Part_1">Part 1 · HTML</a>
+        </li>
+        <li>
+          <a href="#Part_2">Part 2 · CSS selectors</a>
+        </li>
+        <li>
+          <a href="#Part_3">Part 3 · Understanding the DOM</a>
+        </li>
+      </ul>
+
+      <h2 id="Collaboration">Collaboration policy</h2>
+
+      <p>
+        Programming assignments should be your own. You are not allowed to copy
+        other students code, or copy/modify large chunks of code or entire
+        projects found online (e.g. on GitHub).
+      </p>
+
+      <p>
+        You are allowed to consult online resources, e.g. Stack Overflow, to get
+        answers to specific implementation questions.
+      </p>
+
+      <p>
+        LLM-based tools like ChatGPT and GitHub Copilot are helpful and
+        increasingly common in industry, and
+        <strong>you may use them</strong> to help you complete assignments, with
+        the following caveats:
+      </p>
+
+      <ul>
+        <li>
+          You should stick to using AI for line- or function-level edits; do
+          <strong>not</strong> paste the entire chunks of the assignment
+          description into ChatGPT (it’s pretty obvious when you do this).
+          Programming assignments are not quite like real-world software
+          development, because we often provide detail in the specification that
+          would not normally be written out for you in a real-world project. If
+          you use these tools, you should practice the skill of communicating
+          with the tools rather than letting the assignment document do this for
+          you.
+        </li>
+        <li>
+          We generally describe what we want you to learn from a particular
+          exercise. Work through each task with the intention of
+          <strong>practicing the skills we mention</strong>; if AI helped you
+          get unstuck, do your best to come away with an understanding of the
+          concepts targeted by the assignment.
+        </li>
+        <li>
+          When we ask you to think about the design and aesthetics of your
+          application,
+          <strong>we’re looking for <em>your</em> creative spark</strong>. AI
+          can be great for helping you find the right CSS rules to style an
+          element, but you should be making your own high-level decisions.
+        </li>
+        <li>
+          The goal of these assignments is to develop your skills to work
+          independently on code implementations. LLMs can be part of this
+          process, but when you prompt AI tools to help you write assignment
+          code,
+          <strong>you should not share the exact prompts you used</strong> with
+          other students. This has a similar effect as sharing code, since it
+          prevents other students from developing their own skills with the
+          tools they are using. Of course, it's always okay to exchange
+          high-level advice with your peers.
+        </li>
+      </ul>
+
+      <h2 id="Starter_code">Starter code</h2>
+
+      <p>
+        This assignment includes starter code in the
+        <code>code</code> directory. You should build on top of this code for
+        your assignment submission.
+      </p>
+
+      <p>
+        Please do <strong>not</strong> fork the repository on GitHub or upload
+        your code anywhere public-facing. Remember, students aren’t allowed to
+        directly copy each other’s code for these assignments; if another
+        student copies your code, we won’t be able to tell who copied whom, and
+        you’ll be on the hook for the plagiarism too!
+      </p>
+
+      <h2 id="Submission">Submission</h2>
+
+      <p>
+        You will modify the starter code provided to you with the assignment,
+        then submit <strong>just your code/ directory</strong> as a zip file to
+        Gradescope containing your code submission.
+      </p>
+
+      <p>
+        Gradescope will give you a score for the assignment. This assignment is
+        fully autograded, although course staff reserves the right to deduct
+        points for incorrect completion of the assignment in a way that subverts
+        the autograder (<em>e.g.,</em> by hardcoding a solution that passes the
+        tests but does not meet the assignment requirements).
+      </p>
+
+      <p>Submission file structure:</p>
+
+      <ul>
+        <li>submission.zip</li>
+        <ul>
+          <li>part1/</li>
+          <ul>
+            <li>index.html</li>
+            <li>task1.html</li>
+            <li>task2.html</li>
+            <li>task3.html</li>
+            <li>task4.html</li>
+          </ul>
+          <li>part2/</li>
+          <ul>
+            <li>save-data.json</li>
+            <ul>
+              <li>
+                <em
+                  >(you won’t author this manually; it will be generated as you
+                  complete the CSS Diner exercises.)</em
+                >
+              </li>
+            </ul>
+          </ul>
+          <li>part3/</li>
+          <ul>
+            <li>solution.js</li>
+            <ul>
+              <li>
+                <em
+                  >(it's okay to include the other files in this directory, but
+                  only solution.js will be used by the autograder.)</em
+                >
+              </li>
+            </ul>
+          </ul>
+          <li>index.html</li>
+        </ul>
+      </ul>
+
+      <h2 id="Development_environment">Development environment</h2>
+
+      <p>
+        Read the assignment's README.md for instructions on how to run the local
+        server; if you've done it right, the URL of this specification document
+        you're reading should be http://localhost:6160/specification/index.html.
+      </p>
+
+      <p>
+        You'll also want to open the <code>code</code> directory of the
+        repository in a text editor. We like
+        <a href="https://code.visualstudio.com/">VS Code</a>.
+      </p>
+
+      <h2 id="Autograder">Autograder</h2>
+
+      <p>
+        The tests for this assignment are included in the starter code
+        repository. We recommend trying
+        <a href="https://playwright.dev/docs/running-tests"
+          >Playwright’s interactive debugging UI</a
+        >, although much of its value will be apparent only later in the
+        semester, when you're building interactive software for the browser.
+      </p>
+
+      <p>
+        The tests you run locally are the same tests that will run in
+        Gradescope. Still, you should
+        <strong>make a test submission to Gradescope early</strong> to make sure
+        you know how to submit correctly before the deadline!
+      </p>
+
+      <section id="Part_1" style="margin-top: 48px">
+        <h2>Part 1 · HTML</h2>
+        <p>
+          <em> Skills: HTML </em>
+        </p>
+
+        <p>This exercise is copyright CC BY-SA v2.5, Mozilla Contributors.</p>
+
+        <p>
+          Open
+          <a href="/code/part1/index.html"><strong>part1/index.html</strong></a>
+          in your browser. In HTML, <code>index.html</code> in a directory
+          typically refers to the “main” page, named this way because it
+          represents the page that often acts as an “index” or table of contents
+          for the rest of the directory.
+        </p>
+
+        <h2>Task 1</h2>
+
+        <p>
+          In this task, we want you to mark up the provided HTML using semantic
+          heading (<code>h1</code>, etc.) and paragraph (<code>p</code>)
+          elements.
+        </p>
+
+        <p>
+          Open <strong>task1.html</strong>, both in your text editor (like VS
+          Code) and your Web browser.
+        </p>
+
+        <p>Your final page should look like this:</p>
+
+        <div class="image-container">
+          <img src="./images/part1/task1.png" />
+        </div>
+
+        <p>
+          Note that some styling is present in the provided template, which is
+          where the purple text comes from.
+        </p>
+
+        <p>
+          Once you've finished, run <code>npx playwright test</code> from within
+          the <code>programming-assignment-1</code> directory (make sure you're
+          still running the server in some terminal with <code>npm start</code>,
+          and that you have run the <code>npx playwright install</code> command
+          from this repository's README). You should be passing the tests for
+          task 1 of part 1!
+        </p>
+
+        <p>
+          We've also found the official Playwright extension in VS Code to be
+          pretty helpful! You'll want to open the entire repository (not just
+          the <code>code</code> directory) in VS Code so that it can see the
+          <code>test</code> folder.
+        </p>
+
+        <h2>Task 2</h2>
+
+        <p>
+          In this task, we want you to turn the first un-marked up
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists"
+            >list</a
+          >
+          into an unordered list, and the second one into an ordered list.
+        </p>
+
+        <p>Open <strong>task2.html</strong>.</p>
+
+        <p>Your final page should look like this:</p>
+
+        <div class="image-container">
+          <img src="./images/part1/task2.png" />
+        </div>
+
+        <p>
+          As before, some styling is already present (that’s where the colored
+          borders come from.)
+        </p>
+
+        <h2>Task 3</h2>
+
+        <p>
+          In this task, we want you to turn the provided animals and their
+          definitions into a
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dd"
+            >description list</a
+          >.
+        </p>
+
+        <p>Open <strong>task3.html</strong>.</p>
+
+        <p>Your final page should look like this:</p>
+
+        <div class="image-container">
+          <img src="./images/part1/task3.png" />
+        </div>
+
+        <h2>Task 4</h2>
+
+        <p>
+          In this task, you are provided with a paragraph, and your aim is to
+          use some inline elements to mark up a couple of appropriate words with
+          <strong>strong</strong> importance, and a couple with
+          <em>emphasis</em>.
+        </p>
+
+        <p>Open <strong>task4.html</strong>.</p>
+
+        <p>Your final page should look like this:</p>
+
+        <div class="image-container">
+          <img src="./images/part1/task4.png" />
+        </div>
+
+        <h2>Finishing up</h2>
+
+        <p>
+          Once you’ve completed all four tasks, make sure the tests are passing.
+          Submit all three parts of this assignment together, at the end!
+        </p>
+
+        <h3>Resources</h3>
+        <ul>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML"
+              >Structuring the web with HTML - Learn web development | MDN</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists"
+              >Lists - Learn web development | MDN</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dd"
+              >&lt;dd&gt;: The Description Details element - HTML | MDN</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section id="Part_2">
+        <h2>Part 2 · CSS selectors</h2>
+        <p>
+          <em>Skills: locating elements in the page with CSS</em>
+        </p>
+
+        <p>
+          You <strong>won’t write any code in your editor</strong> for this
+          task. Instead, you'll run through <strong>CSS Diner</strong>, a set of
+          exercises by <a href="https://github.com/flukeout">@flukeout</a>, used
+          under the
+          <a href="https://github.com/flukeout/css-diner?tab=MPL-2.0-1-ov-file"
+            >Mozilla Public License, version 2.0</a
+          >.
+        </p>
+
+        <p>
+          CSS is a language designed to let you choose particular elements in an
+          HTML page, then apply styles to those elements. In this exercise,
+          we'll focus on that first part: <strong>selecting elements</strong>,
+          in particular on selecting just the elements you want. CSS diner will
+          show you various HTML snippets and ask you to write a CSS selector
+          that selects certain elements from those snippets.
+        </p>
+
+        <p>
+          We've curated a subset of the exercises from the CSS diner website
+          (the original is at cssdiner.com), so make sure you're completing them
+          within our custom version distributed with this homework. If you are
+          running the local Web server associated with this assignment (with
+          <code>npm start</code>), you can open this version of CSS diner:
+        </p>
+
+        <div style="margin-left: 24px">
+          <a href="http://localhost:6160/css-diner/"
+            >http://localhost:6160/css-diner/</a
+          >
+        </div>
+
+        <p>
+          When you complete each level, this will save your answer to the
+          <code>code/part2/save-data.json</code> file, enabling a new test to
+          pass (you'll find these in the same place as the tests for part 1).
+          Pass all the tests to complete the exercise.
+        </p>
+
+        <p>
+          <strong
+            >Make sure to keep the server (<code>npm start</code>)
+            running</strong
+          >
+          while you work. Otherwise, your progress won't be saved!
+        </p>
+      </section>
+
+      <section id="Part_3">
+        <h2>Part 3 · Understanding the DOM</h2>
+        <p>
+          <em>Skills: locating elements in the page with the DOM</em>
+        </p>
+
+        <p>
+          An HTML document is represented in the browser as a tree data
+          structure. This structure can be accessed and manipulated using
+          JavaScript, through the Document Object Model (DOM) API.
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/grubhub-component-tree.png"
+            alt="Grubhub Component Tree"
+          />
+        </div>
+        <div style="text-align: center; font-style: italic; font-size: 10pt">
+          This is a view from my browser's developer tools, showing the DOM
+          structure for a widget from the Grubhub website.
+        </div>
+
+        <p>
+          In this task, you'll be asked to write CSS selectors that select
+          various sets of elements from a provided page. Then, you'll write a
+          JavaScript function that (without CSS selectors) uses the DOM tree to
+          select those same elements.
+        </p>
+
+        <p>
+          In
+          <a href="/code/part3/index.html"><strong>part3/index.html</strong></a
+          >, you'll find a document from the
+          <a href="https://html5up.net">HTML5 Up</a> template website. Have a
+          look around, and explore the DOM tree using your browser's
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools"
+            >developer tools</a
+          >!
+          <strong
+            >Make sure you're seeing a left sidebar and a main section</strong
+          >; you may need to make your browser larger and/or zoom out, since
+          this page has a responsive layout and will change its layout when it
+          becomes too narrow.
+        </p>
+
+        <div class="image-container">
+          <video
+            src="images/part3/template-devtools.webm"
+            style="max-width: 80%"
+            autoplay
+            muted
+            controls
+            loop
+          ></video>
+        </div>
+        <div style="text-align: center; font-style: italic; font-size: 10pt">
+          Playing around in the Firefox developer tools!
+        </div>
+
+        <p>
+          For each of the below tasks, edit <code>code/part3/solution.js</code>,
+          adding a CSS selector that will select all of the required elements on
+          the page. We will use <code>document.querySelectorAll</code> with your
+          CSS selector to verify that the correct elements are selected.
+        </p>
+
+        <p>
+          We've added a floating helper panel to the page, which provides
+          buttons you can click to highlight the elements selected by your
+          current solutions (you'll want to reload the page before trying again,
+          when you make a change).
+        </p>
+
+        <p>
+          Then, for each task, <strong>implement the same selector</strong> with
+          pure JavaScript DOM operations.
+          <strong>You may not use querySelector or querySelectorAll</strong>;
+          instead, use these DOM operations, as needed:
+        </p>
+        <ul>
+          <li>
+            <code
+              ><a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById"
+                >getElementById</a
+              ></code
+            >
+          </li>
+          <li>
+            <code
+              ><a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName"
+                >getElementsByClassName</a
+              ></code
+            >
+          </li>
+          <li>
+            <code
+              ><a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName"
+                >getElementsByTagName</a
+              ></code
+            >
+          </li>
+          <li>
+            <code>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode"
+                >parentNode</a
+              ></code
+            >
+          </li>
+          <li>
+            <code>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes"
+                >childNodes</a
+              ></code
+            >
+          </li>
+          <li>
+            <code>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList"
+                >classList</a
+              ></code
+            >
+          </li>
+        </ul>
+
+        <p>
+          Tip: each of these can be called not just on the global
+          <code>document</code> object, but also on any individual element
+          fetched from the DOM. You'll see an example below, when we call
+          <code>article.getElementsByClassName</code>. This can help you query
+          for elements within a particular scope, rather than searching the
+          entire document.
+        </p>
+
+        <p>
+          Note that operations that return multiple elements (like
+          <code>getElementsByClassName</code>) return an HTMLCollection or
+          NodeList, which is different than a typical list (array) in
+          JavaScript. If you're having trouble getting these return values to
+          behave, you can convert them to lists:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-javascript">const elements = document.getElementsByClassName("some-class");
+const elementsList = [...elements];
+
+// use elementsList like a normal list</code></pre>
+        </div>
+
+        <p>
+          We haven't explicitly taught you JavaScript just yet. It's quite a bit
+          like other languages you'll have seen in your technical courses! If
+          you're in need of a bit more guidance, the
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types"
+            >MDN</a
+          >
+          includes some great detail that should help you pick up JavaScript as
+          a language.
+        </p>
+
+        <h3>Example: author tags</h3>
+
+        <p>
+          Each post in the main section (on the right side of the template)
+          contains an "author" section, an <code>&lt;a&gt;</code> tag.
+        </p>
+
+        <p>
+          Let's say we want to
+          <strong
+            >select all of these author tags associated with main-section posts,
+            except the first one on the page</strong
+          >.
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/task0-selected.png"
+            alt="Visual demonstration of which elements are selected"
+          />
+        </div>
+
+        <p>
+          For this first example, we'll go through it together (but you should
+          still put this in your submission). You'll complete the subsequent
+          tasks on your own. We've chosen a somewhat complex example to start
+          with so that you can see how to approach the problem!
+        </p>
+
+        <p>
+          Let's start by writing a CSS selector. Each of these author tags has
+          the <code>author</code> class, so we could try selecting those:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-css">.author</code></pre>
+        </div>
+
+        <p>
+          This selects too many items, though: it includes author tags not
+          associated with the main-section posts! Let's limit the CSS selector,
+          adding another selector preceding the <code>.author</code> selector.
+        </p>
+
+        <p>
+          All posts, including mini-posts, are in an <code>article</code> tag,
+          but only some of these have the <code>post</code> class. These are the
+          ones we want:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-css">article.post .author</code></pre>
+        </div>
+
+        <p>
+          Great! We're still selecting the first author tag, though, and the
+          exercise asked us to avoid that first one. CSS provides a handy
+          pseudo-class for this:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-css">article.post:not(:first-of-type) .author</code></pre>
+        </div>
+
+        <p>
+          That'll do it! That covers the CSS side of things. Now, how do we do
+          this in JavaScript, without using the CSS selector?
+        </p>
+
+        <p>Well, let's start by getting all the posts:</p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-javascript">const articles = document.getElementsByTagName("article");
+for (let i = 0; i < articles.length; i++) {
+  const article = articles[i];
+  if (article.classList.contains("post")) {
+    // This is a post!
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          Now, let's find an author within each post. In this page, the post
+          always contains exactly one author tag, so there's no need to handle
+          the case where no author is found:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-javascript">const articles = document.getElementsByTagName("article");
+for (let i = 0; i < articles.length; i++) {
+  const article = articles[i];
+  if (article.classList.contains("post")) {
+    const authorTag = article.getElementsByClassName("author")[0]; // always exists
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          And finally, let's keep track of which tags we've found, skipping the
+          first one:
+        </p>
+
+        <div style="margin-left: 24px">
+          <pre><code class="language-javascript">const selectedElements = [];
+let skippedFirst = false;
+
+const articles = document.getElementsByTagName("article");
+for (let i = 0; i < articles.length; i++) {
+  const article = articles[i];
+  if (article.classList.contains("post")) {
+    const authorTag = article.getElementsByClassName("author")[0]; // always exists
+    if (skippedFirst) {
+      // 'push' adds an item to the end of a list
+      selectedElements.push(authorTag);
+    } else {
+      // This is the first one, so we'll skip it
+      skippedFirst = true;
+    }
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          Now, the <code>selectedElements</code> list contains exactly the
+          elements we selected earlier with CSS.
+        </p>
+
+        <p>
+          Put this solution code into <code>code/part3/solution.js</code>. The
+          CSS selector goes in the <code>task0_cssSelector</code> variable (it's
+          just a string), and the JavaScript code goes in
+          <code>task0_jsCode</code>. Make sure to return the final list of
+          selected elements from the function!
+        </p>
+
+        <p>Now, complete the following tasks on your own.</p>
+
+        <h3>Intro section</h3>
+
+        <p>
+          In the sidebar on the left, there's a section towards the top with an
+          image and some description of the template. Write code that
+          <strong>selects this intro section</strong>. (Hint: the section has an
+          <code>id</code> attribute!)
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/task1-selected.png"
+            alt="Visual demonstration of which elements are selected"
+          />
+        </div>
+
+        <div class="admonition-info">
+          Note: your <code>task1_jsCode</code> function should always return a
+          list of all selected elements, even though in this case we're only
+          selecting a single element (so the list will have length 1).
+        </div>
+
+        <h3>Intro header</h3>
+
+        <p>
+          In that same intro section, there's a <strong>header tag</strong> (<em
+            >e.g.,</em
+          >
+          <code>h1</code>, <code>h2</code>, ...). Write code that
+          <strong> selects just this header tag </strong>.
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/task2-selected.png"
+            alt="Visual demonstration of which elements are selected"
+          />
+        </div>
+
+        <h3>Active buttons</h3>
+
+        <p>
+          Each button in this template is represented by a styled
+          <code>&lt;a&gt;</code> tag.
+          <strong>Select all 6 buttons on the page that are not disabled</strong
+          >. (There's just one disabled button, the "previous page" button, and
+          it has an indication in the markup that it is disabled.)
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/task3-selected.png"
+            alt="Visual demonstration of which elements are selected"
+          />
+        </div>
+
+        <h3>Post titles</h3>
+
+        <p>
+          There are three different places in the page where post titles appear:
+          in the main content area, in the sidebar with large image previews
+          (these are called "mini posts" in the markup), and in the sidebar
+          below this without image previews.
+        </p>
+
+        <p>
+          <strong
+            >Select all 12 elements that directly contain the post
+            titles</strong
+          >
+          (these will all be <code>&lt;a&gt;</code> tags, located in various
+          parts of the page).
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/part3/task4-selected.png"
+            alt="Visual demonstration of which elements are selected"
+          />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
