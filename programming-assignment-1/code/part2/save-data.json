@@ -1,7 +1,7 @@
 {
-  "totalCorrect": 22,
-  "percentComplete": 0.88,
-  "lastPercentEvent": 0.7999999999999999,
+  "totalCorrect": 25,
+  "percentComplete": 1,
+  "lastPercentEvent": 0.9999999999999999,
   "guessHistory": {
     "0": {
       "correct": true,
@@ -134,6 +134,24 @@
       "incorrectCount": 2,
       "gaSent": true,
       "enteredSelector": "bento[for=\"Vitaly\"]"
+    },
+    "22": {
+      "correct": true,
+      "incorrectCount": 12,
+      "gaSent": true,
+      "enteredSelector": "[for^=\"Sa\"]"
+    },
+    "23": {
+      "correct": true,
+      "incorrectCount": 1,
+      "gaSent": true,
+      "enteredSelector": "[for$=\"ato\"]"
+    },
+    "24": {
+      "correct": true,
+      "incorrectCount": 2,
+      "gaSent": true,
+      "enteredSelector": "[for*=\"obb\"]"
     }
   }
 }
