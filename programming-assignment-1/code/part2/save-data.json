@@ -1,6 +1,6 @@
 {
-  "totalCorrect": 11,
-  "percentComplete": 0.44,
+  "totalCorrect": 12,
+  "percentComplete": 0.48,
   "lastPercentEvent": 0.4,
   "guessHistory": {
     "0": {
@@ -68,6 +68,12 @@
       "incorrectCount": 2,
       "gaSent": true,
       "enteredSelector": "plate *"
+    },
+    "11": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "plate + apple"
     }
   }
 }
