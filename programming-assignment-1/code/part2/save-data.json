@@ -1,7 +1,7 @@
 {
-  "totalCorrect": 2,
-  "percentComplete": 0.08,
-  "lastPercentEvent": 0,
+  "totalCorrect": 7,
+  "percentComplete": 0.28,
+  "lastPercentEvent": 0.2,
   "guessHistory": {
     "0": {
       "correct": true,
@@ -14,6 +14,41 @@
       "incorrectCount": 0,
       "gaSent": true,
       "enteredSelector": "bento"
+    },
+    "2": {
+      "correct": true,
+      "incorrectCount": 1,
+      "gaSent": true,
+      "enteredSelector": "#fancy"
+    },
+    "3": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "plate apple"
+    },
+    "4": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "#fancy pickle"
+    },
+    "5": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": ".small"
+    },
+    "6": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "orange.small"
+    },
+    "7": {
+      "correct": false,
+      "incorrectCount": 5,
+      "gaSent": false
     }
   }
 }
