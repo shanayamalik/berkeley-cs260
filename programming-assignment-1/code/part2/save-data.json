@@ -1,7 +1,7 @@
 {
-  "totalCorrect": 17,
-  "percentComplete": 0.68,
-  "lastPercentEvent": 0.6,
+  "totalCorrect": 18,
+  "percentComplete": 0.72,
+  "lastPercentEvent": 0.7,
   "guessHistory": {
     "0": {
       "correct": true,
@@ -104,6 +104,17 @@
       "incorrectCount": 1,
       "gaSent": true,
       "enteredSelector": "apple:first-of-type"
+    },
+    "17": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "bento:empty"
+    },
+    "18": {
+      "correct": false,
+      "incorrectCount": 3,
+      "gaSent": false
     }
   }
 }
