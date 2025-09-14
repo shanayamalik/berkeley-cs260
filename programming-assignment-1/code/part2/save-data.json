@@ -1,6 +1,6 @@
 {
-  "totalCorrect": 21,
-  "percentComplete": 0.84,
+  "totalCorrect": 22,
+  "percentComplete": 0.88,
   "lastPercentEvent": 0.7999999999999999,
   "guessHistory": {
     "0": {
@@ -128,6 +128,12 @@
       "incorrectCount": 0,
       "gaSent": true,
       "enteredSelector": "plate[for]"
+    },
+    "21": {
+      "correct": true,
+      "incorrectCount": 2,
+      "gaSent": true,
+      "enteredSelector": "bento[for=\"Vitaly\"]"
     }
   }
 }
