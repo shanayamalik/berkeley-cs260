@@ -1,7 +1,7 @@
 {
-  "totalCorrect": 18,
-  "percentComplete": 0.72,
-  "lastPercentEvent": 0.7,
+  "totalCorrect": 21,
+  "percentComplete": 0.84,
+  "lastPercentEvent": 0.7999999999999999,
   "guessHistory": {
     "0": {
       "correct": true,
@@ -112,9 +112,22 @@
       "enteredSelector": "bento:empty"
     },
     "18": {
-      "correct": false,
-      "incorrectCount": 3,
-      "gaSent": false
+      "correct": true,
+      "incorrectCount": 5,
+      "gaSent": true,
+      "enteredSelector": "apple:not(.small)"
+    },
+    "19": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "[for]"
+    },
+    "20": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "plate[for]"
     }
   }
 }
