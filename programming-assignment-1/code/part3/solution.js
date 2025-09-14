@@ -1,7 +1,21 @@
 // Example: author tags
-const task0_cssSelector = "";
+const task0_cssSelector = "article.post:not(:first-of-type) .author";
 const task0_jsCode = () => {
   const selectedElements = [];
+  let skippedFirst = false;
+
+  const articles = document.getElementsByTagName("article");
+  for (let i = 0; i < articles.length; i++) {
+    const article = articles[i];
+    if (article.classList.contains("post")) {
+      const authorTag = article.getElementsByClassName("author")[0]; // always exists
+      if (skippedFirst) {
+        selectedElements.push(authorTag);
+      } else {
+        skippedFirst = true;
+      }
+    }
+  }
 
   return selectedElements;
 };
