@@ -1,7 +1,7 @@
 {
-  "totalCorrect": 9,
-  "percentComplete": 0.36,
-  "lastPercentEvent": 0.30000000000000004,
+  "totalCorrect": 11,
+  "percentComplete": 0.44,
+  "lastPercentEvent": 0.4,
   "guessHistory": {
     "0": {
       "correct": true,
@@ -56,6 +56,18 @@
       "incorrectCount": 2,
       "gaSent": true,
       "enteredSelector": "plate, bento"
+    },
+    "9": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "*"
+    },
+    "10": {
+      "correct": true,
+      "incorrectCount": 2,
+      "gaSent": true,
+      "enteredSelector": "plate *"
     }
   }
 }
