@@ -1,6 +1,6 @@
 {
-  "totalCorrect": 15,
-  "percentComplete": 0.6,
+  "totalCorrect": 17,
+  "percentComplete": 0.68,
   "lastPercentEvent": 0.6,
   "guessHistory": {
     "0": {
@@ -92,6 +92,18 @@
       "incorrectCount": 4,
       "gaSent": true,
       "enteredSelector": "apple.small, pickle:last-child"
+    },
+    "15": {
+      "correct": true,
+      "incorrectCount": 0,
+      "gaSent": true,
+      "enteredSelector": "plate:nth-child(3)"
+    },
+    "16": {
+      "correct": true,
+      "incorrectCount": 1,
+      "gaSent": true,
+      "enteredSelector": "apple:first-of-type"
     }
   }
 }
