@@ -21,7 +21,7 @@ const task0_jsCode = () => {
 };
 
 // Intro section
-const task1_cssSelector = "";
+const task1_cssSelector = "#intro";
 const task1_jsCode = () => {
   const selectedElements = [];
 
