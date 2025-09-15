@@ -35,7 +35,18 @@ const task1_jsCode = () => {
 const task2_cssSelector = "#intro h2";
 const task2_jsCode = () => {
   const selectedElements = [];
-
+  const introSection = document.getElementById("intro");
+  if (introSection) {
+    // Find the header element inside intro
+    const headers = introSection.getElementsByTagName("header");
+    if (headers.length > 0) {
+      // Find the h2 inside the header
+      const h2s = headers[0].getElementsByTagName("h2");
+      if (h2s.length > 0) {
+        selectedElements.push(h2s[0]);
+      }
+    }
+  }
   return selectedElements;
 };
 
