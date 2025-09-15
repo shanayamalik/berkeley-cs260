@@ -64,7 +64,7 @@ const task3_jsCode = () => {
 };
 
 // Post titles
-const task4_cssSelector = "";
+const task4_cssSelector = "h2 > a, h3 > a";
 const task4_jsCode = () => {
   const selectedElements = [];
 
