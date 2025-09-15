@@ -51,10 +51,13 @@ const task2_jsCode = () => {
 };
 
 // Active buttons
-const task3_cssSelector = "";
+const task3_cssSelector = "a.button:not(.disabled)";
 const task3_jsCode = () => {
   const selectedElements = [];
-
+  const buttons = document.getElementsByClassName("button");
+  buttons.forEach(button => {
+    selectedElements.push(button);
+  });
   return selectedElements;
 };
 
