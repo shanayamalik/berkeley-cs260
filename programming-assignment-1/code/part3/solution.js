@@ -55,8 +55,10 @@ const task3_cssSelector = "a.button:not(.disabled)";
 const task3_jsCode = () => {
   const selectedElements = [];
   const buttons = document.getElementsByClassName("button");
-  buttons.forEach(button => {
-    selectedElements.push(button);
+  Array.from(buttons).forEach(button => {
+    if (!button.classList.contains("disabled")) {
+      selectedElements.push(button);
+    }
   });
   return selectedElements;
 };
