@@ -67,6 +67,28 @@ const task3_jsCode = () => {
 const task4_cssSelector = "h2 > a, h3 > a";
 const task4_jsCode = () => {
   const selectedElements = [];
+  const h2s = document.getElementsByTagName("h2");
+  const h3s = document.getElementsByTagName("h3");
+
+  // Check the titles in h2s
+  for (let i = 0; i < h2s.length; i++) {
+    const children = h2s[i].children;
+    for (let j = 0; j < children.length; j++) {
+      if (children[j].tagName === "A") {
+        selectedElements.push(children[j]);
+      }
+    }
+  }
+
+  // Check the titles in h3s
+  for (let i = 0; i < h3s.length; i++) {
+    const children = h3s[i].children;
+    for (let j = 0; j < children.length; j++) {
+      if (children[j].tagName === "A") {
+        selectedElements.push(children[j]);
+      }
+    }
+  }
 
   return selectedElements;
 };
