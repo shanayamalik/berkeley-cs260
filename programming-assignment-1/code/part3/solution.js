@@ -24,12 +24,15 @@ const task0_jsCode = () => {
 const task1_cssSelector = "#intro";
 const task1_jsCode = () => {
   const selectedElements = [];
-
+  const introSection = document.getElementById("intro");
+  if (introSection) {
+    selectedElements.push(introSection);
+  }
   return selectedElements;
 };
 
 // Intro header
-const task2_cssSelector = "";
+const task2_cssSelector = "#intro h2";
 const task2_jsCode = () => {
   const selectedElements = [];
 
