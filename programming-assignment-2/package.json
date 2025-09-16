@@ -1,0 +1,16 @@
+{
+  "name": "programming-assignment-2",
+  "version": "1.0.0",
+  "description": "Hello friend! This is a programming assignment for CS 160/260A.",
+  "main": "server/serve.js",
+  "scripts": {
+    "start": "node server/serve.js"
+  },
+  "author": "CS 160 course staff",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "@playwright/test": "1.55.0",
+    "express": "^5.1.0"
+  }
+}
