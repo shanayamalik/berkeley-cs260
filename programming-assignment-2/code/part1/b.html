@@ -48,12 +48,44 @@
         /* You may add additional code here, if you need. */
       }
 
+      .left-column,
+      .right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+      }
+
+      .left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+      }
+
       /* Add whatever CSS you need below to reference the elements you create in your HTML. */
+      .left-column > .red,
+      .left-column > .blue {
+        flex: 1;
+      }
+
+      .right-column > .green,
+      .right-column > .yellow,
+      .right-column > .gray {
+        flex: 1;
+      }
     </style>
   </head>
   <body>
     <main>
       <!-- Add the appropriate <div> elements here. -->
+      <div class="left-column">
+        <div class="red"></div>
+        <div class="blue"></div>
+      </div>
+      <div class="right-column">
+        <div class="green"></div>
+        <div class="yellow"></div>
+        <div class="gray"></div>
+      </div>
     </main>
   </body>
 </html>
