@@ -14,6 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
+      .row > div {
+        flex: 1;
+        margin: 0;
+        padding: 0;
+      }
       body {
         margin: 0;
         padding: 0;
@@ -43,9 +48,20 @@
       main {
         width: 100vw;
         height: 100vh;
-        display: grid;
-        grid-template-rows: 2fr 1fr;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row {
+        display: flex;
+        flex: 1;
+      }
+
+      .top-row {
+        flex: 2;
+      }
+      .bottom-row {
+        flex: 1;
       }
 
       /* Add whatever CSS you need below to reference the elements you create in your HTML. */
@@ -53,11 +69,14 @@
   </head>
   <body>
     <main>
-  <!-- Layout C grid quadrants -->
-  <div class="red"></div>
-  <div class="blue"></div>
-  <div class="green"></div>
-  <div class="yellow"></div>
+      <div class="row top-row">
+        <div class="red"></div>
+        <div class="blue"></div>
+      </div>
+      <div class="row bottom-row">
+        <div class="green"></div>
+        <div class="yellow"></div>
+      </div>
     </main>
   </body>
 </html>
