@@ -43,9 +43,9 @@
       main {
         width: 100vw;
         height: 100vh;
-
-        display: flex;
-        /* You may add additional code here, if you need. */
+        display: grid;
+        grid-template-rows: 2fr 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       /* Add whatever CSS you need below to reference the elements you create in your HTML. */
@@ -53,7 +53,11 @@
   </head>
   <body>
     <main>
-      <!-- Add the appropriate <div> elements here. -->
+  <!-- Layout C grid quadrants -->
+  <div class="red"></div>
+  <div class="blue"></div>
+  <div class="green"></div>
+  <div class="yellow"></div>
     </main>
   </body>
 </html>
