@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cafe Currency Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: 'Quicksand', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(120deg, #fffbe7 0%, #ffe0b2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      header {
+        padding: 20px;
+        color: #6d4c41;
+        background: #fff8e1;
+        border-radius: 16px;
+        margin-top: 24px;
+        box-shadow: 0 2px 8px rgba(109,76,65,0.08);
+        font-family: 'Pacifico', cursive;
+        font-size: 2em;
+        letter-spacing: 2px;
+      }
+      main {
+        width: 100%;
+        max-width: 480px;
+        background: #fffde7;
+        border-radius: 20px;
+        box-shadow: 0 4px 16px rgba(109,76,65,0.12);
+        padding: 32px 24px;
+        margin: 32px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #6d4c41;
+        font-weight: 700;
+        font-size: 1.1em;
+      }
+      input[type="radio"] {
+        accent-color: #a1887f;
+        margin-right: 8px;
+      }
+      #amount-textbox {
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid #ffe0b2;
+        margin-bottom: 16px;
+        width: 80%;
+        font-size: 1.1em;
+        background: #fffbe7;
+        color: #6d4c41;
+      }
+      #calculate-clickable {
+        background: #a1887f;
+        color: #fffbe7;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-size: 1em;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(109,76,65,0.12);
+        margin-bottom: 16px;
+        font-family: 'Quicksand', sans-serif;
+        transition: background 0.2s;
+      }
+      #calculate-clickable:hover {
+        background: #6d4c41;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        background: #ffe0b2;
+        border-radius: 12px;
+        overflow: hidden;
+        color: #6d4c41;
+        font-family: 'Quicksand', sans-serif;
+      }
+      th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ffe0b2;
+      }
+      th {
+        background: #fff8e1;
+        color: #6d4c41;
+        font-weight: 700;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      #error-message {
+        color: #d32f2f;
+        min-height: 1.5em;
+        margin-top: 8px;
+        font-weight: 700;
+        font-family: 'Quicksand', sans-serif;
+      }
+      .cafe-description {
+        background: #ffe0b2;
+        color: #6d4c41;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        font-size: 1.05em;
+        box-shadow: 0 2px 8px rgba(109,76,65,0.08);
+        font-family: 'Quicksand', sans-serif;
+      }
+      .boba {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #a1887f;
+        margin: 0 2px;
+        box-shadow: 0 2px 4px rgba(109,76,65,0.18);
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Cafe Currency Converter <span class="boba"></span><span class="boba"></span><span class="boba"></span></h1>
+    </header>
+    <main>
+      <div class="cafe-description">
+        <strong>Design Concept:</strong> Cozy Cafe/Boba Theme<br>
+        To create a warm, inviting vibe, I used:
+        <ul>
+          <li>A soft, creamy color palette inspired by coffee and boba drinks.</li>
+          <li>Rounded corners and playful shadows for a cozy feel.</li>
+          <li>The "Pacifico" font for the header to evoke a handwritten menu.</li>
+        </ul>
+      </div>
+      <label><input type="radio" name="currency" value="usd" id="usd-clickable" checked> USD</label>
+      <label><input type="radio" name="currency" value="eur" id="eur-clickable"> EUR</label>
+      <label><input type="radio" name="currency" value="chf" id="custom-currency-1-clickable"> CHF</label>
+      <label><input type="radio" name="currency" value="cad" id="custom-currency-2-clickable"> CAD</label>
+      <label for="amount-textbox">Amount:</label>
+      <input type="text" id="amount-textbox" placeholder="Enter amount">
+      <button id="calculate-clickable">Calculate</button>
+      <table>
+        <thead>
+          <tr>
+            <th>USD</th>
+            <th>EUR</th>
+            <th>CHF</th>
+            <th>CAD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="usd-calculated"></td>
+            <td id="eur-calculated"></td>
+            <td id="custom-currency-1-calculated"></td>
+            <td id="custom-currency-2-calculated"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-message"></div>
+    </main>
+    <script>
+      const EUR_PER_USD = 0.85;
+      const CHF_PER_USD = 0.92;
+      const CAD_PER_USD = 1.35;
+      document.getElementById("calculate-clickable").addEventListener("click", () => {
+        const amountTextbox = document.getElementById("amount-textbox");
+        const amountAsNumber = parseFloat(amountTextbox.value);
+        const errorMessage = document.getElementById("error-message");
+        if (isNaN(amountAsNumber) || amountAsNumber < 0) {
+          errorMessage.textContent = "Please enter a non-negative number.";
+          document.getElementById("usd-calculated").textContent = "";
+          document.getElementById("eur-calculated").textContent = "";
+          document.getElementById("custom-currency-1-calculated").textContent = "";
+          document.getElementById("custom-currency-2-calculated").textContent = "";
+          return;
+        } else {
+          errorMessage.textContent = "";
+        }
+        if (document.getElementById("usd-clickable").checked) {
+          const eurAmount = amountAsNumber * EUR_PER_USD;
+          const chfAmount = amountAsNumber * CHF_PER_USD;
+          const cadAmount = amountAsNumber * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("eur-clickable").checked) {
+          const usdAmount = amountAsNumber / EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-1-clickable").checked) {
+          const usdAmount = amountAsNumber / CHF_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-2-clickable").checked) {
+          const usdAmount = amountAsNumber / CAD_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = amountAsNumber.toFixed(2);
+        }
+      });
+    </script>
+  </body>
+</html>
