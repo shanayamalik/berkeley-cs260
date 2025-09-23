@@ -177,6 +177,20 @@
         // To convert to a number, we can use the 'parseFloat' function.
         const amountAsNumber = parseFloat(amount);
 
+        // Error handling for negative values
+        const errorMessage = document.getElementById("error-message");
+        if (isNaN(amountAsNumber) || amountAsNumber < 0) {
+          errorMessage.textContent = "Please enter a non-negative number.";
+          // Clear results
+          document.getElementById("usd-calculated").textContent = "";
+          document.getElementById("eur-calculated").textContent = "";
+          document.getElementById("custom-currency-1-calculated").textContent = "";
+          document.getElementById("custom-currency-2-calculated").textContent = "";
+          return;
+        } else {
+          errorMessage.textContent = "";
+        }
+
         // Write some code to make sure the amount is positive.
         // If it's not, set the content of the error message element:
         document.getElementById("error-message").textContent = ""; // ...
