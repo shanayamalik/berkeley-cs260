@@ -14,9 +14,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
-      body {
+      body,
+      html {
         margin: 0;
         padding: 0;
+      }
+
+      .container {
+        display: flex;
+      }
+
+      .block {
+        flex: 1;
+      }
+
+      @media (orientation: portrait) {
+        .container {
+          flex-direction: column;
+        }
+      }
+      @media (orientation: landscape) {
+        .container {
+          flex-direction: row;
+        }
       }
 
       .red {
@@ -52,8 +72,11 @@
     </style>
   </head>
   <body>
-    <main>
-      <!-- Add the appropriate <div> elements here. -->
+    <main class="container">
+      <div class="block red"></div>
+      <div class="block blue"></div>
+      <div class="block green"></div>
+      <div class="block yellow"></div>
     </main>
   </body>
 </html>
