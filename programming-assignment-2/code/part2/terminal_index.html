@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terminal Currency Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: 'Roboto Mono', monospace;
+        margin: 0;
+        padding: 0;
+        background: #23272e;
+        color: #e0e0e0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      header {
+        padding: 20px;
+        color: #00ff00;
+        background: #181a20;
+        border-radius: 8px;
+        margin-top: 24px;
+        box-shadow: 0 2px 8px rgba(0,255,0,0.08);
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      main {
+        width: 100%;
+        max-width: 480px;
+        background: #181a20;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,255,0,0.12);
+        padding: 32px 24px;
+        margin: 32px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #00ff00;
+        font-weight: 700;
+      }
+      input[type="radio"] {
+        accent-color: #00ff00;
+        margin-right: 8px;
+      }
+      #amount-textbox {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #444;
+        margin-bottom: 16px;
+        width: 80%;
+        font-size: 1.1em;
+        background: #23272e;
+        color: #e0e0e0;
+      }
+      #calculate-clickable {
+        background: #00ff00;
+        color: #23272e;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 24px;
+        font-size: 1em;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0,255,0,0.12);
+        margin-bottom: 16px;
+        font-family: 'Roboto Mono', monospace;
+        transition: background 0.2s;
+      }
+      #calculate-clickable:hover {
+        background: #00cc00;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        background: #23272e;
+        border-radius: 8px;
+        overflow: hidden;
+        color: #e0e0e0;
+        font-family: 'Roboto Mono', monospace;
+      }
+      th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #444;
+      }
+      th {
+        background: #181a20;
+        color: #00ff00;
+        font-weight: 700;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      #error-message {
+        color: #ff1744;
+        min-height: 1.5em;
+        margin-top: 8px;
+        font-weight: 700;
+        font-family: 'Roboto Mono', monospace;
+      }
+      .terminal-description {
+        background: #181a20;
+        color: #00ff00;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+        font-size: 1.05em;
+        box-shadow: 0 2px 8px rgba(0,255,0,0.08);
+        font-family: 'Roboto Mono', monospace;
+      }
+      .blinking-cursor {
+        font-weight: bold;
+        color: #00ff00;
+        animation: blink 1s steps(2, start) infinite;
+      }
+      @keyframes blink {
+        to {
+          visibility: hidden;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Terminal Currency Converter <span class="blinking-cursor">_</span></h1>
+    </header>
+    <main>
+      <div class="terminal-description">
+        <strong>Design Concept:</strong> Developer's Terminal<br>
+        To create a geeky, efficient vibe, I used:
+        <ul>
+          <li>A dark background with green text to mimic a classic terminal.</li>
+          <li>Monospace font and a blinking cursor for authenticity.</li>
+          <li>Sharp corners and minimalistic layout for a focused feel.</li>
+        </ul>
+      </div>
+      <label><input type="radio" name="currency" value="usd" id="usd-clickable" checked> USD</label>
+      <label><input type="radio" name="currency" value="eur" id="eur-clickable"> EUR</label>
+      <label><input type="radio" name="currency" value="chf" id="custom-currency-1-clickable"> CHF</label>
+      <label><input type="radio" name="currency" value="cad" id="custom-currency-2-clickable"> CAD</label>
+      <label for="amount-textbox">Amount:</label>
+      <input type="text" id="amount-textbox" placeholder="Enter amount">
+      <button id="calculate-clickable">Calculate</button>
+      <table>
+        <thead>
+          <tr>
+            <th>USD</th>
+            <th>EUR</th>
+            <th>CHF</th>
+            <th>CAD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="usd-calculated"></td>
+            <td id="eur-calculated"></td>
+            <td id="custom-currency-1-calculated"></td>
+            <td id="custom-currency-2-calculated"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-message"></div>
+    </main>
+    <script>
+      const EUR_PER_USD = 0.85;
+      const CHF_PER_USD = 0.92;
+      const CAD_PER_USD = 1.35;
+      document.getElementById("calculate-clickable").addEventListener("click", () => {
+        const amountTextbox = document.getElementById("amount-textbox");
+        const amountAsNumber = parseFloat(amountTextbox.value);
+        const errorMessage = document.getElementById("error-message");
+        if (isNaN(amountAsNumber) || amountAsNumber < 0) {
+          errorMessage.textContent = "Please enter a non-negative number.";
+          document.getElementById("usd-calculated").textContent = "";
+          document.getElementById("eur-calculated").textContent = "";
+          document.getElementById("custom-currency-1-calculated").textContent = "";
+          document.getElementById("custom-currency-2-calculated").textContent = "";
+          return;
+        } else {
+          errorMessage.textContent = "";
+        }
+        if (document.getElementById("usd-clickable").checked) {
+          const eurAmount = amountAsNumber * EUR_PER_USD;
+          const chfAmount = amountAsNumber * CHF_PER_USD;
+          const cadAmount = amountAsNumber * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("eur-clickable").checked) {
+          const usdAmount = amountAsNumber / EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-1-clickable").checked) {
+          const usdAmount = amountAsNumber / CHF_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-2-clickable").checked) {
+          const usdAmount = amountAsNumber / CAD_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = amountAsNumber.toFixed(2);
+        }
+      });
+    </script>
+  </body>
+</html>
