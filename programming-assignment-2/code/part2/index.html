@@ -198,6 +198,12 @@
           document.getElementById("usd-calculated").textContent = amountAsNumber.toFixed(2);
           document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
         }
+
+        if (document.getElementById("eur-clickable").checked) {
+          const usdAmount = amountAsNumber / EUR_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = amountAsNumber.toFixed(2);
+        }
       });
     </script>
   </body>
