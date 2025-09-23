@@ -179,7 +179,15 @@
 
         // Error handling for negative values
         const errorMessage = document.getElementById("error-message");
-        if (isNaN(amountAsNumber) || amountAsNumber < 0) {
+        if (isNaN(amountAsNumber)) {
+          errorMessage.textContent = "Please enter a valid number.";
+          // Clear results
+          document.getElementById("usd-calculated").textContent = "";
+          document.getElementById("eur-calculated").textContent = "";
+          document.getElementById("custom-currency-1-calculated").textContent = "";
+          document.getElementById("custom-currency-2-calculated").textContent = "";
+          return;
+        } else if (amountAsNumber < 0) {
           errorMessage.textContent = "Please enter a non-negative number.";
           // Clear results
           document.getElementById("usd-calculated").textContent = "";
