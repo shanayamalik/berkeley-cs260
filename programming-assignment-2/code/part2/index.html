@@ -191,6 +191,13 @@
         // If you want to include additional text (e.g. a € symbol), you can either include it here
         // or add it in the HTML, outside of the element with the "usd-calculated" ID.
         // To do this, you may want to use a <span> (rather than a <td>) for the "usd-calculated" element.
+
+        // USD to EUR conversion logic
+        if (document.getElementById("usd-clickable").checked) {
+          const eurAmount = amountAsNumber * EUR_PER_USD;
+          document.getElementById("usd-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+        }
       });
     </script>
   </body>
