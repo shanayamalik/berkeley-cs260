@@ -121,8 +121,8 @@
         EUR
       </label>
       <label>
-        <input type="radio" name="currency" value="gbp" id="custom-currency-1-clickable">
-        GBP
+  <input type="radio" name="currency" value="chf" id="custom-currency-1-clickable">
+  CHF
       </label>
       <label>
         <input type="radio" name="currency" value="cad" id="custom-currency-2-clickable">
@@ -139,7 +139,7 @@
           <tr>
             <th>USD</th>
             <th>EUR</th>
-            <th>GBP</th>
+            <th>CHF</th>
             <th>CAD</th>
           </tr>
         </thead>
@@ -157,6 +157,8 @@
 
     <script>
       const EUR_PER_USD = 0.85;
+  const CHF_PER_USD = 0.92; // 1 USD = 0.92 CHF
+  const CAD_PER_USD = 1.35; // 1 USD = 1.35 CAD
 
       // This code grabs the element above with the id "calculate-clickable". This could
       // be a button or any other kind of element.
@@ -195,14 +197,39 @@
         // USD to EUR conversion logic
         if (document.getElementById("usd-clickable").checked) {
           const eurAmount = amountAsNumber * EUR_PER_USD;
+          const chfAmount = amountAsNumber * CHF_PER_USD;
+          const cadAmount = amountAsNumber * CAD_PER_USD;
           document.getElementById("usd-calculated").textContent = amountAsNumber.toFixed(2);
           document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
         }
-
-        if (document.getElementById("eur-clickable").checked) {
+        else if (document.getElementById("eur-clickable").checked) {
           const usdAmount = amountAsNumber / EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
           document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
           document.getElementById("eur-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-1-clickable").checked) {
+          const usdAmount = amountAsNumber / CHF_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const cadAmount = usdAmount * CAD_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = amountAsNumber.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = cadAmount.toFixed(2);
+        }
+        else if (document.getElementById("custom-currency-2-clickable").checked) {
+          const usdAmount = amountAsNumber / CAD_PER_USD;
+          const eurAmount = usdAmount * EUR_PER_USD;
+          const chfAmount = usdAmount * CHF_PER_USD;
+          document.getElementById("usd-calculated").textContent = usdAmount.toFixed(2);
+          document.getElementById("eur-calculated").textContent = eurAmount.toFixed(2);
+          document.getElementById("custom-currency-1-calculated").textContent = chfAmount.toFixed(2);
+          document.getElementById("custom-currency-2-calculated").textContent = amountAsNumber.toFixed(2);
         }
       });
     </script>
