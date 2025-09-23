@@ -121,13 +121,38 @@
         EUR
       </label>
       <label>
-         <input type="radio" name="currency" value="gbp" id="gbp-clickable">
-         GBP
+        <input type="radio" name="currency" value="gbp" id="custom-currency-1-clickable">
+        GBP
       </label>
       <label>
-         <input type="radio" name="currency" value="cad" id="inr-clickable">
-         CAD
+        <input type="radio" name="currency" value="cad" id="custom-currency-2-clickable">
+        CAD
       </label>
+
+      <label for="amount-textbox">Amount:</label>
+      <input type="text" id="amount-textbox" placeholder="Enter amount">
+
+      <button id="calculate-clickable">Calculate</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>USD</th>
+            <th>EUR</th>
+            <th>GBP</th>
+            <th>CAD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="usd-calculated"></td>
+            <td id="eur-calculated"></td>
+            <td id="custom-currency-1-calculated"></td>
+            <td id="custom-currency-2-calculated"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-message" style="color: red; min-height: 1.5em;"></div>
     </main>
 
     <script>
