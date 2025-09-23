@@ -1,0 +1,46 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: row;
+
+  min-height: 100vh;
+}
+
+.sidebar {
+  flex: 1;
+  background-color: #f0f0f0;
+  border-right: 4px double #ccc;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    li a {
+      display: block;
+      padding: 1rem;
+      text-decoration: none;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+  }
+}
+
+.main {
+  flex: 5;
+  padding: 3rem;
+  box-sizing: border-box;
+}

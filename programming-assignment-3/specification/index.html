@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Programming Assignment 3: Building with React</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script>
+      const createHeader = () => {
+        const headerBg = document.getElementById("header-bg");
+        headerBg.innerHTML = "";
+
+        // https://materialui.co/colors
+        const colors = [
+          "#FFEBEE",
+          "#FCE4EC",
+          "#F3E5F5",
+          "#EDE7F6",
+          "#E8EAF6",
+          "#E3F2FD",
+          "#E1F5FE",
+          "#E0F7FA",
+          "#E0F2F1",
+          "#E8F5E9",
+          "#F1F8E9",
+          "#F9FBE7",
+          "#FFFDE7",
+          "#FFF8E1",
+          "#FFF3E0",
+          "#FBE9E7",
+          "#EFEBE9",
+          "#FAFAFA",
+          "#ECEFF1",
+        ];
+
+        for (let i = 0; i < 6; i++) {
+          const pillContainer = document.createElement("div");
+          pillContainer.classList.add("pill-container");
+          headerBg.appendChild(pillContainer);
+
+          const totalWidth = headerBg.offsetWidth;
+
+          const initialOffset = -Math.random() * 100;
+          pillContainer.style.transform = `translateX(${initialOffset}px)`;
+          let pillsWidth = initialOffset;
+          let iters = 0;
+          while (pillsWidth < totalWidth + 300 && iters < 100) {
+            const pill = document.createElement("div");
+            pill.classList.add("pill");
+            pill.style.width = `${Math.random() * 100 + 20}px`;
+            pill.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            pillContainer.appendChild(pill);
+
+            pillsWidth += pill.offsetWidth;
+
+            iters++;
+          }
+        }
+      };
+
+      const debounce = (func, wait, immediate) => {
+        let timeout;
+        return function () {
+          const context = this,
+            args = arguments;
+          const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          const callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };
+
+      const createHeaderDebounced = debounce(createHeader, 500);
+
+      window.addEventListener("DOMContentLoaded", createHeader);
+      window.addEventListener("resize", createHeaderDebounced);
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div id="header-bg" class="header-bg" aria-hidden="true"></div>
+      <h1>
+        <span class="pre-header">CS 160/260A Programming Assignment 3</span
+        ><br />Building with React
+      </h1>
+    </header>
+    <main>
+      <p>
+        In this programming assignment, you’ll edit a React project, adding
+        functionality and making it beautiful!
+      </p>
+
+      <p>Let’s dive in!</p>
+
+      <h2>Contents</h2>
+
+      <ul>
+        <li>
+          <a href="#Collaboration">Collaboration policy</a>
+        </li>
+        <li>
+          <a href="#Starter_code">Starter code</a>
+        </li>
+        <li>
+          <a href="#Submission">Submission</a>
+        </li>
+        <li>
+          <a href="#Development_environment">Development environment</a>
+        </li>
+        <li>
+          <a href="#Grading">Grading</a>
+        </li>
+
+        <li>
+          <a href="#Part_0">Part 0 · Getting situated</a>
+        </li>
+        <li>
+          <a href="#Part_1">Part 1 · Reusable components</a>
+        </li>
+        <li>
+          <a href="#Part_2">Part 2 · Adding interactivity</a>
+        </li>
+        <li>
+          <a href="#Part_3">Part 3 · Luggage planning</a>
+        </li>
+        <li>
+          <a href="#Part_4">Part 4 · Adding a new page</a>
+        </li>
+        <li>
+          <a href="#Part_5">Part 5 · Make it your own</a>
+        </li>
+      </ul>
+
+      <h2 id="Collaboration">Collaboration policy</h2>
+
+      <p>
+        Programming assignments should be your own. You are not allowed to copy
+        other students code, or copy/modify large chunks of code or entire
+        projects found online (e.g. on GitHub).
+      </p>
+
+      <p>
+        You are allowed to consult online resources, e.g. Stack Overflow, to get
+        answers to specific implementation questions.
+      </p>
+
+      <p>
+        LLM-based tools like ChatGPT and GitHub Copilot are helpful and
+        increasingly common in industry, and
+        <strong>you may use them</strong> to help you complete assignments, with
+        the following caveats:
+      </p>
+
+      <ul>
+        <li>
+          You should stick to using AI for line- or function-level edits; do
+          <strong>not</strong> paste the entire chunks of the assignment
+          description into ChatGPT (it’s pretty obvious when you do this).
+          Programming assignments are not quite like real-world software
+          development, because we often provide detail in the specification that
+          would not normally be written out for you in a real-world project. If
+          you use these tools, you should practice the skill of communicating
+          with the tools rather than letting the assignment document do this for
+          you.
+        </li>
+        <li>
+          We generally describe what we want you to learn from a particular
+          exercise. Work through each task with the intention of
+          <strong>practicing the skills we mention</strong>; if AI helped you
+          get unstuck, do your best to come away with an understanding of the
+          concepts targeted by the assignment.
+        </li>
+        <li>
+          When we ask you to think about the design and aesthetics of your
+          application,
+          <strong>we’re looking for <em>your</em> creative spark</strong>. AI
+          can be great for helping you find the right CSS rules to style an
+          element, but you should be making your own high-level decisions.
+        </li>
+        <li>
+          The goal of these assignments is to develop your skills to work
+          independently on code implementations. LLMs can be part of this
+          process, but when you prompt AI tools to help you write assignment
+          code,
+          <strong>you should not share the exact prompts you used</strong> with
+          other students. This has a similar effect as sharing code, since it
+          prevents other students from developing their own skills with the
+          tools they are using. Of course, it's always okay to exchange
+          high-level advice with your peers.
+        </li>
+      </ul>
+
+      <h2 id="Starter_code">Starter code</h2>
+
+      <p>
+        This assignment includes starter code in the
+        <code>code</code> directory. You should build on top of this code for
+        your assignment submission.
+      </p>
+
+      <p>
+        Please do <strong>not</strong> fork the repository on GitHub or upload
+        your code anywhere public-facing. Remember, students aren’t allowed to
+        directly copy each other’s code for these assignments; if another
+        student copies your code, we won’t be able to tell who copied whom, and
+        you’ll be on the hook for the plagiarism too!
+      </p>
+
+      <h2 id="Submission">Submission</h2>
+
+      <p>
+        You will modify the starter code provided to you with the assignment,
+        then submit your code as a zip file to Gradescope containing your code
+        submission. Gradescope will give you a link to an uploaded build of your
+        submission;
+        <strong>you should verify that this works as expected</strong>. This
+        assignment will be manually graded by course staff after the submission
+        deadline.
+      </p>
+
+      <p>Submission file structure:</p>
+
+      <ul>
+        <li>submission.zip</li>
+        <ul>
+          <li>src/</li>
+          <ul>
+            <li>(...)</li>
+          </ul>
+          <li>public/</li>
+          <ul>
+            <li>(...)</li>
+          </ul>
+          <li>index.html</li>
+          <li>package.json and package-lock.json</li>
+          <ul>
+            <!-- TODO: check this works -->
+            <li>
+              (optional. If you install new libraries, you’ll need to copy these
+              files into your submission folder from outside the
+              <code>code</code> folder.)
+            </li>
+          </ul>
+        </ul>
+      </ul>
+
+      <h2 id="Development_environment">Development environment</h2>
+
+      <p>
+        Read the assignment's README.md for instructions on how to run the local
+        server; if you've done it right, the URL of this specification document
+        you're reading should be http://localhost:6160/specification/index.html.
+      </p>
+
+      <p>
+        You'll also want to open the <code>code</code> directory of the
+        repository in a text editor. We like
+        <a href="https://code.visualstudio.com/">VS Code</a>.
+      </p>
+
+      <h2 id="Grading">Grading</h2>
+
+      <p>
+        There are <strong>no autograded portions</strong> for this assignment;
+        course staff will manually grade your work by using your Web interface.
+      </p>
+
+      <p>
+        You should go through the assignment’s requirements checklist and make
+        sure you have completed everything asked of you before submitting.
+      </p>
+
+      <p>
+        Because the assignment is manually graded, it is important to have the
+        right submission activated in Gradescope when the deadline passes. We
+        will only grade your assignment once!
+      </p>
+
+      <!-- react dev tools -->
+
+      <!-- can I use libraries? -->
+
+      <section id="Part_0">
+        <h2>Part 0 · Getting situated</h2>
+
+        <p>
+          Hello! This project will be different than your other programming
+          assignments. We’ve provided a skeleton React application, which you’ll
+          modify over the next few parts of the assignment. Rather than building
+          to an exact, autogradable specification, you’ll design and construct
+          your own interactions that implement the requested requirements.
+        </p>
+
+        <p>
+          We’ll build a <strong>travel planning application</strong>, which
+          helps users plan their luggage for a flight, ensuring they stay within
+          airline baggage weight limits.
+        </p>
+
+        <p>
+          You’ll find the
+          <a
+            href="https://react.dev/learn/describing-the-ui"
+            target="_blank"
+            rel="noopener noreferrer"
+            >React documentation</a
+          >
+          to be very helpful here! Be cautious about using LLMs in this
+          assignment, since asking them to generate code can make it harder for
+          you to understand the concepts that this homework is designed to
+          teach. You’ll want to make sure you’re well-prepared for your final
+          project!
+        </p>
+
+        <p>
+          It’s okay if you’re finding that you don’t already know, before
+          starting, everything you need to know to complete the assignment.
+          Practice is the best way to become proficient!
+        </p>
+
+        <h3>Developing the application</h3>
+
+        <p>
+          If you’re running the server for this homework correctly (with
+          <code>npm start</code>), you’ll be running a
+          <a href="https://vite.dev/" target="_blank" rel="noopener noreferrer"
+            >Vite server</a
+          >
+          locally on your computer. Vite automatically reloads your code as you
+          save changes to the code files, which is great for fast prototyping!
+          This can (rarely) cause the page to misbehave, so you may want to
+          reload every now and then to make sure your code works as expected.
+        </p>
+
+        <p>
+          You’ll be able to view your project, throughout the assignment, at
+          <a
+            href="http://localhost:6160/code/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >http://localhost:6160/code/</a
+          >. When you submit your work, the Gradescope submission will
+          <a
+            href="https://vite.dev/guide/build"
+            target="_blank"
+            rel="noopener noreferrer"
+            >build a static version</a
+          >
+          of your application, which is what course staff will see when they
+          grade your submission. This static build can run even without a
+          dynamic Web server like the Vite server you’re using to develop your
+          code; it’s what you would upload if, say, you wanted your React
+          application to work on a static site host like GitHub Pages.
+        </p>
+
+        <h3>React developer tools</h3>
+
+        <p>
+          Because React encourages you to break your page up into a component
+          hierarchy (similar to the HTML document tree), React provides
+          <a
+            href="https://react.dev/learn/react-developer-tools"
+            target="_blank"
+            rel="noopener noreferrer"
+            >custom browser extensions</a
+          >
+          that augment your browser’s built-in developer tools. We recommend
+          trying them out!
+        </p>
+
+        <h3>Making a change</h3>
+
+        <p>Let’s try making a change to the code!</p>
+
+        <p>
+          <code>src/App.jsx</code> contains the entrypoint React component; it
+          includes a Sidebar component and a main content area. The main content
+          area renders only one of the components in the
+          <code>pages</code> folder, depending on what page the user is
+          currently visiting.
+        </p>
+
+        <p>
+          We also have an <code>index.css</code> file (imported in
+          <code>App.jsx</code>) that we’re using to store all of our
+          application’s CSS. Opinions vary on exactly how to manage CSS code in
+          a large project, but ours is small enough that it shouldn’t get too
+          confusing to put all of our CSS in this file.
+        </p>
+
+        <p>
+          <strong>Try changing the background color of the sidebar</strong> in
+          the <code>index.css</code> file. Watch the page update in real time
+          (thanks to Vite’s auto reload)!
+        </p>
+
+        <p>
+          Then, head into <code>Sidebar.jsx</code> (which is a
+          <a
+            href="https://react.dev/learn/importing-and-exporting-components"
+            target="_blank"
+            rel="noopener noreferrer"
+            >component</a
+          >
+          used by <code>App.jsx</code>, our entrypoint) and
+          <strong>
+            add something at the top of the sidebar, above the navigation
+            links</strong
+          >. Maybe you’ll add a logo or a title for the app.
+        </p>
+
+        <p>
+          You’ll notice that the sidebar component looks a lot like HTML code.
+          We’re writing
+          <a
+            href="https://react.dev/learn/writing-markup-with-jsx"
+            target="_blank"
+            rel="noopener noreferrer"
+            >JSX</a
+          >
+          to describe our UI. There are a few differences from HTML, but it’s
+          very similar here! We’ll want to add something within the
+          <code>div</code> for the sidebar, but outside the <code>ul</code> tag.
+        </p>
+
+        <!-- <h3>Resources</h3>
+        <ul>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML"
+              >Structuring the web with HTML - Learn web development | MDN</a
+            >
+          </li>
+        </ul> -->
+      </section>
+
+      <section id="Part_1">
+        <h2>Part 1 · Reusable components</h2>
+
+        <p>
+          There are two big reasons to use components in React. The first is to
+          <a
+            href="https://react.dev/learn/understanding-your-ui-as-a-tree"
+            target="_blank"
+            rel="noopener noreferrer"
+            >break up your application’s code into a hierarchy</a
+          >; we did this in the Sidebar component, to avoid having to clutter
+          the <code>App.jsx</code> file with all of the sidebar’s content.
+        </p>
+
+        <p>
+          The other is to create reusable UI elements so that you don’t need to
+          rewrite the same HTML structure over and over.
+        </p>
+
+        <p>
+          Peek into <code>src/luggage-overview/LuggageOverview.jsx</code>. This
+          is the code for the landing page of the application; it describes the
+          different sizes of luggage bag that users are allowed to bring onto a
+          flight. This page isn’t dynamic, and we won’t add any interactivity to
+          it for now; it’s just informational.
+        </p>
+
+        <div class="image-container">
+          <img
+            src="images/luggage-types.png"
+            alt="A screenshot of the landing page of the application."
+          />
+        </div>
+
+        <p>
+          It’s not very beautiful! You should
+          <strong
+            >think about how we might structure and style the markup</strong
+          >
+          so that it looks better; maybe the icon could be bigger or in a
+          different spot. Maybe we can render the maximum weight in a way that
+          stands out better. Make some design choices! In particular, you should
+          choose a design that renders each luggage type more or less the same
+          way (but with different content); the motivation for this will come up
+          in a moment.
+        </p>
+
+        <p>
+          If you change the markup, you’ll notice that you have to change it in
+          more than one spot to keep the luggage types consistent. Rather than
+          repeating the same markup over and over, let’s extract this into a
+          <a
+            href="https://react.dev/learn/your-first-component"
+            target="_blank"
+            rel="noopener noreferrer"
+            >reusable React component</a
+          >!
+        </p>
+
+        <p>
+          Make a new function (either in the same
+          <code>LuggageOverview.jsx</code> file, or in a new file that you
+          import) that renders a single luggage type. The function should be a
+          React component, meaning:
+        </p>
+
+        <ul>
+          <li>Its name should start with a capital letter</li>
+          <li>
+            It should take in, as its first argument, the
+            <a href="https://react.dev/learn/passing-props-to-a-component"
+              ><code>props</code></a
+            >
+            of the component
+          </li>
+          <li>
+            It should return the JSX markup representing the HTML structure we
+            want to render
+          </li>
+        </ul>
+
+        <p>
+          Then, replace the individual luggage type sections in
+          <code>LuggageOverview.jsx</code> with instances of your new component.
+          It might look something like this:
+        </p>
+
+        <pre style="margin-left: 2rem"><code>&lt;LuggageType
+  name={LUGGAGE_TYPES[0].name}
+  ...
+/&gt;
+&lt;LuggageType
+  name={LUGGAGE_TYPES[1].name}
+  ...
+/&gt;</code></pre>
+
+        <p>
+          Now, you’re free to customize the structure and style of the
+          component, and every change you make will affect both instances at
+          once! Play around with the design until you’re happy with it.
+        </p>
+
+        <h3>Rendering lists</h3>
+
+        <p>
+          Let’s reap the benefits of having a reusable component.
+          <strong>Add a new luggage type</strong> to the
+          <code>LUGGAGE_TYPES</code> array (maybe we‘ll make it the
+          <strong>first</strong> element of the new array, to keep it in order
+          of weight):
+        </p>
+
+        <pre style="margin-left: 2rem"><code>{
+  icon: "🎒",
+  name: "Personal item",
+  maxWeightLbs: 15,
+  description: "A small bag that fits under the seat in front of you.",
+}</code></pre>
+
+        <p>
+          If you’d like, you can add a new copy of the component you made
+          earlier to the page, to see if this worked. But rather than manually
+          hard-coding every component, it’d be better to iterate over the
+          <code>LUGGAGE_TYPES</code> array, automatically making a new component
+          instance for each luggage type. Then, future updates to the array
+          would automatically be reflected in the UI.
+        </p>
+
+        <p>
+          <strong>Render the list of luggage types</strong> dynamically, using
+          the full <code>LUGGAGE_TYPES</code> array. The
+          <a
+            href="https://react.dev/learn/rendering-lists"
+            target="_blank"
+            rel="noopener noreferrer"
+            >React docs show you how to do this</a
+          >
+          in detail, but the simple principle is: include a component in the
+          markup for each element of the array, and don’t forget the
+          <code>key</code> prop! You don’t need to use a list HTML element
+          (<code>ul</code> or <code>ol</code>); the docs show this as an
+          example, but you can render arbitrary dynamic element trees using this
+          approach.
+        </p>
+
+        <p>
+          The result is that your main component rendering code won’t need to
+          change at all if you want to add, remove, or reorder luggage types;
+          only the <code>LUGGAGE_TYPES</code> array needs to be updated.
+        </p>
+
+        <h3>Checklist</h3>
+
+        <p>
+          Make sure you’ve completed all of the following before moving onto the
+          next task:
+        </p>
+
+        <ul>
+          <li>
+            From part 0: updated the background color of the sidebar, and added
+            something new at the top of the sidebar
+          </li>
+          <li>
+            Changed the design of the luggage type display to something nicer
+          </li>
+          <li>
+            Created a reusable React component to render a single luggage type
+          </li>
+          <li>
+            Added the “personal item” luggage type to the
+            <code>LUGGAGE_TYPES</code> array
+          </li>
+          <li>
+            Rendered the list of luggage types dynamically, by iterating over
+            the <code>LUGGAGE_TYPES</code> array or using the <code>map</code>
+            function
+          </li>
+        </ul>
+      </section>
+
+      <section id="Part_2">
+        <h2>Part 2 · Adding interactivity</h2>
+
+        <p>
+          Not all luggage is allowed for every plane ticket. In our airline’s
+          “Basic Economy” fare class, only a personal item and a carry-on bag
+          are allowed.
+        </p>
+
+        <p>
+          Let’s add an option to the page that lets the user select whether they
+          are on a Basic Economy fare, and if so, do not show the option for
+          checked luggage.
+        </p>
+
+        <p>
+          We’ll start out with a simple design for this feature, a button that,
+          when clicked, toggles whether the user is on a Basic Economy fare or a
+          normal (full-featured) fare.
+        </p>
+
+        <p>
+          In HTML, we can use the <code>&lt;button&gt;</code> tag to make a
+          clickable, interactable button:
+        </p>
+
+        <pre
+          style="margin-left: 2rem"
+        ><code>&lt;button&gt;Toggle Basic Economy&lt;/button&gt;</code></pre>
+
+        <p>
+          If you add this to your page, it won’t do anything yet, but it’ll look
+          something like this:
+        </p>
+
+        <div style="margin-left: 2rem">
+          <button>Toggle Basic Economy</button>
+        </div>
+
+        <p>
+          Now, how do we make it so that clicking this button can control the
+          displayed luggage types?
+        </p>
+
+        <p>
+          In React, we can attach <strong>program state</strong> to a component,
+          ensuring that the state value is remembered even as the component
+          re-renders. We do this with the <code>useState</code> function, which
+          we’re already using in <code>App.jsx</code> to decide which page to
+          render.
+        </p>
+
+        <p>
+          Have a look at
+          <a
+            href="https://react.dev/learn/state-a-components-memory"
+            target="_blank"
+            rel="noopener noreferrer"
+            >React’s documentation about useState</a
+          >, especially the examples!
+        </p>
+
+        <p>
+          With <code>useState</code>, add a Boolean state variable
+          (<code>basicEconomy</code>) to the
+          <code>LuggageOverview</code> component. Don’t forget to import the
+          <code>useState</code> function (you can see how this is done in
+          <code>App.jsx</code>, or see if you can get your IDE to help you
+          import the function automatically).
+        </p>
+
+        <p>
+          Add a button, too, so that when the user clicks the button, the
+          <code>basicEconomy</code> state variable toggles: if it was
+          <code>true</code>, it becomes <code>false</code>, and vice versa. In
+          React, you can add a click handler to a button using the
+          <code>onClick</code> prop; the examples in the documentation do this a
+          lot.
+        </p>
+
+        <p>
+          Then, use the value of the <code>basicEconomy</code> state variable to
+          decide whether to render the checked luggage option.
+        </p>
+
+        <p>
+          In the last part, we made a reusable component to render a luggage
+          type, and then rendered the list so that we don’t have to write
+          separate code for each luggage type. This is a good pattern, but now
+          we need a way to distinguish the checked luggage type from the others.
+          You might do this by adding a new field to the luggage type objects in
+          the <code>LUGGAGE_TYPES</code> array, something like
+          <code>allowedInBasicEconomy</code>:
+        </p>
+
+        <pre style="margin-left: 2rem"><code>[..., {
+  ...
+  name: "Carry-on",
+  allowedInBasicEconomy: true,
+  ...
+},
+{
+  ...
+  name: "Checked bag",
+  allowedInBasicEconomy: false,
+  ...
+}]</code></pre>
+
+        <p>
+          Then, based on the state variable, you can choose whether or not to
+          render luggage types that have <code>allowedInBasicEconomy</code> set
+          to <code>false</code>.
+        </p>
+
+        <p>
+          You can do this either by filtering the array (so that you only render
+          the relevant components in the first place) or by returning
+          <code>null</code> (rather than HTML markup) from components that
+          shouldn’t appear on the page.
+        </p>
+
+        <p>Check that this button works correctly before moving on:</p>
+
+        <div class="image-container">
+          <video controls muted loop autoplay style="max-width: 700px">
+            <source src="images/basic-economy.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <p>What’s the problem here?</p>
+
+        <p>
+          The state isn‘t visible to the user! Although the interactivity works,
+          it’s not clear whether Basic Economy is currently active or not.
+        </p>
+
+        <p>One thing we could do is actively render the state into the page:</p>
+
+        <pre
+          style="margin-left: 2rem"
+        ><code>let buttonText = "Toggle Basic Economy";
+if (basicEconomy) {
+  buttonText += ' (currently ON)';
+} else {
+  buttonText += ' (currently OFF)';
+}
+
+...
+
+&lt;button onClick={...}&gt;
+  {buttonText}
+&lt;/button&gt;</code></pre>
+
+        <p>This works!</p>
+
+        <div class="image-container">
+          <video controls muted loop autoplay style="max-width: 700px">
+            <source src="images/basic-economy-2.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <p>
+          But we’re reinventing the wheel a bit here... aren’t there already
+          well-designed togglable components that communicate their current
+          state?
+        </p>
+
+        <h3>Controlled components</h3>
+
+        <p>
+          This really ought to be a <strong>checkbox</strong>. HTML offers a
+          checkbox element, a variant of the <code>&lt;input /&gt;</code> tag:
+        </p>
+
+        <pre
+          style="margin-left: 2rem"
+        ><code>&lt;label&gt;Basic economy: &lt;input type="checkbox" /&gt;&lt;/label&gt;</code></pre>
+
+        <p>
+          (including a <code>label</code> ensures that the browser knows that
+          this text is associated with the form control, which is great for
+          accessibility; it will also make it so that clicking on the text
+          toggles the checkbox. See below:)
+        </p>
+
+        <div style="margin-left: 2rem">
+          <label>Basic economy: <input type="checkbox" /></label>
+        </div>
+
+        <p>
+          If you add this to your page, you’ll see the checkbox. It will even be
+          interactive, without you needing to write any code! But it won’t
+          control (or reflect the value of) our state variable.
+        </p>
+
+        <p>
+          In React, we control <code>&lt;input /&gt;</code> elements the same
+          way we just controlled our button, by rendering the current state and
+          then accepting interactions that update the state.
+        </p>
+
+        <p>
+          The checkbox component takes a <code>checked</code> prop, which
+          decides whether the checkbox shows as being checked. If you set this
+          to <code>true</code> or <code>false</code>, the checkbox will actually
+          <em>stop</em> being interactive (since React is forcing its value to
+          whatever the <code>checked</code> prop is set to).
+        </p>
+
+        <div style="margin-left: 2rem">
+          <!-- this is not React! just good, ol'-fashioned inline javascript. -->
+          <label
+            >Basic economy:
+            <input type="checkbox" checked onchange="this.checked = true;"
+          /></label>
+        </div>
+
+        <p>
+          To make the checkbox interactive again, we need to
+          <strong>use the state variable</strong> as the value for the
+          <code>checked</code> prop. Then, we should update our state variable
+          (<code>basicEconomy</code>) when the box is checked or unchecked. We
+          can do this with an onChange handler, as
+          <a
+            href="https://react.dev/reference/react-dom/components/input#my-checkbox-doesnt-update-when-i-click-on-it"
+            >shown here in the React docs</a
+          >.
+        </p>
+
+        <p>
+          Even if we change the state variable for some other reason (say, the
+          user chose some other option that is incompatible with Basic Economy,
+          so we set the state variable to
+          <code>false</code>
+          ), this technique will update the checkbox whenever the state changes.
+          The change doesn’t only need to come from the user clicking the box.
+        </p>
+
+        <p>
+          A component that works like this — routing state <em>through</em> a
+          state variable — is called a <strong>controlled component</strong>,
+          since React is in charge of what state to render, as well as updating
+          it when the user interacts with the page.
+        </p>
+
+        <p>
+          <strong>Add this working checkbox to your page</strong>, and remove
+          the button you made earlier.
+        </p>
+
+        <div class="image-container">
+          <video controls muted loop autoplay style="max-width: 700px">
+            <source src="images/basic-economy-3.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <p>
+          You’re encouraged to try a more interesting design than a checkbox in
+          your final submission — a drop-down box? a set of tabs? a toggle
+          switch? — but the checkbox design (as long as it’s clear and
+          aesthetically appealing!) is acceptable here.
+        </p>
+
+        <h3>Checklist</h3>
+        <p>
+          Make sure you’ve completed all of the following before submitting your
+          assignment:
+        </p>
+
+        <ul>
+          <li>
+            Added a Boolean state variable (<code>basicEconomy</code>) to the
+            <code>LuggageOverview</code> component, using the
+            <code>useState</code> function
+          </li>
+          <li>
+            Added a checkbox (or other togglable UI element) that controls the
+            value of the <code>basicEconomy</code> state variable
+          </li>
+          <li>
+            Used the value of the <code>basicEconomy</code> state variable to
+            decide whether to render the checked luggage option (likely by
+            updating the <code>LUGGAGE_TYPES</code> array to include a new
+            field)
+          </li>
+        </ul>
+      </section>
+
+      <section id="Part_3">
+        <h2>Part 3 · Luggage planning</h2>
+
+        <p>
+          Let’s create a more interesting interactive page, one that provides
+          some value to the user. On the second page (the “Planner”), we’ll give
+          the user the ability to plan out what’s going to go in each of two
+          bags: a personal item, and a carry-on.
+        </p>
+
+        <div class="image-container">
+          <video controls muted loop autoplay style="max-width: 700px">
+            <source src="images/planner.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <p>
+          To keep it simple, we’ll hard-code the application so that it assumes
+          the user just has one of each of these bags.
+        </p>
+
+        <p>
+          Implement this application in <code>Planner.jsx</code>. It should have
+          the following features and implementation details:
+        </p>
+
+        <ul>
+          <li>
+            Users can add items to either bag, specifying the name and weight
+            (in pounds) of items as they are added.
+          </li>
+          <ul>
+            <li>
+              Use text fields for data entry (<strong>not</strong>
+              <code>window.prompt</code>, which is a convenient but limited way
+              to get user input)
+            </li>
+            <li>
+              <strong>Prevent</strong> users from adding items (<em>e.g.,</em>
+              by disabling the button(s)) if the “name” field is empty or the
+              weight is negative
+            </li>
+            <li>
+              After successfully adding an item, <strong>clear</strong> the
+              input fields
+            </li>
+          </ul>
+          <li>Show users the items they have added so far in each bag</li>
+          <ul>
+            <li>
+              <strong>Use a React component</strong> to render each item, like
+              we did in Part 1
+            </li>
+          </ul>
+          <li>Let users delete items they have added</li>
+          <li>Calculate and show the total weight of each bag</li>
+          <li>Show a warning if the weight of a bag exceeds its limit</li>
+          <ul>
+            <li>
+              You can hard-code a limit of 15 lb for the personal item, and 22
+              lb for the carry-on
+            </li>
+          </ul>
+        </ul>
+
+        <p>
+          You’re welcome to add additional features or interactions as you see
+          fit! <strong>Make your application beautiful, too</strong>! If you add
+          anything especially fancy, please explain it with instructions in the
+          page so we know how to use your application.
+        </p>
+
+        <p>Here are some tips we think will help you implement this part:</p>
+
+        <h3>Controlled text fields</h3>
+
+        <p>
+          You can use text fields to get user input. The HTML tag for a text
+          field is another variant of the <code>&lt;input /&gt;</code> tag:
+        </p>
+
+        <pre
+          style="margin-left: 2rem"
+        ><code>&lt;input type="text" /&gt;</code></pre>
+
+        <p>
+          You can also use <code>type="number"</code> to get a numeric input
+          field! As with checkboxes, we need to
+          <a
+            href="https://react.dev/reference/react-dom/components/input#my-text-input-doesnt-update-when-i-type-into-it"
+            >control these inputs</a
+          >
+          so that we can use their values.
+        </p>
+
+        <h3>Arrays in state variables</h3>
+
+        <p>
+          Placing arrays in state can be trickier than simpler values like
+          Booleans, numbers, and strings. This is because, to call the state
+          update function (the second value returned by <code>useState</code>),
+          you need to provide a <em>new</em> array representing the changed
+          value.
+        </p>
+
+        <p>
+          It’s important not to change the existing state array directly (<em
+            >e.g.,</em
+          >
+          by using the <code>push</code> function). React expects state values
+          to be
+          <a
+            href="https://react.dev/learn/tutorial-tic-tac-toe#why-immutability-is-important"
+            target="_blank"
+            rel="noopener noreferrer"
+            >immutable</a
+          >, so you can only update the state value by creating a new array with
+          your requested changes and replacing the old array entirely.
+        </p>
+
+        <p>
+          There’s lots of detail on how to do this in
+          <a
+            href="https://react.dev/learn/updating-arrays-in-state"
+            target="_blank"
+            rel="noopener noreferrer"
+            >the React documentation</a
+          >!
+        </p>
+
+        <h3>Making a delete button</h3>
+
+        <p>
+          You might find that you have some trouble making a “Delete” button
+          within a component. When it’s clicked, the button should update the
+          state array in the <em>parent</em> component, removing that item from
+          the state array.
+        </p>
+
+        <p>
+          You don’t have direct access to the parent’s state in a child.
+          Instead, in the code for the <code>Planner</code> component, you’ll
+          need to provide the <code>Item</code> component (or whatever you call
+          it) with a <em>function</em> that can be used to delete that item.
+        </p>
+
+        <p>
+          <a
+            href="https://react.dev/learn/sharing-state-between-components"
+            target="_blank"
+            rel="noopener noreferrer"
+            >This page</a
+          >
+          of the React documentation offers a lot of detail, through a worked
+          example.
+        </p>
+
+        <h3>Disabling buttons</h3>
+
+        <p>
+          You can disable a button by adding the <code>disabled</code> prop to
+          it. If you set this prop to <code>true</code>, the button will be
+          disabled; if you set it to <code>false</code>, it will be enabled. Use
+          a JavaScript expression (in {curly braces}) to decide, based on the
+          program state, whether the button should be enabled or disabled.
+        </p>
+
+        <h3>Checklist</h3>
+
+        <p>
+          See above. Make sure to verify that you’ve implemented each bullet
+          point!
+        </p>
+      </section>
+
+      <section id="Part_4">
+        <h2>Part 4 · Adding a new page</h2>
+
+        <p>
+          Finally, edit <code>App.jsx</code> and <code>Sidebar.jsx</code> to add
+          a <strong>new page</strong> to the application. This page should be
+          called “Summary” or something similar.
+        </p>
+
+        <p>
+          The Summary page is only required to contain one piece of information:
+          <strong
+            >the total weight of all items added in the Planner
+            application</strong
+          >, across all bags. You are welcome to show additional insights to the
+          user!
+        </p>
+
+        <p>
+          If you added one or more state variables in the Planner to track the
+          items in each bag, you’ll notice that
+          <strong>navigating to another page clears the state entirely</strong>,
+          and you certainly won’t have access to that state variable in the
+          Summary page. Both Planner and Summary are children of the App
+          component, but they can't directly share state between one another.
+        </p>
+
+        <p>How do we fix this?</p>
+
+        <p>
+          The answer is to <strong>lift state up</strong>: put the luggage state
+          variable into the App component instead, and give access to it in both
+          Planner and Summary. The
+          <a
+            href="https://react.dev/learn/sharing-state-between-components#lifting-state-up-by-example"
+            target="_blank"
+            rel="noopener noreferrer"
+            >React documentation</a
+          >
+          offers some guidance. You’ll need to make sure you can still
+          <strong>update the program state</strong> from the Planner page! This
+          will likely involve passing a function into the props of
+          <code>&lt;Planner&gt;</code>.
+        </p>
+
+        <p>
+          If this is starting to feel like a lot of props being passed back and
+          forth, consider using
+          <a
+            href="https://react.dev/learn/passing-data-deeply-with-context"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Context</a
+          >
+          to manage how data is passed to components. The
+          <a
+            href="https://react.dev/reference/react/useContext#updating-data-passed-via-context"
+            target="_blank"
+            rel="noopener noreferrer"
+            >useContext page</a
+          >
+          provides great exercises on how to update context within your
+          application!
+        </p>
+
+        <p>
+          Using React Context here is optional, but if you choose to use it, you
+          can earn some credit for it in Part 5 of this assignment.
+        </p>
+
+        <h3>Checklist</h3>
+
+        <ul>
+          <li>A new page (Summary) is linked in the sidebar.</li>
+          <li>
+            Navigating between pages does not lose information about which items
+            have been added to bags.
+          </li>
+          <li>
+            The Summary page includes the total weight of all items in all bags,
+            updating as the user updates the contents of the bags.
+          </li>
+        </ul>
+      </section>
+
+      <section id="Part_5">
+        <h2>Part 5 · Make it your own</h2>
+
+        <p>
+          Grading for this assignment, scored out of 40 points, includes
+          <strong>30 points for functionality</strong>.
+        </p>
+
+        <p>
+          To earn the remaining 10 points, you must
+          <strong>improve the aesthetics of your application</strong>. You can
+          also earn points by <strong>implementing extra features</strong>.
+        </p>
+
+        <h3>New features</h3>
+
+        <p>Here’s a list of features we will award points for:</p>
+
+        <strong>1 point each</strong>
+        <ul>
+          <li>
+            Add a “quantity” field so that users can specify how many of a
+            particular item to add
+          </li>
+          <li>
+            Add the ability to save and load bags from local storage, so that
+            the program state is not lost when the page reloads
+          </li>
+          <li>Make the sidebar show the currently-selected page</li>
+          <li>
+            Use React Context (or a state management library like Zustand) to
+            manage state across components
+          </li>
+        </ul>
+
+        <strong>2 points each</strong>
+
+        <ul>
+          <li>
+            Allow users to add multiple bags of each type, rather than just one
+          </li>
+          <li>
+            Allow users to reorder items within a bag, or move items between
+            bags
+          </li>
+          <ul>
+            <li>
+              Consider using a “sortable list” library, so that items can be
+              dragged around to reorder
+            </li>
+          </ul>
+          <li>
+            Add inline editing features so that users can change the name or
+            weight of an item without deleting and re-adding it
+          </li>
+          <li>
+            Use React Router or another technique to show different URLs in the
+            browser URL bar depending on the selected page
+          </li>
+          <li>
+            Add more insights to the Summary page, with some kind of useful
+            visual — consider using a library like Plotly or Chart.js!
+          </li>
+        </ul>
+
+        <p>
+          You can earn <strong>up to 6 points</strong> for adding extra
+          features.
+        </p>
+
+        <p>
+          If you add new functionality, <strong>be explicit</strong> about what
+          new features you added. Include some text in the page that describes
+          everything you improved, so we know what to look for!
+        </p>
+
+        <h3>Aesthetics</h3>
+
+        <p>
+          You should also improve the aesthetics of your application, worth up
+          to 10 points. You are required to do this to earn full credit, and you
+          can earn full credit on the assignment even without implementing
+          additional functionality. We’ll expect really exceptional work,
+          though, if you want to earn all 10 points for aesthetics.
+        </p>
+
+        <p>
+          As in prior assignments, we tend to be most impressed when you
+          <strong>stick to a consistent theme</strong>, and it should be more
+          ambitious than simply “make the application look nice, clean, and
+          modern.” We know what it looks like when you got an LLM to design your
+          application for you, and these submissions don’t stand out. Do
+          something creative!
+        </p>
+
+        <p>
+          <strong
+            >The maximum score you can earn on this assignment is 40/40</strong
+          >. You can earn up to 10 points for improved aesthetics, and up to 6
+          points for extra features, but you cannot earn more than 40 points
+          total. You’re encouraged to put in some extra work so that you’ll have
+          more opportunities to earn these final 10 points!
+        </p>
+
+        <h3>Custom libraries</h3>
+
+        <p>
+          You can install custom packages (like component libraries and utility
+          libraries) to this project with npm. If you do, make sure to include
+          <code>package.json</code> <strong>and</strong>
+          <code>package-lock.json</code>, which should be updated automatically
+          when you install new libraries, in your submission zip file. These
+          will not be included automatically, since they reside outside of the
+          <code>code/</code> folder; you’ll need to copy them in manually.
+        </p>
+
+        <p>
+          If you don’t include these files, the autograder will fail to build
+          your project, and the TAs won’t be able to grade it!
+          <strong
+            >Make sure to check that the autograder uploads a working version of
+            your application</strong
+          >, even if you don’t install any custom libraries.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
