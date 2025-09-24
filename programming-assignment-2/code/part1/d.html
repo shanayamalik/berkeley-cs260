@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-
 <html>
   <head>
-    <title></title>
+    <title>Layout D</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,28 +26,29 @@
         background-color: #007bff;
       }
 
-      .green {
-        background-color: #28a745;
-      }
-
-      .yellow {
-        background-color: #ffc107;
-      }
-
-      .gray,
-      .grey {
-        background-color: #6c757d;
-      }
-
       main {
         width: 100vw;
         height: 100vh;
-
         display: flex;
-        /* You may add additional code here, if you need. */
+        flex-direction: column;
       }
 
-      /* Keep this code; the circles in the design are meant to be this size, shape, and color. */
+      .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .top {
+        flex: 1; /* 1/3 of height */
+      }
+
+      .bottom {
+        flex: 2; /* 2/3 of height */
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+
       .circle {
         width: 50px;
         height: 50px;
@@ -56,18 +56,28 @@
         border-radius: 25px;
       }
 
-      /* Add whatever CSS you need below to reference the elements you create in your HTML. */
+      /* For the top row: circles in a row with no space between */
+      .top .circle {
+        margin: 0;
+      }
+
+      .top {
+        gap: 0;
+      }
     </style>
   </head>
   <body>
     <main>
-      <!-- Add the appropriate <div> elements here. -->
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
+      <div class="row red top">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <div class="row blue bottom">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
     </main>
   </body>
 </html>
