@@ -216,16 +216,13 @@
     </header>
     <main>
       <div class="travel-description">
-        <strong>Design Concept:</strong> Travel Theme 🌍🗺️🧳🏖️🏔️<br>
-        To create a fun, adventurous vibe, I used:
+        <strong>Design Concept:</strong> It is designed to make you feel like you're preparing for a trip! Input your travel budget to see what it's worth in other countries.
         <ul>
-          <li>Bright, sky-inspired colors and playful icons (plane, globe, flags, 🏖️, 🏔️, 🧳).</li>
-          <li>Rounded corners and soft shadows for a friendly feel.</li>
-          <li>The "Dancing Script" font for the header to evoke elegant travel excitement.</li>
-          <li>Clean "Roboto" font for readability and modern interface elements.</li>
-          <li>Animated flag emojis and a subtle world map background for extra travel flair.</li>
+          <li><strong>Colors:</strong> The sky-inspired gradient and world map background for a global feel.</li>
+          <li><strong>Typography & Icons:</strong> "Dancing Script" for that vacation vibe (and it's my favorite!), plus flags to help with geography.</li>
+          <li><strong>Interactive Touch:</strong> The orange button shows what you can actually buy with your converted money!</li>
         </ul>
-        <div style="font-size:1.5em; margin-top:8px;">✈️ 🗺️ 🧳 🏖️ 🏔️ 🚆 🛳️</div>
+        <div style="font-size:1.5em; margin-top:8px;"></div>
       </div>
       <label><input type="radio" name="currency" value="usd" id="usd-clickable" checked> USD <span class="flag">🇺🇸</span></label>
       <label><input type="radio" name="currency" value="eur" id="eur-clickable"> EUR <span class="flag">🇪🇺</span></label>
@@ -326,16 +323,30 @@
         const amount = parseFloat(document.getElementById("amount-textbox").value);
         const popupContent = document.getElementById("popup-content");
         
-        let content = `With your ${amount} converted money, you could enjoy:<br><br>`;
-        
+        // Get the selected currency
+        let selectedCurrency = "";
+        if (document.getElementById("usd-clickable").checked) {
+          selectedCurrency = "USD";
+        } else if (document.getElementById("eur-clickable").checked) {
+          selectedCurrency = "EUR";
+        } else if (document.getElementById("custom-currency-1-clickable").checked) {
+          selectedCurrency = "CHF";
+        } else if (document.getElementById("custom-currency-2-clickable").checked) {
+          selectedCurrency = "CAD";
+        }
+
+        let content = `If you have ${amount} ${selectedCurrency}, here's a few ideas of one (or more) things you could enjoy!<br><br>`;
+
         if (amount <= 10) {
-          content += "☕ A few delicious coffees<br>🍪 Some local pastries<br>🚇 A couple metro rides";
-        } else if (amount <= 50) {
-          content += "🍕 Several tasty meals<br>🎬 A few movie tickets<br>🚇 Week of public transport<br>🍺 Drinks with friends";
+          content += "🍪 A coffee or some cookies<br>📮 A postcard to send home<br>🛍️ Small souvenirs";
+        } else if (amount <= 30) {
+          content += "🍕 A nice lunch<br>🎬 A movie ticket and some popcorn";
+        } else if (amount <= 100) {
+          content += "🍽️ A great dinner<br>🎭 Concert or show tickets<br>🚇 Week of public transport<br>👕 Some new travel clothes";
         } else if (amount <= 200) {
-          content += "🏨 A night in a nice hotel<br>🍽️ Fancy dinner for two<br>🎭 Theater or concert tickets<br>🛍️ Some great shopping";
+          content += "🏨 A night in a nice hotel<br>🍽️ Fancy dinner<br>🛍️ Serious shopping spree";
         } else {
-          content += "✈️ A short weekend trip<br>🏨 Several nights accommodation<br>🎪 Amazing local experiences<br>🛍️ Lots of souvenirs!";
+          content += "🏨 A fancy hotel accommodation<br>�️ Rent a Porsche for the day<br>✈️ Weekend getaway trip";
         }
         
         popupContent.innerHTML = content;
