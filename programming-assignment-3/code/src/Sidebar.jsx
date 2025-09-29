@@ -1,6 +1,7 @@
 export function Sidebar({ setPage }) {
   return (
     <div className="sidebar">
+      <h1 className="sidebar-title">Smart Luggage Planner</h1>
       <ul>
         <li>
           <a
