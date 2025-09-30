@@ -74,6 +74,9 @@ const LUGGAGE_TYPES = [
 
 // Reusable component for individual luggage types
 function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
+  // Convert lbs to kg (1 lb = 0.453592 kg, rounded to nearest 0.5 kg)
+  const maxWeightKg = Math.round(maxWeightLbs * 0.453592 * 2) / 2;
+  
   return (
     <div className="luggage-card">
       <div className="luggage-icon" aria-hidden="true">
@@ -89,7 +92,7 @@ function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
               </span>
             )}
             <span className="weight-badge">
-              Max {maxWeightLbs} lbs{bagLimit > 1 ? '/bag' : ''}
+              Max {maxWeightLbs} lbs ({maxWeightKg} kg){bagLimit > 1 ? ' per bag' : ''}
             </span>
           </div>
         </div>
