@@ -46,7 +46,8 @@ export default function LuggageOverview() {
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
-      
+
+      {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
       {LUGGAGE_TYPES.map((luggageType, index) => (
         <LuggageType
           key={index}
