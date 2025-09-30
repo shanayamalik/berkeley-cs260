@@ -7,6 +7,9 @@ const LUGGAGE_TYPES = [
     maxWeightLbs: 15,
     description: "A small bag that fits under the seat in front of you.",
     allowedInBasicEconomy: true,
+    allowedInPremiumEconomy: true,
+    allowedInBusiness: true,
+    allowedInFirst: true,
   },
   {
     icon: "💼",
@@ -14,6 +17,9 @@ const LUGGAGE_TYPES = [
     maxWeightLbs: 22,
     description: "A larger bag that fits in the overhead bin.",
     allowedInBasicEconomy: true,
+    allowedInPremiumEconomy: true,
+    allowedInBusiness: true,
+    allowedInFirst: true,
   },
   {
     icon: "🧳",
@@ -22,6 +28,9 @@ const LUGGAGE_TYPES = [
     description:
       "A bag that is checked at the gate and stored in the cargo hold.",
     allowedInBasicEconomy: false,
+    allowedInPremiumEconomy: true,
+    allowedInBusiness: true,
+    allowedInFirst: true,
   },
 ];
 
@@ -48,25 +57,45 @@ function LuggageType({ icon, name, maxWeightLbs, description }) {
 }
 
 export default function LuggageOverview() {
-  // Boolean state variable to track if user is on Basic Economy fare
-  const [basicEconomy, setBasicEconomy] = useState(false);
+  // State variable to track the selected fare class
+  const [fareClass, setFareClass] = useState('basic-economy');
+
+  // Helper function to determine if a luggage type is allowed for the current fare class
+  const isLuggageAllowed = (luggageType) => {
+    switch (fareClass) {
+      case 'basic-economy':
+        return luggageType.allowedInBasicEconomy;
+      case 'premium-economy':
+        return luggageType.allowedInPremiumEconomy;
+      case 'business':
+        return luggageType.allowedInBusiness;
+      case 'first':
+        return luggageType.allowedInFirst;
+      default:
+        return true;
+    }
+  };
 
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
       
       <label>
-        Basic economy: 
-        <input 
-          type="checkbox" 
-          checked={basicEconomy}
-          onChange={(e) => setBasicEconomy(e.target.checked)}
-        />
+        Fare class: 
+        <select 
+          value={fareClass} 
+          onChange={(e) => setFareClass(e.target.value)}
+        >
+          <option value="basic-economy">Basic Economy</option>
+          <option value="premium-economy">Premium Economy</option>
+          <option value="business">Business Class</option>
+          <option value="first">First Class</option>
+        </select>
       </label>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
       {LUGGAGE_TYPES
-        .filter(luggageType => !basicEconomy || luggageType.allowedInBasicEconomy)
+        .filter(luggageType => isLuggageAllowed(luggageType))
         .map((luggageType, index) => (
           <LuggageType
             key={index}
