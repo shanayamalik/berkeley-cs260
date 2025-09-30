@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const LUGGAGE_TYPES = [
   {
     icon: "🎒",
@@ -43,6 +45,9 @@ function LuggageType({ icon, name, maxWeightLbs, description }) {
 }
 
 export default function LuggageOverview() {
+  // Boolean state variable to track if user is on Basic Economy fare
+  const [basicEconomy, setBasicEconomy] = useState(false);
+
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
