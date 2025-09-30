@@ -19,20 +19,38 @@ export default function LuggageOverview() {
     <div className="luggage-overview">
       <h1>Luggage types</h1>
 
-      {/* This feels pretty redundant... */}
-
-      <div className="luggage-type">
-        <h2>{LUGGAGE_TYPES[0].name}</h2>
-        <p>{LUGGAGE_TYPES[0].icon}</p>
-        <p>Max weight: {LUGGAGE_TYPES[0].maxWeightLbs} lbs</p>
-        <p>{LUGGAGE_TYPES[0].description}</p>
+      <div className="luggage-card">
+        <div className="luggage-icon" aria-hidden="true">
+          {LUGGAGE_TYPES[0].icon}
+        </div>
+        <div className="luggage-body">
+          <div className="luggage-header">
+            <h2 className="luggage-name">{LUGGAGE_TYPES[0].name}</h2>
+            <span className="weight-badge">
+              Max {LUGGAGE_TYPES[0].maxWeightLbs} lbs
+            </span>
+          </div>
+          <p className="luggage-description">
+            {LUGGAGE_TYPES[0].description}
+          </p>
+        </div>
       </div>
 
-      <div className="luggage-type">
-        <h2>{LUGGAGE_TYPES[1].name}</h2>
-        <p>{LUGGAGE_TYPES[1].icon}</p>
-        <p>Max weight: {LUGGAGE_TYPES[1].maxWeightLbs} lbs</p>
-        <p>{LUGGAGE_TYPES[1].description}</p>
+      <div className="luggage-card">
+        <div className="luggage-icon" aria-hidden="true">
+          {LUGGAGE_TYPES[1].icon}
+        </div>
+        <div className="luggage-body">
+          <div className="luggage-header">
+            <h2 className="luggage-name">{LUGGAGE_TYPES[1].name}</h2>
+            <span className="weight-badge">
+              Max {LUGGAGE_TYPES[1].maxWeightLbs} lbs
+            </span>
+          </div>
+          <p className="luggage-description">
+            {LUGGAGE_TYPES[1].description}
+          </p>
+        </div>
       </div>
     </div>
   );
