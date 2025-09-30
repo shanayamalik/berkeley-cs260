@@ -52,7 +52,9 @@ export default function LuggageOverview() {
     <div className="luggage-overview">
       <h1>Luggage types</h1>
       
-      <button>Toggle Basic Economy</button>
+      <button onClick={() => setBasicEconomy(!basicEconomy)}>
+        Toggle Basic Economy
+      </button>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
       {LUGGAGE_TYPES.map((luggageType, index) => (
