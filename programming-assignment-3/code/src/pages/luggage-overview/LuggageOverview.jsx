@@ -57,10 +57,10 @@ function LuggageType({ icon, name, maxWeightLbs, description }) {
 }
 
 export default function LuggageOverview() {
-  // State variable to track the selected fare class
+  // State variable to track the selected cabin class
   const [fareClass, setFareClass] = useState('basic-economy');
 
-  // Helper function to determine if a luggage type is allowed for the current fare class
+  // Helper function to determine if a luggage type is allowed for the current cabin class
   const isLuggageAllowed = (luggageType) => {
     switch (fareClass) {
       case 'basic-economy':
@@ -80,9 +80,13 @@ export default function LuggageOverview() {
     <div className="luggage-overview">
       <h1>Luggage types</h1>
       
-      <label>
-        Fare class: 
+      <div className="fare-selector">
+        <label htmlFor="fare-class-select" className="fare-label">
+          Select Cabin Class:
+        </label>
         <select 
+          id="fare-class-select"
+          className="fare-dropdown"
           value={fareClass} 
           onChange={(e) => setFareClass(e.target.value)}
         >
@@ -91,7 +95,7 @@ export default function LuggageOverview() {
           <option value="business">Business Class</option>
           <option value="first">First Class</option>
         </select>
-      </label>
+      </div>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
       {LUGGAGE_TYPES
