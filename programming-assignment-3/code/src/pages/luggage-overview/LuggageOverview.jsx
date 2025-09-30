@@ -6,12 +6,14 @@ const LUGGAGE_TYPES = [
     name: "Personal item",
     maxWeightLbs: 15,
     description: "A small bag that fits under the seat in front of you.",
+    allowedInBasicEconomy: true,
   },
   {
     icon: "💼",
     name: "Carry-on",
     maxWeightLbs: 22,
     description: "A larger bag that fits in the overhead bin.",
+    allowedInBasicEconomy: true,
   },
   {
     icon: "🧳",
@@ -19,6 +21,7 @@ const LUGGAGE_TYPES = [
     maxWeightLbs: 50,
     description:
       "A bag that is checked at the gate and stored in the cargo hold.",
+    allowedInBasicEconomy: false,
   },
 ];
 
@@ -57,15 +60,17 @@ export default function LuggageOverview() {
       </button>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
-      {LUGGAGE_TYPES.map((luggageType, index) => (
-        <LuggageType
-          key={index}
-          icon={luggageType.icon}
-          name={luggageType.name}
-          maxWeightLbs={luggageType.maxWeightLbs}
-          description={luggageType.description}
-        />
-      ))}
+      {LUGGAGE_TYPES
+        .filter(luggageType => !basicEconomy || luggageType.allowedInBasicEconomy)
+        .map((luggageType, index) => (
+          <LuggageType
+            key={index}
+            icon={luggageType.icon}
+            name={luggageType.name}
+            maxWeightLbs={luggageType.maxWeightLbs}
+            description={luggageType.description}
+          />
+        ))}
     </div>
   );
 }
