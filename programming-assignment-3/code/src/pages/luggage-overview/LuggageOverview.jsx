@@ -14,44 +14,42 @@ const LUGGAGE_TYPES = [
   },
 ];
 
+// Reusable component for individual luggage types
+function LuggageType({ icon, name, maxWeightLbs, description }) {
+  return (
+    <div className="luggage-card">
+      <div className="luggage-icon" aria-hidden="true">
+        {icon}
+      </div>
+      <div className="luggage-body">
+        <div className="luggage-header">
+          <h2 className="luggage-name">{name}</h2>
+          <span className="weight-badge">
+            Max {maxWeightLbs} lbs
+          </span>
+        </div>
+        <p className="luggage-description">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function LuggageOverview() {
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
-
-      <div className="luggage-card">
-        <div className="luggage-icon" aria-hidden="true">
-          {LUGGAGE_TYPES[0].icon}
-        </div>
-        <div className="luggage-body">
-          <div className="luggage-header">
-            <h2 className="luggage-name">{LUGGAGE_TYPES[0].name}</h2>
-            <span className="weight-badge">
-              Max {LUGGAGE_TYPES[0].maxWeightLbs} lbs
-            </span>
-          </div>
-          <p className="luggage-description">
-            {LUGGAGE_TYPES[0].description}
-          </p>
-        </div>
-      </div>
-
-      <div className="luggage-card">
-        <div className="luggage-icon" aria-hidden="true">
-          {LUGGAGE_TYPES[1].icon}
-        </div>
-        <div className="luggage-body">
-          <div className="luggage-header">
-            <h2 className="luggage-name">{LUGGAGE_TYPES[1].name}</h2>
-            <span className="weight-badge">
-              Max {LUGGAGE_TYPES[1].maxWeightLbs} lbs
-            </span>
-          </div>
-          <p className="luggage-description">
-            {LUGGAGE_TYPES[1].description}
-          </p>
-        </div>
-      </div>
+      
+      {LUGGAGE_TYPES.map((luggageType, index) => (
+        <LuggageType
+          key={index}
+          icon={luggageType.icon}
+          name={luggageType.name}
+          maxWeightLbs={luggageType.maxWeightLbs}
+          description={luggageType.description}
+        />
+      ))}
     </div>
   );
 }
