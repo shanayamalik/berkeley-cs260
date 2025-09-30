@@ -136,6 +136,12 @@ body {
   flex-wrap: wrap;
 }
 
+.luggage-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .luggage-name {
   font-size: 1.05rem;
   margin: 0;
@@ -147,6 +153,17 @@ body {
   letter-spacing: 0.5px;
   background: #eef2ff;
   color: #1e3a8a;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.bag-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: #f0fdf4;
+  color: #166534;
   padding: 0.35rem 0.55rem;
   border-radius: 999px;
   white-space: nowrap;

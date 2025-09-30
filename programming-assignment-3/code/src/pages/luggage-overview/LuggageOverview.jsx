@@ -10,6 +10,19 @@ const LUGGAGE_TYPES = [
     allowedInPremiumEconomy: true,
     allowedInBusiness: true,
     allowedInFirst: true,
+    // Weight and bag limits are the same across all cabin classes for personal items
+    weightLimits: {
+      'basic-economy': 15,
+      'premium-economy': 15,
+      'business': 15,
+      'first': 15
+    },
+    bagLimits: {
+      'basic-economy': 1,
+      'premium-economy': 1,
+      'business': 1,
+      'first': 1
+    }
   },
   {
     icon: "💼",
@@ -20,22 +33,47 @@ const LUGGAGE_TYPES = [
     allowedInPremiumEconomy: true,
     allowedInBusiness: true,
     allowedInFirst: true,
+    // Weight and bag limits are the same across all cabin classes for carry-on
+    weightLimits: {
+      'basic-economy': 22,
+      'premium-economy': 22,
+      'business': 22,
+      'first': 22
+    },
+    bagLimits: {
+      'basic-economy': 1,
+      'premium-economy': 1,
+      'business': 1,
+      'first': 1
+    }
   },
   {
     icon: "🧳",
     name: "Checked bag",
     maxWeightLbs: 50,
-    description:
-      "A bag that is checked at the gate and stored in the cargo hold.",
+    description: "A bag that is checked at the gate and stored in the cargo hold.",
     allowedInBasicEconomy: false,
     allowedInPremiumEconomy: true,
     allowedInBusiness: true,
     allowedInFirst: true,
+    // Different weight and bag limits for checked bags based on cabin class
+    weightLimits: {
+      'basic-economy': 0, // Not allowed
+      'premium-economy': 50,
+      'business': 70,
+      'first': 70
+    },
+    bagLimits: {
+      'basic-economy': 0, // Not allowed
+      'premium-economy': 1,
+      'business': 2,
+      'first': 3
+    }
   },
 ];
 
 // Reusable component for individual luggage types
-function LuggageType({ icon, name, maxWeightLbs, description }) {
+function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
   return (
     <div className="luggage-card">
       <div className="luggage-icon" aria-hidden="true">
@@ -44,9 +82,16 @@ function LuggageType({ icon, name, maxWeightLbs, description }) {
       <div className="luggage-body">
         <div className="luggage-header">
           <h2 className="luggage-name">{name}</h2>
-          <span className="weight-badge">
-            Max {maxWeightLbs} lbs
-          </span>
+          <div className="luggage-badges">
+            {bagLimit > 1 && (
+              <span className="bag-badge">
+                Up to {bagLimit} bags
+              </span>
+            )}
+            <span className="weight-badge">
+              Max {maxWeightLbs} lbs{bagLimit > 1 ? '/bag' : ''}
+            </span>
+          </div>
         </div>
         <p className="luggage-description">
           {description}
@@ -105,8 +150,9 @@ export default function LuggageOverview() {
             key={index}
             icon={luggageType.icon}
             name={luggageType.name}
-            maxWeightLbs={luggageType.maxWeightLbs}
+            maxWeightLbs={luggageType.weightLimits[fareClass]}
             description={luggageType.description}
+            bagLimit={luggageType.bagLimits[fareClass]}
           />
         ))}
     </div>
