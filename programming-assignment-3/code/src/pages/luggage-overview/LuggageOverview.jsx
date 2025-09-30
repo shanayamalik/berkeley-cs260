@@ -51,12 +51,20 @@ export default function LuggageOverview() {
   // Boolean state variable to track if user is on Basic Economy fare
   const [basicEconomy, setBasicEconomy] = useState(false);
 
+  // Create dynamic button text based on current state
+  let buttonText = "Toggle Basic Economy";
+  if (basicEconomy) {
+    buttonText += ' (currently ON)';
+  } else {
+    buttonText += ' (currently OFF)';
+  }
+
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
       
       <button onClick={() => setBasicEconomy(!basicEconomy)}>
-        Toggle Basic Economy
+        {buttonText}
       </button>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
