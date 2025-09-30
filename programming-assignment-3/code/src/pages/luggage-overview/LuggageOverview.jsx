@@ -1,5 +1,11 @@
 const LUGGAGE_TYPES = [
   {
+    icon: "🎒",
+    name: "Personal item",
+    maxWeightLbs: 15,
+    description: "A small bag that fits under the seat in front of you.",
+  },
+  {
     icon: "💼",
     name: "Carry-on",
     maxWeightLbs: 22,
