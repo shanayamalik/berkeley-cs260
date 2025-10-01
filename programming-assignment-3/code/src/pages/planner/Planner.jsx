@@ -4,30 +4,41 @@ export default function Planner() {
   const [personalItemItems, setPersonalItemItems] = useState([]);
   const [carryOnItems, setCarryOnItems] = useState([]);
   
-  // Form state for adding new items
-  const [newItemName, setNewItemName] = useState("");
-  const [newItemWeight, setNewItemWeight] = useState("");
+  // Form state for adding new items to personal item bag
+  const [personalItemName, setPersonalItemName] = useState("");
+  const [personalItemWeight, setPersonalItemWeight] = useState("");
+  
+  // Form state for adding new items to carry-on bag
+  const [carryOnName, setCarryOnName] = useState("");
+  const [carryOnWeight, setCarryOnWeight] = useState("");
 
-  // Validation function to check if form is valid
-  const isFormValid = () => {
-    const name = newItemName.trim();
-    const weight = parseFloat(newItemWeight);
+  // Validation function to check if personal item form is valid
+  const isPersonalItemFormValid = () => {
+    const name = personalItemName.trim();
+    const weight = parseFloat(personalItemWeight);
+    return name.length > 0 && !isNaN(weight) && weight >= 0;
+  };
+
+  // Validation function to check if carry-on form is valid
+  const isCarryOnFormValid = () => {
+    const name = carryOnName.trim();
+    const weight = parseFloat(carryOnWeight);
     return name.length > 0 && !isNaN(weight) && weight >= 0;
   };
 
   // Function to add item to personal item bag
   const addToPersonalItem = (e) => {
     e.preventDefault();
-    if (newItemName.trim() && newItemWeight.trim()) {
-      const weight = parseFloat(newItemWeight);
+    if (personalItemName.trim() && personalItemWeight.trim()) {
+      const weight = parseFloat(personalItemWeight);
       if (weight > 0) {
         setPersonalItemItems([...personalItemItems, {
           id: Date.now(), // Simple ID generation
-          name: newItemName.trim(),
+          name: personalItemName.trim(),
           weight: weight
         }]);
-        setNewItemName("");
-        setNewItemWeight("");
+        setPersonalItemName("");
+        setPersonalItemWeight("");
       }
     }
   };
@@ -35,16 +46,16 @@ export default function Planner() {
   // Function to add item to carry-on bag
   const addToCarryOn = (e) => {
     e.preventDefault();
-    if (newItemName.trim() && newItemWeight.trim()) {
-      const weight = parseFloat(newItemWeight);
+    if (carryOnName.trim() && carryOnWeight.trim()) {
+      const weight = parseFloat(carryOnWeight);
       if (weight > 0) {
         setCarryOnItems([...carryOnItems, {
           id: Date.now(), // Simple ID generation
-          name: newItemName.trim(),
+          name: carryOnName.trim(),
           weight: weight
         }]);
-        setNewItemName("");
-        setNewItemWeight("");
+        setCarryOnName("");
+        setCarryOnWeight("");
       }
     }
   };
@@ -64,20 +75,20 @@ export default function Planner() {
                 <input
                   type="text"
                   placeholder="Item name"
-                  value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
+                  value={personalItemName}
+                  onChange={(e) => setPersonalItemName(e.target.value)}
                   className="item-name-input"
                 />
                 <input
                   type="number"
                   placeholder="Weight (lbs)"
-                  value={newItemWeight}
-                  onChange={(e) => setNewItemWeight(e.target.value)}
+                  value={personalItemWeight}
+                  onChange={(e) => setPersonalItemWeight(e.target.value)}
                   step="0.1"
                   min="0"
                   className="item-weight-input"
                 />
-                <button type="submit" className="add-button" disabled={!isFormValid()}>
+                <button type="submit" className="add-button" disabled={!isPersonalItemFormValid()}>
                   Add Item
                 </button>
               </div>
@@ -111,20 +122,20 @@ export default function Planner() {
                 <input
                   type="text"
                   placeholder="Item name"
-                  value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
+                  value={carryOnName}
+                  onChange={(e) => setCarryOnName(e.target.value)}
                   className="item-name-input"
                 />
                 <input
                   type="number"
                   placeholder="Weight (lbs)"
-                  value={newItemWeight}
-                  onChange={(e) => setNewItemWeight(e.target.value)}
+                  value={carryOnWeight}
+                  onChange={(e) => setCarryOnWeight(e.target.value)}
                   step="0.1"
                   min="0"
                   className="item-weight-input"
                 />
-                <button type="submit" className="add-button" disabled={!isFormValid()}>
+                <button type="submit" className="add-button" disabled={!isCarryOnFormValid()}>
                   Add Item
                 </button>
               </div>
