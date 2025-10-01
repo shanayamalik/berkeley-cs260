@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
 
+// Reusable component for individual items
+function Item({ name, weight, unit }) {
+  return (
+    <li className="item">
+      <span className="item-name">{name}</span>
+      <span className="item-weight">{weight} {unit}</span>
+    </li>
+  );
+}
+
 export default function Planner() {
   const [personalItemItems, setPersonalItemItems] = useState([]);
   const [carryOnItems, setCarryOnItems] = useState([]);
@@ -234,10 +244,12 @@ export default function Planner() {
             ) : (
               <ul className="item-list">
                 {personalItemItems.map((item) => (
-                  <li key={item.id} className="item">
-                    <span className="item-name">{item.name}</span>
-                    <span className="item-weight">{item.weight} {item.unit}</span>
-                  </li>
+                  <Item
+                    key={item.id}
+                    name={item.name}
+                    weight={item.weight}
+                    unit={item.unit}
+                  />
                 ))}
               </ul>
             )}
@@ -282,10 +294,12 @@ export default function Planner() {
             ) : (
               <ul className="item-list">
                 {carryOnItems.map((item) => (
-                  <li key={item.id} className="item">
-                    <span className="item-name">{item.name}</span>
-                    <span className="item-weight">{item.weight} {item.unit}</span>
-                  </li>
+                  <Item
+                    key={item.id}
+                    name={item.name}
+                    weight={item.weight}
+                    unit={item.unit}
+                  />
                 ))}
               </ul>
             )}
@@ -335,10 +349,12 @@ export default function Planner() {
                   ) : (
                     <ul className="item-list">
                       {checkedBagItems.map((item) => (
-                        <li key={item.id} className="item">
-                          <span className="item-name">{item.name}</span>
-                          <span className="item-weight">{item.weight} {item.unit}</span>
-                        </li>
+                        <Item
+                          key={item.id}
+                          name={item.name}
+                          weight={item.weight}
+                          unit={item.unit}
+                        />
                       ))}
                     </ul>
                   )}
@@ -383,10 +399,12 @@ export default function Planner() {
                     ) : (
                       <ul className="item-list">
                         {checkedBag2Items.map((item) => (
-                          <li key={item.id} className="item">
-                            <span className="item-name">{item.name}</span>
-                            <span className="item-weight">{item.weight} {item.unit}</span>
-                          </li>
+                          <Item
+                            key={item.id}
+                            name={item.name}
+                            weight={item.weight}
+                            unit={item.unit}
+                          />
                         ))}
                       </ul>
                     )}
