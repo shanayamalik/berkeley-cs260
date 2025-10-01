@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import LuggageOverview from "./pages/luggage-overview/LuggageOverview";
 import Planner from "./pages/planner/Planner";
+import Summary from "./pages/summary/Summary";
 
 function App() {
   const [page, setPage] = useState("luggage-overview");
@@ -12,6 +13,7 @@ function App() {
       <div className="main">
         {page === "luggage-overview" ? <LuggageOverview /> : null}
         {page === "planner" ? <Planner /> : null}
+        {page === "summary" ? <Summary /> : null}
       </div>
     </div>
   );

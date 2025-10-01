@@ -23,6 +23,16 @@ export function Sidebar({ setPage }) {
             Planner
           </a>
         </li>
+        <li>
+          <a
+            href="#"
+            onClick={() => {
+              setPage("summary");
+            }}
+          >
+            Summary
+          </a>
+        </li>
       </ul>
     </div>
   );
