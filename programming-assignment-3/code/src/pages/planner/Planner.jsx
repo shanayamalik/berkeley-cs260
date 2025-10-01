@@ -71,7 +71,7 @@ export default function Planner() {
                   className="item-weight-input"
                 />
                 <button type="submit" className="add-button">
-                  Add to Personal Item
+                  Add Item
                 </button>
               </div>
             </form>
@@ -118,7 +118,7 @@ export default function Planner() {
                   className="item-weight-input"
                 />
                 <button type="submit" className="add-button">
-                  Add to Carry-On
+                  Add Item
                 </button>
               </div>
             </form>
