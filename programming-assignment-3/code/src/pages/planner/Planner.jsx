@@ -4,6 +4,9 @@ export default function Planner() {
   const [personalItemItems, setPersonalItemItems] = useState([]);
   const [carryOnItems, setCarryOnItems] = useState([]);
   
+  // Weight unit preference (default to lbs)
+  const [weightUnit, setWeightUnit] = useState("lbs");
+  
   // Form state for adding new items to personal item bag
   const [personalItemName, setPersonalItemName] = useState("");
   const [personalItemWeight, setPersonalItemWeight] = useState("");
@@ -35,7 +38,8 @@ export default function Planner() {
         setPersonalItemItems([...personalItemItems, {
           id: Date.now(), // Simple ID generation
           name: personalItemName.trim(),
-          weight: weight
+          weight: weight,
+          unit: weightUnit
         }]);
         setPersonalItemName("");
         setPersonalItemWeight("");
@@ -52,7 +56,8 @@ export default function Planner() {
         setCarryOnItems([...carryOnItems, {
           id: Date.now(), // Simple ID generation
           name: carryOnName.trim(),
-          weight: weight
+          weight: weight,
+          unit: weightUnit
         }]);
         setCarryOnName("");
         setCarryOnWeight("");
@@ -63,6 +68,21 @@ export default function Planner() {
   return (
     <div className="planner">
       <h1>Planner</h1>
+      
+      <div className="weight-unit-selector">
+        <label htmlFor="weight-unit-select" className="unit-label">
+          Weight Unit:
+        </label>
+        <select 
+          id="weight-unit-select"
+          className="unit-dropdown"
+          value={weightUnit} 
+          onChange={(e) => setWeightUnit(e.target.value)}
+        >
+          <option value="lbs">Pounds (lbs)</option>
+          <option value="kg">Kilograms (kg)</option>
+        </select>
+      </div>
       
       <div className="bag-sections">
         {/* Personal Item Section */}
@@ -81,7 +101,7 @@ export default function Planner() {
                 />
                 <input
                   type="number"
-                  placeholder="Weight (lbs)"
+                  placeholder={`Weight (${weightUnit})`}
                   value={personalItemWeight}
                   onChange={(e) => setPersonalItemWeight(e.target.value)}
                   step="0.1"
@@ -104,7 +124,7 @@ export default function Planner() {
                 {personalItemItems.map((item) => (
                   <li key={item.id} className="item">
                     <span className="item-name">{item.name}</span>
-                    <span className="item-weight">{item.weight} lbs</span>
+                    <span className="item-weight">{item.weight} {item.unit}</span>
                   </li>
                 ))}
               </ul>
@@ -128,7 +148,7 @@ export default function Planner() {
                 />
                 <input
                   type="number"
-                  placeholder="Weight (lbs)"
+                  placeholder={`Weight (${weightUnit})`}
                   value={carryOnWeight}
                   onChange={(e) => setCarryOnWeight(e.target.value)}
                   step="0.1"
@@ -151,7 +171,7 @@ export default function Planner() {
                 {carryOnItems.map((item) => (
                   <li key={item.id} className="item">
                     <span className="item-name">{item.name}</span>
-                    <span className="item-weight">{item.weight} lbs</span>
+                    <span className="item-weight">{item.weight} {item.unit}</span>
                   </li>
                 ))}
               </ul>
