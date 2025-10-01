@@ -396,6 +396,13 @@ body {
   border-bottom: none;
 }
 
+.item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
 .item-name {
   font-weight: 500;
   color: #374151;
@@ -405,4 +412,30 @@ body {
 .item-weight {
   color: #6b7280;
   font-size: 0.8rem;
+}
+
+.delete-button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  line-height: 1;
+}
+
+.delete-button:hover {
+  background: #dc2626;
+}
+
+.delete-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }

@@ -2,11 +2,20 @@ import { useState } from "react";
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
 
 // Reusable component for individual items
-function Item({ name, weight, unit }) {
+function Item({ id, name, weight, unit, onDelete }) {
   return (
     <li className="item">
-      <span className="item-name">{name}</span>
-      <span className="item-weight">{weight} {unit}</span>
+      <div className="item-info">
+        <span className="item-name">{name}</span>
+        <span className="item-weight">{weight} {unit}</span>
+      </div>
+      <button 
+        className="delete-button" 
+        onClick={() => onDelete(id)}
+        aria-label={`Delete ${name}`}
+      >
+        ×
+      </button>
     </li>
   );
 }
@@ -165,6 +174,23 @@ export default function Planner() {
     }
   };
 
+  // Delete functions for each bag type
+  const deleteFromPersonalItem = (itemId) => {
+    setPersonalItemItems(personalItemItems.filter(item => item.id !== itemId));
+  };
+
+  const deleteFromCarryOn = (itemId) => {
+    setCarryOnItems(carryOnItems.filter(item => item.id !== itemId));
+  };
+
+  const deleteFromCheckedBag = (itemId) => {
+    setCheckedBagItems(checkedBagItems.filter(item => item.id !== itemId));
+  };
+
+  const deleteFromCheckedBag2 = (itemId) => {
+    setCheckedBag2Items(checkedBag2Items.filter(item => item.id !== itemId));
+  };
+
   return (
     <div className="planner">
       <h1>Planner</h1>
@@ -246,9 +272,11 @@ export default function Planner() {
                 {personalItemItems.map((item) => (
                   <Item
                     key={item.id}
+                    id={item.id}
                     name={item.name}
                     weight={item.weight}
                     unit={item.unit}
+                    onDelete={deleteFromPersonalItem}
                   />
                 ))}
               </ul>
@@ -296,9 +324,11 @@ export default function Planner() {
                 {carryOnItems.map((item) => (
                   <Item
                     key={item.id}
+                    id={item.id}
                     name={item.name}
                     weight={item.weight}
                     unit={item.unit}
+                    onDelete={deleteFromCarryOn}
                   />
                 ))}
               </ul>
@@ -351,9 +381,11 @@ export default function Planner() {
                       {checkedBagItems.map((item) => (
                         <Item
                           key={item.id}
+                          id={item.id}
                           name={item.name}
                           weight={item.weight}
                           unit={item.unit}
+                          onDelete={deleteFromCheckedBag}
                         />
                       ))}
                     </ul>
@@ -401,9 +433,11 @@ export default function Planner() {
                         {checkedBag2Items.map((item) => (
                           <Item
                             key={item.id}
+                            id={item.id}
                             name={item.name}
                             weight={item.weight}
                             unit={item.unit}
+                            onDelete={deleteFromCheckedBag2}
                           />
                         ))}
                       </ul>
