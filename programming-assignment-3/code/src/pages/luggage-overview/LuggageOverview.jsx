@@ -3,7 +3,7 @@ import { useState } from 'react';
 const LUGGAGE_TYPES = [
   {
     icon: "🎒",
-    name: "Personal item",
+    name: "Personal Item",
     maxWeightLbs: 15,
     description: "A small bag that fits under the seat in front of you.",
     allowedInBasicEconomy: true,
@@ -26,7 +26,7 @@ const LUGGAGE_TYPES = [
   },
   {
     icon: "💼",
-    name: "Carry-on",
+    name: "Carry-On",
     maxWeightLbs: 22,
     description: "A larger bag that fits in the overhead bin.",
     allowedInBasicEconomy: true,
@@ -49,7 +49,7 @@ const LUGGAGE_TYPES = [
   },
   {
     icon: "🧳",
-    name: "Checked bag",
+    name: "Checked Bag",
     maxWeightLbs: 50,
     description: "A bag that is checked at the gate and stored in the cargo hold.",
     allowedInBasicEconomy: false,
