@@ -253,6 +253,15 @@ body {
   background: #2563eb;
 }
 
+.add-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.add-button:disabled:hover {
+  background: #9ca3af;
+}
+
 .items-list {
   border-top: 1px solid #e5e7eb;
   padding-top: 0.75rem;

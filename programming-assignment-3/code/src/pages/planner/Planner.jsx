@@ -8,6 +8,13 @@ export default function Planner() {
   const [newItemName, setNewItemName] = useState("");
   const [newItemWeight, setNewItemWeight] = useState("");
 
+  // Validation function to check if form is valid
+  const isFormValid = () => {
+    const name = newItemName.trim();
+    const weight = parseFloat(newItemWeight);
+    return name.length > 0 && !isNaN(weight) && weight >= 0;
+  };
+
   // Function to add item to personal item bag
   const addToPersonalItem = (e) => {
     e.preventDefault();
@@ -70,7 +77,7 @@ export default function Planner() {
                   min="0"
                   className="item-weight-input"
                 />
-                <button type="submit" className="add-button">
+                <button type="submit" className="add-button" disabled={!isFormValid()}>
                   Add Item
                 </button>
               </div>
@@ -117,7 +124,7 @@ export default function Planner() {
                   min="0"
                   className="item-weight-input"
                 />
-                <button type="submit" className="add-button">
+                <button type="submit" className="add-button" disabled={!isFormValid()}>
                   Add Item
                 </button>
               </div>
