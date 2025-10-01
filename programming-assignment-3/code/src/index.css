@@ -471,3 +471,96 @@ body {
   outline: none;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
+
+/* Summary page styles */
+.summary {
+  max-width: 800px;
+  padding: 1.5rem;
+}
+
+.summary h1 {
+  margin: 0 0 1.5rem 0;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.total-weight-section {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.total-weight-section h2 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.total-weight {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.weight-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1e40af;
+  line-height: 1;
+}
+
+.weight-unit {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.bags-breakdown {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.bags-breakdown h3 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.bag-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bag-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #f3f4f6;
+}
+
+.bag-name {
+  font-weight: 500;
+  color: #374151;
+}
+
+.item-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: #e5e7eb;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
