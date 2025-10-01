@@ -96,7 +96,13 @@ export default function Planner() {
   const getRemainingWeight = (currentWeight, maxWeightLbs) => {
     const maxWeight = parseFloat(getWeightLimitInUnit(maxWeightLbs));
     const remaining = maxWeight - currentWeight;
-    return Math.max(0, remaining).toFixed(1);
+    return remaining.toFixed(1);
+  };
+
+  // Helper function to check if bag is overweight
+  const isWeightExceeded = (currentWeight, maxWeightLbs) => {
+    const maxWeight = parseFloat(getWeightLimitInUnit(maxWeightLbs));
+    return currentWeight > maxWeight;
   };
 
   // Validation function to check if personal item form is valid
@@ -290,11 +296,23 @@ export default function Planner() {
           
           <div className="items-list">
             <h3>Items ({personalItemItems.length})</h3>
-            <div className="weight-summary">
+            <div className={`weight-summary ${isWeightExceeded(personalItemTotalWeight, personalItemData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
               <span className="total-weight">
-                Used: {personalItemTotalWeight.toFixed(1)} {weightUnit} • 
-                Remaining: {getRemainingWeight(personalItemTotalWeight, personalItemData.weightLimits[cabinClass])} {weightUnit}
+                Used: {personalItemTotalWeight.toFixed(1)} {weightUnit} • {isWeightExceeded(personalItemTotalWeight, personalItemData.weightLimits[cabinClass]) ? (
+                  <span className="exceeded-text">
+                    Weight exceeded by: {Math.abs(parseFloat(getRemainingWeight(personalItemTotalWeight, personalItemData.weightLimits[cabinClass]))).toFixed(1)} {weightUnit}
+                  </span>
+                ) : (
+                  <span>
+                    Remaining: {getRemainingWeight(personalItemTotalWeight, personalItemData.weightLimits[cabinClass])} {weightUnit}
+                  </span>
+                )}
               </span>
+              {isWeightExceeded(personalItemTotalWeight, personalItemData.weightLimits[cabinClass]) && (
+                <div className="weight-warning">
+                  ⚠️ This bag's weight limit has been exceeded. Please remove some items.
+                </div>
+              )}
             </div>
             {personalItemItems.length === 0 ? (
               <p className="empty-message">No items added yet</p>
@@ -348,11 +366,23 @@ export default function Planner() {
           
           <div className="items-list">
             <h3>Items ({carryOnItems.length})</h3>
-            <div className="weight-summary">
+            <div className={`weight-summary ${isWeightExceeded(carryOnTotalWeight, carryOnData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
               <span className="total-weight">
-                Used: {carryOnTotalWeight.toFixed(1)} {weightUnit} • 
-                Remaining: {getRemainingWeight(carryOnTotalWeight, carryOnData.weightLimits[cabinClass])} {weightUnit}
+                Used: {carryOnTotalWeight.toFixed(1)} {weightUnit} • {isWeightExceeded(carryOnTotalWeight, carryOnData.weightLimits[cabinClass]) ? (
+                  <span className="exceeded-text">
+                    Weight exceeded by: {Math.abs(parseFloat(getRemainingWeight(carryOnTotalWeight, carryOnData.weightLimits[cabinClass]))).toFixed(1)} {weightUnit}
+                  </span>
+                ) : (
+                  <span>
+                    Remaining: {getRemainingWeight(carryOnTotalWeight, carryOnData.weightLimits[cabinClass])} {weightUnit}
+                  </span>
+                )}
               </span>
+              {isWeightExceeded(carryOnTotalWeight, carryOnData.weightLimits[cabinClass]) && (
+                <div className="weight-warning">
+                  ⚠️ This bag's weight limit has been exceeded. Please remove some items.
+                </div>
+              )}
             </div>
             {carryOnItems.length === 0 ? (
               <p className="empty-message">No items added yet</p>
@@ -411,11 +441,23 @@ export default function Planner() {
                 
                 <div className="items-list">
                   <h3>Items ({checkedBagItems.length})</h3>
-                  <div className="weight-summary">
+                  <div className={`weight-summary ${isWeightExceeded(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
                     <span className="total-weight">
-                      Used: {checkedBagTotalWeight.toFixed(1)} {weightUnit} • 
-                      Remaining: {getRemainingWeight(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                      Used: {checkedBagTotalWeight.toFixed(1)} {weightUnit} • {isWeightExceeded(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass]) ? (
+                        <span className="exceeded-text">
+                          Weight exceeded by: {Math.abs(parseFloat(getRemainingWeight(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass]))).toFixed(1)} {weightUnit}
+                        </span>
+                      ) : (
+                        <span>
+                          Remaining: {getRemainingWeight(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                        </span>
+                      )}
                     </span>
+                    {isWeightExceeded(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass]) && (
+                      <div className="weight-warning">
+                        ⚠️ This bag's weight limit has been exceeded. Please remove some items.
+                      </div>
+                    )}
                   </div>
                   {checkedBagItems.length === 0 ? (
                     <p className="empty-message">No items added yet</p>
@@ -469,11 +511,23 @@ export default function Planner() {
                   
                   <div className="items-list">
                     <h3>Items ({checkedBag2Items.length})</h3>
-                    <div className="weight-summary">
+                    <div className={`weight-summary ${isWeightExceeded(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
                       <span className="total-weight">
-                        Used: {checkedBag2TotalWeight.toFixed(1)} {weightUnit} • 
-                        Remaining: {getRemainingWeight(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                        Used: {checkedBag2TotalWeight.toFixed(1)} {weightUnit} • {isWeightExceeded(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass]) ? (
+                          <span className="exceeded-text">
+                            Weight exceeded by: {Math.abs(parseFloat(getRemainingWeight(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass]))).toFixed(1)} {weightUnit}
+                          </span>
+                        ) : (
+                          <span>
+                            Remaining: {getRemainingWeight(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                          </span>
+                        )}
                       </span>
+                      {isWeightExceeded(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass]) && (
+                        <div className="weight-warning">
+                          ⚠️ This bag's weight limit has been exceeded. Please remove some items.
+                        </div>
+                      )}
                     </div>
                     {checkedBag2Items.length === 0 ? (
                       <p className="empty-message">No items added yet</p>

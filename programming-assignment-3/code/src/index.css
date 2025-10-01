@@ -379,10 +379,28 @@ body {
   border-radius: 4px;
 }
 
+.weight-summary.weight-exceeded {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
 .total-weight {
   font-size: 0.8rem;
   font-weight: 600;
   color: #374151;
+}
+
+.exceeded-text {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.weight-warning {
+  font-size: 0.75rem;
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0;
 }
 
 .empty-message {
