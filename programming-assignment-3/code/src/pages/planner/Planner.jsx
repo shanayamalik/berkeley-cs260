@@ -74,6 +74,31 @@ export default function Planner() {
     return checkedBagData.bagLimits[cabinClass] || 0;
   };
 
+  // Calculate total weight for each bag type
+  const calculateTotalWeight = (items) => {
+    return items.reduce((total, item) => total + item.weight, 0);
+  };
+
+  const personalItemTotalWeight = calculateTotalWeight(personalItemItems);
+  const carryOnTotalWeight = calculateTotalWeight(carryOnItems);
+  const checkedBagTotalWeight = calculateTotalWeight(checkedBagItems);
+  const checkedBag2TotalWeight = calculateTotalWeight(checkedBag2Items);
+
+  // Helper function to get weight limit in correct unit
+  const getWeightLimitInUnit = (weightInLbs) => {
+    if (weightUnit === 'kg') {
+      return (weightInLbs * 0.453592).toFixed(1);
+    }
+    return weightInLbs;
+  };
+
+  // Helper function to get remaining weight
+  const getRemainingWeight = (currentWeight, maxWeightLbs) => {
+    const maxWeight = parseFloat(getWeightLimitInUnit(maxWeightLbs));
+    const remaining = maxWeight - currentWeight;
+    return Math.max(0, remaining).toFixed(1);
+  };
+
   // Validation function to check if personal item form is valid
   const isPersonalItemFormValid = () => {
     const name = personalItemName.trim();
@@ -235,7 +260,7 @@ export default function Planner() {
           {/* Personal Item Section */}
           <div className="bag-section">
             <h2>🎒 Personal Item</h2>
-            <p className="weight-limit">Max: {personalItemData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(personalItemData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+            <p className="weight-limit">Max: {getWeightLimitInUnit(personalItemData.weightLimits[cabinClass])} {weightUnit}</p>
             <div className="add-item-form">
             <h3>Add Item</h3>
             <form onSubmit={addToPersonalItem}>
@@ -265,6 +290,12 @@ export default function Planner() {
           
           <div className="items-list">
             <h3>Items ({personalItemItems.length})</h3>
+            <div className="weight-summary">
+              <span className="total-weight">
+                Used: {personalItemTotalWeight.toFixed(1)} {weightUnit} • 
+                Remaining: {getRemainingWeight(personalItemTotalWeight, personalItemData.weightLimits[cabinClass])} {weightUnit}
+              </span>
+            </div>
             {personalItemItems.length === 0 ? (
               <p className="empty-message">No items added yet</p>
             ) : (
@@ -287,7 +318,7 @@ export default function Planner() {
         {/* Carry-On Section */}
         <div className="bag-section">
           <h2>💼 Carry-On</h2>
-          <p className="weight-limit">Max: {carryOnData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(carryOnData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+          <p className="weight-limit">Max: {getWeightLimitInUnit(carryOnData.weightLimits[cabinClass])} {weightUnit}</p>
           <div className="add-item-form">
             <h3>Add Item</h3>
             <form onSubmit={addToCarryOn}>
@@ -317,6 +348,12 @@ export default function Planner() {
           
           <div className="items-list">
             <h3>Items ({carryOnItems.length})</h3>
+            <div className="weight-summary">
+              <span className="total-weight">
+                Used: {carryOnTotalWeight.toFixed(1)} {weightUnit} • 
+                Remaining: {getRemainingWeight(carryOnTotalWeight, carryOnData.weightLimits[cabinClass])} {weightUnit}
+              </span>
+            </div>
             {carryOnItems.length === 0 ? (
               <p className="empty-message">No items added yet</p>
             ) : (
@@ -344,7 +381,7 @@ export default function Planner() {
             <div className="bag-row checked-bag-row">
               <div className="bag-section">
                 <h2>🧳 Checked Bag {getCheckedBagLimit() > 1 ? '1' : ''}</h2>
-                <p className="weight-limit">Max: {checkedBagData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(checkedBagData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+                <p className="weight-limit">Max: {getWeightLimitInUnit(checkedBagData.weightLimits[cabinClass])} {weightUnit}</p>
                 <div className="add-item-form">
                   <h3>Add Item</h3>
                   <form onSubmit={addToCheckedBag}>
@@ -374,6 +411,12 @@ export default function Planner() {
                 
                 <div className="items-list">
                   <h3>Items ({checkedBagItems.length})</h3>
+                  <div className="weight-summary">
+                    <span className="total-weight">
+                      Used: {checkedBagTotalWeight.toFixed(1)} {weightUnit} • 
+                      Remaining: {getRemainingWeight(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                    </span>
+                  </div>
                   {checkedBagItems.length === 0 ? (
                     <p className="empty-message">No items added yet</p>
                   ) : (
@@ -396,7 +439,7 @@ export default function Planner() {
                 /* Second Checked Bag for Business/First Class */
                 <div className="bag-section">
                   <h2>🧳 Checked Bag 2</h2>
-                  <p className="weight-limit">Max: {checkedBagData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(checkedBagData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+                  <p className="weight-limit">Max: {getWeightLimitInUnit(checkedBagData.weightLimits[cabinClass])} {weightUnit}</p>
                   <div className="add-item-form">
                     <h3>Add Item</h3>
                     <form onSubmit={addToCheckedBag2}>
@@ -426,6 +469,12 @@ export default function Planner() {
                   
                   <div className="items-list">
                     <h3>Items ({checkedBag2Items.length})</h3>
+                    <div className="weight-summary">
+                      <span className="total-weight">
+                        Used: {checkedBag2TotalWeight.toFixed(1)} {weightUnit} • 
+                        Remaining: {getRemainingWeight(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass])} {weightUnit}
+                      </span>
+                    </div>
                     {checkedBag2Items.length === 0 ? (
                       <p className="empty-message">No items added yet</p>
                     ) : (
