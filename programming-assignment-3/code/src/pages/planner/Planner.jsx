@@ -5,6 +5,7 @@ export default function Planner() {
   const [personalItemItems, setPersonalItemItems] = useState([]);
   const [carryOnItems, setCarryOnItems] = useState([]);
   const [checkedBagItems, setCheckedBagItems] = useState([]);
+  const [checkedBag2Items, setCheckedBag2Items] = useState([]);
   
   // Cabin class selection (default to basic-economy)
   const [cabinClass, setCabinClass] = useState("basic-economy");
@@ -23,6 +24,10 @@ export default function Planner() {
   // Form state for adding new items to checked bag
   const [checkedBagName, setCheckedBagName] = useState("");
   const [checkedBagWeight, setCheckedBagWeight] = useState("");
+  
+  // Form state for adding new items to checked bag 2
+  const [checkedBag2Name, setCheckedBag2Name] = useState("");
+  const [checkedBag2Weight, setCheckedBag2Weight] = useState("");
 
   // Get luggage type data
   const personalItemData = LUGGAGE_TYPES.find(type => type.name === "Personal Item");
@@ -45,6 +50,11 @@ export default function Planner() {
     }
   };
 
+  // Get number of allowed checked bags for current cabin class
+  const getCheckedBagLimit = () => {
+    return checkedBagData.bagLimits[cabinClass] || 0;
+  };
+
   // Validation function to check if personal item form is valid
   const isPersonalItemFormValid = () => {
     const name = personalItemName.trim();
@@ -63,6 +73,13 @@ export default function Planner() {
   const isCheckedBagFormValid = () => {
     const name = checkedBagName.trim();
     const weight = parseFloat(checkedBagWeight);
+    return name.length > 0 && !isNaN(weight) && weight >= 0;
+  };
+
+  // Validation function to check if checked bag 2 form is valid
+  const isCheckedBag2FormValid = () => {
+    const name = checkedBag2Name.trim();
+    const weight = parseFloat(checkedBag2Weight);
     return name.length > 0 && !isNaN(weight) && weight >= 0;
   };
 
@@ -116,6 +133,24 @@ export default function Planner() {
         }]);
         setCheckedBagName("");
         setCheckedBagWeight("");
+      }
+    }
+  };
+
+  // Function to add item to checked bag 2
+  const addToCheckedBag2 = (e) => {
+    e.preventDefault();
+    if (checkedBag2Name.trim() && checkedBag2Weight.trim()) {
+      const weight = parseFloat(checkedBag2Weight);
+      if (weight > 0) {
+        setCheckedBag2Items([...checkedBag2Items, {
+          id: Date.now() + 1, // Simple ID generation with offset
+          name: checkedBag2Name.trim(),
+          weight: weight,
+          unit: weightUnit
+        }]);
+        setCheckedBag2Name("");
+        setCheckedBag2Weight("");
       }
     }
   };
@@ -258,58 +293,111 @@ export default function Planner() {
         </div>
         </div>
 
-        {/* Checked Bag Section - only show if allowed for current cabin class */}
+        {/* Checked Bag Section(s) - only show if allowed for current cabin class */}
         {isCheckedBagAllowed() && (
-          <div className="bag-row checked-bag-row">
-            <div className="bag-section">
-              <h2>🧳 Checked Bag</h2>
-              <p className="weight-limit">Max: {checkedBagData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(checkedBagData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
-              <div className="add-item-form">
-                <h3>Add Item</h3>
-                <form onSubmit={addToCheckedBag}>
-                  <div className="form-row">
-                    <input
-                      type="text"
-                      placeholder="Item name"
-                      value={checkedBagName}
-                      onChange={(e) => setCheckedBagName(e.target.value)}
-                      className="item-name-input"
-                    />
-                    <input
-                      type="number"
-                      placeholder={`Weight (${weightUnit})`}
-                      value={checkedBagWeight}
-                      onChange={(e) => setCheckedBagWeight(e.target.value)}
-                      step="0.1"
-                      min="0"
-                      className="item-weight-input"
-                    />
-                    <button type="submit" className="add-button" disabled={!isCheckedBagFormValid()}>
-                      Add Item
-                    </button>
+          <>
+            {/* First Checked Bag */}
+            <div className="bag-row checked-bag-row">
+              <div className="bag-section">
+                <h2>🧳 Checked Bag {getCheckedBagLimit() > 1 ? '1' : ''}</h2>
+                <p className="weight-limit">Max: {checkedBagData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(checkedBagData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+                <div className="add-item-form">
+                  <h3>Add Item</h3>
+                  <form onSubmit={addToCheckedBag}>
+                    <div className="form-row">
+                      <input
+                        type="text"
+                        placeholder="Item name"
+                        value={checkedBagName}
+                        onChange={(e) => setCheckedBagName(e.target.value)}
+                        className="item-name-input"
+                      />
+                      <input
+                        type="number"
+                        placeholder={`Weight (${weightUnit})`}
+                        value={checkedBagWeight}
+                        onChange={(e) => setCheckedBagWeight(e.target.value)}
+                        step="0.1"
+                        min="0"
+                        className="item-weight-input"
+                      />
+                      <button type="submit" className="add-button" disabled={!isCheckedBagFormValid()}>
+                        Add Item
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                
+                <div className="items-list">
+                  <h3>Items ({checkedBagItems.length})</h3>
+                  {checkedBagItems.length === 0 ? (
+                    <p className="empty-message">No items added yet</p>
+                  ) : (
+                    <ul className="item-list">
+                      {checkedBagItems.map((item) => (
+                        <li key={item.id} className="item">
+                          <span className="item-name">{item.name}</span>
+                          <span className="item-weight">{item.weight} {item.unit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+              {getCheckedBagLimit() === 2 ? (
+                /* Second Checked Bag for Business/First Class */
+                <div className="bag-section">
+                  <h2>🧳 Checked Bag 2</h2>
+                  <p className="weight-limit">Max: {checkedBagData.weightLimits[cabinClass]} {weightUnit === 'lbs' ? 'lbs' : `kg (${Math.round(checkedBagData.weightLimits[cabinClass] * 0.453592 * 2) / 2} kg)`}</p>
+                  <div className="add-item-form">
+                    <h3>Add Item</h3>
+                    <form onSubmit={addToCheckedBag2}>
+                      <div className="form-row">
+                        <input
+                          type="text"
+                          placeholder="Item name"
+                          value={checkedBag2Name}
+                          onChange={(e) => setCheckedBag2Name(e.target.value)}
+                          className="item-name-input"
+                        />
+                        <input
+                          type="number"
+                          placeholder={`Weight (${weightUnit})`}
+                          value={checkedBag2Weight}
+                          onChange={(e) => setCheckedBag2Weight(e.target.value)}
+                          step="0.1"
+                          min="0"
+                          className="item-weight-input"
+                        />
+                        <button type="submit" className="add-button" disabled={!isCheckedBag2FormValid()}>
+                          Add Item
+                        </button>
+                      </div>
+                    </form>
                   </div>
-                </form>
-              </div>
-              
-              <div className="items-list">
-                <h3>Items ({checkedBagItems.length})</h3>
-                {checkedBagItems.length === 0 ? (
-                  <p className="empty-message">No items added yet</p>
-                ) : (
-                  <ul className="item-list">
-                    {checkedBagItems.map((item) => (
-                      <li key={item.id} className="item">
-                        <span className="item-name">{item.name}</span>
-                        <span className="item-weight">{item.weight} {item.unit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                  
+                  <div className="items-list">
+                    <h3>Items ({checkedBag2Items.length})</h3>
+                    {checkedBag2Items.length === 0 ? (
+                      <p className="empty-message">No items added yet</p>
+                    ) : (
+                      <ul className="item-list">
+                        {checkedBag2Items.map((item) => (
+                          <li key={item.id} className="item">
+                            <span className="item-name">{item.name}</span>
+                            <span className="item-weight">{item.weight} {item.unit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                /* Invisible spacer for Premium Economy (1 bag) */
+                <div className="bag-section invisible-spacer"></div>
+              )}
             </div>
-            {/* Invisible spacer to match the layout structure */}
-            <div className="bag-section invisible-spacer"></div>
-          </div>
+          </>
         )}
       </div>
     </div>
