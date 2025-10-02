@@ -30,12 +30,16 @@ export default function Planner({ luggageData, luggageActions }) {
     weightUnit,
     personalItemName,
     personalItemWeight,
+    personalItemQuantity,
     carryOnName,
     carryOnWeight,
+    carryOnQuantity,
     checkedBagName,
     checkedBagWeight,
+    checkedBagQuantity,
     checkedBag2Name,
-    checkedBag2Weight
+    checkedBag2Weight,
+    checkedBag2Quantity
   } = luggageData;
 
   // Destructure luggage actions from props
@@ -48,12 +52,16 @@ export default function Planner({ luggageData, luggageActions }) {
     setWeightUnit,
     setPersonalItemName,
     setPersonalItemWeight,
+    setPersonalItemQuantity,
     setCarryOnName,
     setCarryOnWeight,
+    setCarryOnQuantity,
     setCheckedBagName,
     setCheckedBagWeight,
+    setCheckedBagQuantity,
     setCheckedBag2Name,
-    setCheckedBag2Weight
+    setCheckedBag2Weight,
+    setCheckedBag2Quantity
   } = luggageActions;
 
   // Get luggage type data
@@ -117,44 +125,54 @@ export default function Planner({ luggageData, luggageActions }) {
   const isPersonalItemFormValid = () => {
     const name = personalItemName.trim();
     const weight = parseFloat(personalItemWeight);
-    return name.length > 0 && !isNaN(weight) && weight >= 0;
+    const quantity = parseInt(personalItemQuantity);
+    return name.length > 0 && !isNaN(weight) && weight >= 0 && !isNaN(quantity) && quantity >= 1;
   };
 
   // Validation function to check if carry-on form is valid
   const isCarryOnFormValid = () => {
     const name = carryOnName.trim();
     const weight = parseFloat(carryOnWeight);
-    return name.length > 0 && !isNaN(weight) && weight >= 0;
+    const quantity = parseInt(carryOnQuantity);
+    return name.length > 0 && !isNaN(weight) && weight >= 0 && !isNaN(quantity) && quantity >= 1;
   };
 
   // Validation function to check if checked bag form is valid
   const isCheckedBagFormValid = () => {
     const name = checkedBagName.trim();
     const weight = parseFloat(checkedBagWeight);
-    return name.length > 0 && !isNaN(weight) && weight >= 0;
+    const quantity = parseInt(checkedBagQuantity);
+    return name.length > 0 && !isNaN(weight) && weight >= 0 && !isNaN(quantity) && quantity >= 1;
   };
 
   // Validation function to check if checked bag 2 form is valid
   const isCheckedBag2FormValid = () => {
     const name = checkedBag2Name.trim();
     const weight = parseFloat(checkedBag2Weight);
-    return name.length > 0 && !isNaN(weight) && weight >= 0;
+    const quantity = parseInt(checkedBag2Quantity);
+    return name.length > 0 && !isNaN(weight) && weight >= 0 && !isNaN(quantity) && quantity >= 1;
   };
 
   // Function to add item to personal item bag
   const addToPersonalItem = (e) => {
     e.preventDefault();
-    if (personalItemName.trim() && personalItemWeight.trim()) {
+    if (personalItemName.trim() && personalItemWeight.trim() && personalItemQuantity.trim()) {
       const weight = parseFloat(personalItemWeight);
-      if (weight > 0) {
-        setPersonalItemItems([...personalItemItems, {
-          id: Date.now(), // Simple ID generation
-          name: personalItemName.trim(),
-          weight: weight,
-          unit: weightUnit
-        }]);
+      const quantity = parseInt(personalItemQuantity);
+      if (weight > 0 && quantity > 0) {
+        const newItems = [];
+        for (let i = 0; i < quantity; i++) {
+          newItems.push({
+            id: Date.now() + i, // Ensure unique IDs
+            name: personalItemName.trim(),
+            weight: weight,
+            unit: weightUnit
+          });
+        }
+        setPersonalItemItems([...personalItemItems, ...newItems]);
         setPersonalItemName("");
         setPersonalItemWeight("");
+        setPersonalItemQuantity("1");
       }
     }
   };
@@ -162,17 +180,23 @@ export default function Planner({ luggageData, luggageActions }) {
   // Function to add item to carry-on bag
   const addToCarryOn = (e) => {
     e.preventDefault();
-    if (carryOnName.trim() && carryOnWeight.trim()) {
+    if (carryOnName.trim() && carryOnWeight.trim() && carryOnQuantity.trim()) {
       const weight = parseFloat(carryOnWeight);
-      if (weight > 0) {
-        setCarryOnItems([...carryOnItems, {
-          id: Date.now(), // Simple ID generation
-          name: carryOnName.trim(),
-          weight: weight,
-          unit: weightUnit
-        }]);
+      const quantity = parseInt(carryOnQuantity);
+      if (weight > 0 && quantity > 0) {
+        const newItems = [];
+        for (let i = 0; i < quantity; i++) {
+          newItems.push({
+            id: Date.now() + i, // Ensure unique IDs
+            name: carryOnName.trim(),
+            weight: weight,
+            unit: weightUnit
+          });
+        }
+        setCarryOnItems([...carryOnItems, ...newItems]);
         setCarryOnName("");
         setCarryOnWeight("");
+        setCarryOnQuantity("1");
       }
     }
   };
@@ -180,17 +204,23 @@ export default function Planner({ luggageData, luggageActions }) {
   // Function to add item to checked bag
   const addToCheckedBag = (e) => {
     e.preventDefault();
-    if (checkedBagName.trim() && checkedBagWeight.trim()) {
+    if (checkedBagName.trim() && checkedBagWeight.trim() && checkedBagQuantity.trim()) {
       const weight = parseFloat(checkedBagWeight);
-      if (weight > 0) {
-        setCheckedBagItems([...checkedBagItems, {
-          id: Date.now(), // Simple ID generation
-          name: checkedBagName.trim(),
-          weight: weight,
-          unit: weightUnit
-        }]);
+      const quantity = parseInt(checkedBagQuantity);
+      if (weight > 0 && quantity > 0) {
+        const newItems = [];
+        for (let i = 0; i < quantity; i++) {
+          newItems.push({
+            id: Date.now() + i, // Ensure unique IDs
+            name: checkedBagName.trim(),
+            weight: weight,
+            unit: weightUnit
+          });
+        }
+        setCheckedBagItems([...checkedBagItems, ...newItems]);
         setCheckedBagName("");
         setCheckedBagWeight("");
+        setCheckedBagQuantity("1");
       }
     }
   };
@@ -198,17 +228,23 @@ export default function Planner({ luggageData, luggageActions }) {
   // Function to add item to checked bag 2
   const addToCheckedBag2 = (e) => {
     e.preventDefault();
-    if (checkedBag2Name.trim() && checkedBag2Weight.trim()) {
+    if (checkedBag2Name.trim() && checkedBag2Weight.trim() && checkedBag2Quantity.trim()) {
       const weight = parseFloat(checkedBag2Weight);
-      if (weight > 0) {
-        setCheckedBag2Items([...checkedBag2Items, {
-          id: Date.now() + 1, // Simple ID generation with offset
-          name: checkedBag2Name.trim(),
-          weight: weight,
-          unit: weightUnit
-        }]);
+      const quantity = parseInt(checkedBag2Quantity);
+      if (weight > 0 && quantity > 0) {
+        const newItems = [];
+        for (let i = 0; i < quantity; i++) {
+          newItems.push({
+            id: Date.now() + i + 1000, // Ensure unique IDs with larger offset
+            name: checkedBag2Name.trim(),
+            weight: weight,
+            unit: weightUnit
+          });
+        }
+        setCheckedBag2Items([...checkedBag2Items, ...newItems]);
         setCheckedBag2Name("");
         setCheckedBag2Weight("");
+        setCheckedBag2Quantity("1");
       }
     }
   };
@@ -277,6 +313,14 @@ export default function Planner({ luggageData, luggageActions }) {
                   step="0.1"
                   min="0"
                   className="item-weight-input"
+                />
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  value={personalItemQuantity}
+                  onChange={(e) => setPersonalItemQuantity(e.target.value)}
+                  min="1"
+                  className="item-quantity-input"
                 />
                 <button type="submit" className="add-button" disabled={!isPersonalItemFormValid()}>
                   Add Item
@@ -347,6 +391,14 @@ export default function Planner({ luggageData, luggageActions }) {
                   step="0.1"
                   min="0"
                   className="item-weight-input"
+                />
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  value={carryOnQuantity}
+                  onChange={(e) => setCarryOnQuantity(e.target.value)}
+                  min="1"
+                  className="item-quantity-input"
                 />
                 <button type="submit" className="add-button" disabled={!isCarryOnFormValid()}>
                   Add Item
@@ -423,6 +475,14 @@ export default function Planner({ luggageData, luggageActions }) {
                         min="0"
                         className="item-weight-input"
                       />
+                      <input
+                        type="number"
+                        placeholder="Qty"
+                        value={checkedBagQuantity}
+                        onChange={(e) => setCheckedBagQuantity(e.target.value)}
+                        min="1"
+                        className="item-quantity-input"
+                      />
                       <button type="submit" className="add-button" disabled={!isCheckedBagFormValid()}>
                         Add Item
                       </button>
@@ -492,6 +552,14 @@ export default function Planner({ luggageData, luggageActions }) {
                           step="0.1"
                           min="0"
                           className="item-weight-input"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Qty"
+                          value={checkedBag2Quantity}
+                          onChange={(e) => setCheckedBag2Quantity(e.target.value)}
+                          min="1"
+                          className="item-quantity-input"
                         />
                         <button type="submit" className="add-button" disabled={!isCheckedBag2FormValid()}>
                           Add Item

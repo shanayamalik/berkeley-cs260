@@ -328,29 +328,38 @@ body {
 
 .item-name-input {
   flex: 2;
-  padding: 0.375rem 0.5rem;
+  padding: 0.25rem 0.25rem;
   border: 1px solid #d1d5db;
   border-radius: 4px;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .item-weight-input {
-  flex: 1;
-  padding: 0.375rem 0.5rem;
+  flex: 0 0 50px;
+  padding: 0.25rem 0.25rem;
   border: 1px solid #d1d5db;
   border-radius: 4px;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+}
+
+.item-quantity-input {
+  flex: 0 0 30px;
+  padding: 0.25rem 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.8rem;
 }
 
 .add-button {
-  padding: 0.375rem 0.75rem;
+  padding: 0.375rem 0.5rem;
   background: #3b82f6;
   color: white;
   border: none;
   border-radius: 4px;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .add-button:hover {

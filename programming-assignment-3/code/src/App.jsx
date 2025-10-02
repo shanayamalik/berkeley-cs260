@@ -22,18 +22,22 @@ function App() {
   // Form state for adding new items to personal item bag
   const [personalItemName, setPersonalItemName] = useState("");
   const [personalItemWeight, setPersonalItemWeight] = useState("");
+  const [personalItemQuantity, setPersonalItemQuantity] = useState("1");
   
   // Form state for adding new items to carry-on bag
   const [carryOnName, setCarryOnName] = useState("");
   const [carryOnWeight, setCarryOnWeight] = useState("");
+  const [carryOnQuantity, setCarryOnQuantity] = useState("1");
   
   // Form state for adding new items to checked bag
   const [checkedBagName, setCheckedBagName] = useState("");
   const [checkedBagWeight, setCheckedBagWeight] = useState("");
+  const [checkedBagQuantity, setCheckedBagQuantity] = useState("1");
   
   // Form state for adding new items to checked bag 2
   const [checkedBag2Name, setCheckedBag2Name] = useState("");
   const [checkedBag2Weight, setCheckedBag2Weight] = useState("");
+  const [checkedBag2Quantity, setCheckedBag2Quantity] = useState("1");
 
   // Create luggage data object to pass to child components
   const luggageData = {
@@ -45,12 +49,16 @@ function App() {
     weightUnit,
     personalItemName,
     personalItemWeight,
+    personalItemQuantity,
     carryOnName,
     carryOnWeight,
+    carryOnQuantity,
     checkedBagName,
     checkedBagWeight,
+    checkedBagQuantity,
     checkedBag2Name,
-    checkedBag2Weight
+    checkedBag2Weight,
+    checkedBag2Quantity
   };
 
   // Create luggage actions object to pass to Planner
@@ -63,12 +71,16 @@ function App() {
     setWeightUnit,
     setPersonalItemName,
     setPersonalItemWeight,
+    setPersonalItemQuantity,
     setCarryOnName,
     setCarryOnWeight,
+    setCarryOnQuantity,
     setCheckedBagName,
     setCheckedBagWeight,
+    setCheckedBagQuantity,
     setCheckedBag2Name,
-    setCheckedBag2Weight
+    setCheckedBag2Weight,
+    setCheckedBag2Quantity
   };
 
   return (
