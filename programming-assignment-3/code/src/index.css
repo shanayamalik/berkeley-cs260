@@ -14,10 +14,11 @@ body {
 }
 
 .sidebar {
-  flex: 1;
+  width: 180px;
+  flex-shrink: 0;
   background: linear-gradient(135deg, #e0f7f9 0%, #dde6ff 60%, #d8dbff 100%);
   border-right: 4px double #ccc;
-  padding: 2rem;
+  padding: 1rem;
   box-sizing: border-box;
 
   ul {
@@ -51,7 +52,7 @@ body {
 }
 
 .main {
-  flex: 5;
+  flex: 1;
   padding: 3rem;
   box-sizing: border-box;
 }
