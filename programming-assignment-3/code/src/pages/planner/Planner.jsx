@@ -180,13 +180,14 @@ export default function Planner({ luggageData, luggageActions }) {
     setCheckedBagQuantity,
     setCheckedBag2Name,
     setCheckedBag2Weight,
-    setCheckedBag2Quantity
+    setCheckedBag2Quantity,
+    setAcceptedSuggestions,
+    setSuggestionsEnabled,
+    resetAllData
   } = luggageActions;
 
-  // State for tracking accepted/declined suggestions
-  const [acceptedSuggestions, setAcceptedSuggestions] = useState([]);
-  // State for enabling/disabling suggestions
-  const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
+  // Get suggestions state from props (now managed in App.jsx)
+  const { acceptedSuggestions, suggestionsEnabled } = luggageData;
 
   // Get luggage type data
   const personalItemData = LUGGAGE_TYPES.find(type => type.name === "Personal Item");
@@ -541,6 +542,20 @@ export default function Planner({ luggageData, luggageActions }) {
             title={suggestionsEnabled ? 'Disable suggestions' : 'Enable suggestions'}
           >
             {suggestionsEnabled ? 'ON' : 'OFF'}
+          </button>
+        </div>
+        
+        <div className="reset-control">
+          <button
+            className="reset-button"
+            onClick={() => {
+              if (window.confirm('Are you sure you want to clear all your packing data? This cannot be undone.')) {
+                resetAllData();
+              }
+            }}
+            title="Clear all packing data"
+          >
+            🗑️ Reset All
           </button>
         </div>
       </div>
