@@ -1,10 +1,31 @@
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
 
 // Reusable component for individual items
-function Item({ id, name, weight, unit, onDelete }) {
+function Item({ id, name, weight, unit, onDelete, bagType }) {
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData("text/plain", JSON.stringify({
+      id,
+      name,
+      weight,
+      unit,
+      sourceBag: bagType
+    }));
+    e.target.classList.add("dragging");
+  };
+
+  const handleDragEnd = (e) => {
+    e.target.classList.remove("dragging");
+  };
+
   return (
-    <li className="item">
+    <li 
+      className="item"
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="item-info">
+        <span className="drag-handle">⋮⋮</span>
         <span className="item-name">{name}</span>
         <span className="item-weight">{weight} {unit}</span>
       </div>
@@ -266,6 +287,68 @@ export default function Planner({ luggageData, luggageActions }) {
     setCheckedBag2Items(checkedBag2Items.filter(item => item.id !== itemId));
   };
 
+  // Drag and Drop functionality
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add("drag-over");
+  };
+
+  const handleDragLeave = (e) => {
+    // Only remove drag-over if we're actually leaving the drop zone
+    // Check if the relatedTarget (where we're going) is outside this element
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      e.currentTarget.classList.remove("drag-over");
+    }
+  };
+
+  const handleDrop = (e, targetBag) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove("drag-over");
+    
+    try {
+      const dragData = JSON.parse(e.dataTransfer.getData("text/plain"));
+      const { id, name, weight, unit, sourceBag } = dragData;
+      
+      // Don't do anything if dropping in the same bag
+      if (sourceBag === targetBag) return;
+      
+      // Remove item from source bag
+      switch (sourceBag) {
+        case "personal-item":
+          setPersonalItemItems(personalItemItems.filter(item => item.id !== id));
+          break;
+        case "carry-on":
+          setCarryOnItems(carryOnItems.filter(item => item.id !== id));
+          break;
+        case "checked-bag":
+          setCheckedBagItems(checkedBagItems.filter(item => item.id !== id));
+          break;
+        case "checked-bag-2":
+          setCheckedBag2Items(checkedBag2Items.filter(item => item.id !== id));
+          break;
+      }
+      
+      // Add item to target bag
+      const newItem = { id: Date.now(), name, weight, unit }; // New ID to avoid conflicts
+      switch (targetBag) {
+        case "personal-item":
+          setPersonalItemItems([...personalItemItems, newItem]);
+          break;
+        case "carry-on":
+          setCarryOnItems([...carryOnItems, newItem]);
+          break;
+        case "checked-bag":
+          setCheckedBagItems([...checkedBagItems, newItem]);
+          break;
+        case "checked-bag-2":
+          setCheckedBag2Items([...checkedBag2Items, newItem]);
+          break;
+      }
+    } catch (error) {
+      console.error("Error handling drop:", error);
+    }
+  };
+
   return (
     <div className="planner">
       <h1>Planner</h1>
@@ -329,7 +412,13 @@ export default function Planner({ luggageData, luggageActions }) {
             </form>
           </div>
           
-          <div className="items-list">
+          <div 
+            className="items-list"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, "personal-item")}
+          >
+            <div className="drop-zone-message">Drop item here</div>
             <h3>Items ({personalItemItems.length})</h3>
             <div className={`weight-summary ${isWeightExceeded(personalItemTotalWeight, personalItemData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
               <span className="total-weight">
@@ -361,6 +450,7 @@ export default function Planner({ luggageData, luggageActions }) {
                     weight={item.weight}
                     unit={item.unit}
                     onDelete={deleteFromPersonalItem}
+                    bagType="personal-item"
                   />
                 ))}
               </ul>
@@ -407,7 +497,13 @@ export default function Planner({ luggageData, luggageActions }) {
             </form>
           </div>
           
-          <div className="items-list">
+          <div 
+            className="items-list"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, "carry-on")}
+          >
+            <div className="drop-zone-message">Drop item here</div>
             <h3>Items ({carryOnItems.length})</h3>
             <div className={`weight-summary ${isWeightExceeded(carryOnTotalWeight, carryOnData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
               <span className="total-weight">
@@ -439,6 +535,7 @@ export default function Planner({ luggageData, luggageActions }) {
                     weight={item.weight}
                     unit={item.unit}
                     onDelete={deleteFromCarryOn}
+                    bagType="carry-on"
                   />
                 ))}
               </ul>
@@ -490,7 +587,13 @@ export default function Planner({ luggageData, luggageActions }) {
                   </form>
                 </div>
                 
-                <div className="items-list">
+                <div 
+                  className="items-list"
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, "checked-bag")}
+                >
+                  <div className="drop-zone-message">Drop item here</div>
                   <h3>Items ({checkedBagItems.length})</h3>
                   <div className={`weight-summary ${isWeightExceeded(checkedBagTotalWeight, checkedBagData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
                     <span className="total-weight">
@@ -522,6 +625,7 @@ export default function Planner({ luggageData, luggageActions }) {
                           weight={item.weight}
                           unit={item.unit}
                           onDelete={deleteFromCheckedBag}
+                          bagType="checked-bag"
                         />
                       ))}
                     </ul>
@@ -568,7 +672,13 @@ export default function Planner({ luggageData, luggageActions }) {
                     </form>
                   </div>
                   
-                  <div className="items-list">
+                  <div 
+                    className="items-list"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, "checked-bag-2")}
+                  >
+                    <div className="drop-zone-message">Drop item here</div>
                     <h3>Items ({checkedBag2Items.length})</h3>
                     <div className={`weight-summary ${isWeightExceeded(checkedBag2TotalWeight, checkedBagData.weightLimits[cabinClass]) ? 'weight-exceeded' : ''}`}>
                       <span className="total-weight">
@@ -600,6 +710,7 @@ export default function Planner({ luggageData, luggageActions }) {
                             weight={item.weight}
                             unit={item.unit}
                             onDelete={deleteFromCheckedBag2}
+                            bagType="checked-bag-2"
                           />
                         ))}
                       </ul>
