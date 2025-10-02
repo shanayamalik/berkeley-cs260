@@ -75,7 +75,7 @@ function App() {
     <div className="app">
       <Sidebar setPage={setPage} />
       <div className="main">
-        {page === "luggage-overview" ? <LuggageOverview /> : null}
+        {page === "luggage-overview" ? <LuggageOverview cabinClass={cabinClass} setCabinClass={setCabinClass} /> : null}
         {page === "planner" ? <Planner luggageData={luggageData} luggageActions={luggageActions} /> : null}
         {page === "summary" ? <Summary luggageData={luggageData} /> : null}
       </div>

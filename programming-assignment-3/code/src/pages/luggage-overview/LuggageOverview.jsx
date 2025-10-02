@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { LUGGAGE_TYPES } from '../../data/luggageTypes';
 
 // Reusable component for individual luggage types
@@ -33,13 +32,10 @@ function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
   );
 }
 
-export default function LuggageOverview() {
-  // State variable to track the selected cabin class
-  const [fareClass, setFareClass] = useState('basic-economy');
-
+export default function LuggageOverview({ cabinClass, setCabinClass }) {
   // Helper function to determine if a luggage type is allowed for the current cabin class
   const isLuggageAllowed = (luggageType) => {
-    switch (fareClass) {
+    switch (cabinClass) {
       case 'basic-economy':
         return luggageType.allowedInBasicEconomy;
       case 'premium-economy':
@@ -57,21 +53,23 @@ export default function LuggageOverview() {
     <div className="luggage-overview">
       <h1>Luggage types</h1>
       
-      <div className="fare-selector">
-        <label htmlFor="fare-class-select" className="fare-label">
-          Select Cabin Class:
-        </label>
-        <select 
-          id="fare-class-select"
-          className="fare-dropdown"
-          value={fareClass} 
-          onChange={(e) => setFareClass(e.target.value)}
-        >
-          <option value="basic-economy">Basic Economy</option>
-          <option value="premium-economy">Premium Economy</option>
-          <option value="business">Business Class</option>
-          <option value="first">First Class</option>
-        </select>
+      <div className="planner-controls">
+        <div className="cabin-class-selector">
+          <label htmlFor="cabin-class-select" className="cabin-label">
+            Cabin Class:
+          </label>
+          <select 
+            id="cabin-class-select"
+            className="cabin-dropdown"
+            value={cabinClass} 
+            onChange={(e) => setCabinClass(e.target.value)}
+          >
+            <option value="basic-economy">Basic Economy</option>
+            <option value="premium-economy">Premium Economy</option>
+            <option value="business">Business Class</option>
+            <option value="first">First Class</option>
+          </select>
+        </div>
       </div>
 
       {/* Dynamic rendering: iterate over LUGGAGE_TYPES array to create components */}
@@ -82,9 +80,9 @@ export default function LuggageOverview() {
             key={index}
             icon={luggageType.icon}
             name={luggageType.name}
-            maxWeightLbs={luggageType.weightLimits[fareClass]}
+            maxWeightLbs={luggageType.weightLimits[cabinClass]}
             description={luggageType.description}
-            bagLimit={luggageType.bagLimits[fareClass]}
+            bagLimit={luggageType.bagLimits[cabinClass]}
           />
         ))}
     </div>

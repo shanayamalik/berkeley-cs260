@@ -235,23 +235,6 @@ export default function Planner({ luggageData, luggageActions }) {
       <h1>Planner</h1>
       
       <div className="planner-controls">
-        <div className="cabin-class-selector">
-          <label htmlFor="cabin-class-select" className="cabin-label">
-            Cabin Class:
-          </label>
-          <select 
-            id="cabin-class-select"
-            className="cabin-dropdown"
-            value={cabinClass} 
-            onChange={(e) => setCabinClass(e.target.value)}
-          >
-            <option value="basic-economy">Basic Economy</option>
-            <option value="premium-economy">Premium Economy</option>
-            <option value="business">Business Class</option>
-            <option value="first">First Class</option>
-          </select>
-        </div>
-        
         <div className="weight-unit-selector">
           <label htmlFor="weight-unit-select" className="unit-label">
             Weight Unit:
