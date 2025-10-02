@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
+import Suggestions from "../../components/Suggestions";
 
 // Reusable component for individual items
 function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
@@ -181,6 +182,11 @@ export default function Planner({ luggageData, luggageActions }) {
     setCheckedBag2Weight,
     setCheckedBag2Quantity
   } = luggageActions;
+
+  // State for tracking accepted/declined suggestions
+  const [acceptedSuggestions, setAcceptedSuggestions] = useState([]);
+  // State for enabling/disabling suggestions
+  const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
 
   // Get luggage type data
   const personalItemData = LUGGAGE_TYPES.find(type => type.name === "Personal Item");
@@ -409,6 +415,39 @@ export default function Planner({ luggageData, luggageActions }) {
     ));
   };
 
+  // Handle suggestion acceptance/decline
+  const handleSuggestion = (bagType, suggestion) => {
+    // Mark suggestion as handled
+    setAcceptedSuggestions(prev => [...prev, suggestion.id]);
+    
+    // If not declined, add to appropriate bag
+    if (!suggestion.decline) {
+      const newItem = {
+        id: Date.now(),
+        name: suggestion.name,
+        weight: suggestion.weight,
+        unit: suggestion.unit
+      };
+
+      switch (bagType) {
+        case "personal-item":
+          setPersonalItemItems(prev => [...prev, newItem]);
+          break;
+        case "carry-on":
+          setCarryOnItems(prev => [...prev, newItem]);
+          break;
+        case "checked-bag":
+          setCheckedBagItems(prev => [...prev, newItem]);
+          break;
+        case "checked-bag-2":
+          setCheckedBag2Items(prev => [...prev, newItem]);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   // Drag and Drop functionality
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -490,6 +529,20 @@ export default function Planner({ luggageData, luggageActions }) {
             <option value="kg">Kilograms (kg)</option>
           </select>
         </div>
+        
+        <div className="suggestions-toggle">
+          <label htmlFor="suggestions-toggle" className="unit-label">
+            Packing Suggestions:
+          </label>
+          <button
+            id="suggestions-toggle"
+            className={`toggle-button ${suggestionsEnabled ? 'enabled' : 'disabled'}`}
+            onClick={() => setSuggestionsEnabled(!suggestionsEnabled)}
+            title={suggestionsEnabled ? 'Disable suggestions' : 'Enable suggestions'}
+          >
+            {suggestionsEnabled ? 'ON' : 'OFF'}
+          </button>
+        </div>
       </div>
       
       <div className="bag-sections">
@@ -499,6 +552,15 @@ export default function Planner({ luggageData, luggageActions }) {
           <div className="bag-section">
             <h2>🎒 Personal Item</h2>
             <p className="weight-limit">Max: {getWeightLimitInUnit(personalItemData.weightLimits[cabinClass])} {weightUnit}</p>
+            
+            {suggestionsEnabled && (
+              <Suggestions 
+                bagType="personal-item"
+                onAcceptSuggestion={(suggestion) => handleSuggestion("personal-item", suggestion)}
+                acceptedSuggestions={acceptedSuggestions}
+              />
+            )}
+            
             <div className="add-item-form">
             <h3>Add Item</h3>
             <form onSubmit={addToPersonalItem}>
@@ -585,6 +647,15 @@ export default function Planner({ luggageData, luggageActions }) {
         <div className="bag-section">
           <h2>💼 Carry-On</h2>
           <p className="weight-limit">Max: {getWeightLimitInUnit(carryOnData.weightLimits[cabinClass])} {weightUnit}</p>
+          
+          {suggestionsEnabled && (
+            <Suggestions 
+              bagType="carry-on"
+              onAcceptSuggestion={(suggestion) => handleSuggestion("carry-on", suggestion)}
+              acceptedSuggestions={acceptedSuggestions}
+            />
+          )}
+          
           <div className="add-item-form">
             <h3>Add Item</h3>
             <form onSubmit={addToCarryOn}>
@@ -676,6 +747,15 @@ export default function Planner({ luggageData, luggageActions }) {
               <div className="bag-section">
                 <h2>🧳 Checked Bag {getCheckedBagLimit() > 1 ? '1' : ''}</h2>
                 <p className="weight-limit">Max: {getWeightLimitInUnit(checkedBagData.weightLimits[cabinClass])} {weightUnit}</p>
+                
+                {suggestionsEnabled && (
+                  <Suggestions 
+                    bagType="checked-bag"
+                    onAcceptSuggestion={(suggestion) => handleSuggestion("checked-bag", suggestion)}
+                    acceptedSuggestions={acceptedSuggestions}
+                  />
+                )}
+                
                 <div className="add-item-form">
                   <h3>Add Item</h3>
                   <form onSubmit={addToCheckedBag}>
@@ -762,6 +842,15 @@ export default function Planner({ luggageData, luggageActions }) {
                 <div className="bag-section">
                   <h2>🧳 Checked Bag 2</h2>
                   <p className="weight-limit">Max: {getWeightLimitInUnit(checkedBagData.weightLimits[cabinClass])} {weightUnit}</p>
+                  
+                  {suggestionsEnabled && (
+                    <Suggestions 
+                      bagType="checked-bag-2"
+                      onAcceptSuggestion={(suggestion) => handleSuggestion("checked-bag-2", suggestion)}
+                      acceptedSuggestions={acceptedSuggestions}
+                    />
+                  )}
+                  
                   <div className="add-item-form">
                     <h3>Add Item</h3>
                     <form onSubmit={addToCheckedBag2}>

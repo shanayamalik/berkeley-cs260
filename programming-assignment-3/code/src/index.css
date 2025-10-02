@@ -267,6 +267,55 @@ body {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
+.suggestions-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.toggle-button {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 50px;
+  transition: all 0.15s ease;
+}
+
+.toggle-button.enabled {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.toggle-button.enabled:hover {
+  background: #059669;
+  border-color: #059669;
+}
+
+.toggle-button.disabled {
+  background: #6b7280;
+  color: white;
+  border-color: #6b7280;
+}
+
+.toggle-button.disabled:hover {
+  background: #4b5563;
+  border-color: #4b5563;
+}
+
+.toggle-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
 .bag-sections {
   display: flex;
   flex-direction: column;
@@ -685,4 +734,99 @@ body {
 .edit-icon:hover {
   opacity: 1;
   background-color: #f3f4f6;
+}
+
+/* Suggestions styling */
+.suggestions-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.suggestions-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.suggestion-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.suggestion-name {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.suggestion-weight {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.suggestion-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.accept-button {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  transition: background-color 0.15s ease;
+}
+
+.accept-button:hover {
+  background: #059669;
+}
+
+.decline-button {
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.15s ease;
+}
+
+.decline-button:hover {
+  background: #4b5563;
 }
