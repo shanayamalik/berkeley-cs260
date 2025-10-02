@@ -501,20 +501,22 @@ body {
 
 .item-info {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex: 1;
+  gap: 8px;
 }
 
 .item-name {
   font-weight: 500;
   color: #374151;
   font-size: 0.875rem;
+  flex: 1;
 }
 
 .item-weight {
   color: #6b7280;
   font-size: 0.8rem;
+  margin-left: auto;
 }
 
 .delete-button {
@@ -619,4 +621,68 @@ body {
   color: #6b7280;
   font-size: 0.8rem;
   font-weight: 500;
+}
+
+/* Inline edit styles */
+.edit-input {
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+.edit-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.edit-name-input {
+  min-width: 120px;
+  flex: 1;
+}
+
+.edit-weight-input {
+  width: 50px;
+  text-align: right;
+}
+
+.edit-weight-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.weight-unit {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.item-name, .item-weight {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.item-name:hover, .item-weight:hover {
+  background-color: #f3f4f6;
+}
+
+.edit-icon {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  font-size: 0.75rem;
+  filter: grayscale(100%);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 2px;
+  margin-left: 2px;
+}
+
+.edit-icon:hover {
+  opacity: 1;
+  background-color: #f3f4f6;
 }

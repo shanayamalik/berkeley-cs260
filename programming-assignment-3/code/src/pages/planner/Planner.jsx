@@ -1,7 +1,14 @@
+import React, { useState } from 'react';
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
 
 // Reusable component for individual items
-function Item({ id, name, weight, unit, onDelete, bagType }) {
+function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
+  // Edit state
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
+  const [editName, setEditName] = useState(name);
+  const [editWeight, setEditWeight] = useState(weight);
+
   const handleDragStart = (e) => {
     e.dataTransfer.setData("text/plain", JSON.stringify({
       id,
@@ -17,6 +24,49 @@ function Item({ id, name, weight, unit, onDelete, bagType }) {
     e.target.classList.remove("dragging");
   };
 
+  // Edit handlers
+  const handleSaveItem = () => {
+    let updates = {};
+    let hasChanges = false;
+
+    if (editName.trim() && editName !== name) {
+      updates.name = editName.trim();
+      hasChanges = true;
+    }
+
+    const weightNum = parseFloat(editWeight);
+    if (!isNaN(weightNum) && weightNum > 0 && weightNum !== weight) {
+      updates.weight = weightNum;
+      hasChanges = true;
+    }
+
+    if (hasChanges) {
+      onUpdate(id, updates);
+    }
+    setIsEditingName(false);
+    setIsEditingWeight(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditName(name);
+    setEditWeight(weight);
+    setIsEditingName(false);
+    setIsEditingWeight(false);
+  };
+
+  const handleEditKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSaveItem();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
+
+  const startEditing = () => {
+    setIsEditingName(true);
+    setIsEditingWeight(true);
+  };
+
   return (
     <li 
       className="item"
@@ -26,8 +76,55 @@ function Item({ id, name, weight, unit, onDelete, bagType }) {
     >
       <div className="item-info">
         <span className="drag-handle">⋮⋮</span>
-        <span className="item-name">{name}</span>
-        <span className="item-weight">{weight} {unit}</span>
+        <span 
+          className="edit-icon"
+          onClick={startEditing}
+          title="Click to edit item"
+        >
+          ✏️
+        </span>
+        {isEditingName ? (
+          <input
+            type="text"
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+            onBlur={handleSaveItem}
+            onKeyDown={handleEditKeyDown}
+            className="edit-input edit-name-input"
+            autoFocus
+          />
+        ) : (
+          <span 
+            className="item-name" 
+            onDoubleClick={startEditing}
+            title="Double-click to edit"
+          >
+            {name}
+          </span>
+        )}
+        {isEditingWeight ? (
+          <div className="edit-weight-container">
+            <input
+              type="number"
+              value={editWeight}
+              onChange={(e) => setEditWeight(e.target.value)}
+              onBlur={handleSaveItem}
+              onKeyDown={handleEditKeyDown}
+              className="edit-input edit-weight-input"
+              min="0"
+              step="0.1"
+            />
+            <span className="weight-unit">{unit}</span>
+          </div>
+        ) : (
+          <span 
+            className="item-weight"
+            onDoubleClick={startEditing}
+            title="Double-click to edit"
+          >
+            {weight} {unit}
+          </span>
+        )}
       </div>
       <button 
         className="delete-button" 
@@ -287,6 +384,31 @@ export default function Planner({ luggageData, luggageActions }) {
     setCheckedBag2Items(checkedBag2Items.filter(item => item.id !== itemId));
   };
 
+  // Update functions for each bag type
+  const updatePersonalItem = (itemId, updates) => {
+    setPersonalItemItems(personalItemItems.map(item => 
+      item.id === itemId ? { ...item, ...updates } : item
+    ));
+  };
+
+  const updateCarryOnItem = (itemId, updates) => {
+    setCarryOnItems(carryOnItems.map(item => 
+      item.id === itemId ? { ...item, ...updates } : item
+    ));
+  };
+
+  const updateCheckedBagItem = (itemId, updates) => {
+    setCheckedBagItems(checkedBagItems.map(item => 
+      item.id === itemId ? { ...item, ...updates } : item
+    ));
+  };
+
+  const updateCheckedBag2Item = (itemId, updates) => {
+    setCheckedBag2Items(checkedBag2Items.map(item => 
+      item.id === itemId ? { ...item, ...updates } : item
+    ));
+  };
+
   // Drag and Drop functionality
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -450,6 +572,7 @@ export default function Planner({ luggageData, luggageActions }) {
                     weight={item.weight}
                     unit={item.unit}
                     onDelete={deleteFromPersonalItem}
+                    onUpdate={updatePersonalItem}
                     bagType="personal-item"
                   />
                 ))}
@@ -535,6 +658,7 @@ export default function Planner({ luggageData, luggageActions }) {
                     weight={item.weight}
                     unit={item.unit}
                     onDelete={deleteFromCarryOn}
+                    onUpdate={updateCarryOnItem}
                     bagType="carry-on"
                   />
                 ))}
@@ -625,6 +749,7 @@ export default function Planner({ luggageData, luggageActions }) {
                           weight={item.weight}
                           unit={item.unit}
                           onDelete={deleteFromCheckedBag}
+                          onUpdate={updateCheckedBagItem}
                           bagType="checked-bag"
                         />
                       ))}
@@ -710,6 +835,7 @@ export default function Planner({ luggageData, luggageActions }) {
                             weight={item.weight}
                             unit={item.unit}
                             onDelete={deleteFromCheckedBag2}
+                            onUpdate={updateCheckedBag2Item}
                             bagType="checked-bag-2"
                           />
                         ))}
