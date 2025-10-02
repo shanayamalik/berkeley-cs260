@@ -193,7 +193,7 @@ export default function Planner({ luggageData, luggageActions }) {
         setPersonalItemItems([...personalItemItems, ...newItems]);
         setPersonalItemName("");
         setPersonalItemWeight("");
-        setPersonalItemQuantity("1");
+        setPersonalItemQuantity("");
       }
     }
   };
@@ -217,7 +217,7 @@ export default function Planner({ luggageData, luggageActions }) {
         setCarryOnItems([...carryOnItems, ...newItems]);
         setCarryOnName("");
         setCarryOnWeight("");
-        setCarryOnQuantity("1");
+        setCarryOnQuantity("");
       }
     }
   };
@@ -241,7 +241,7 @@ export default function Planner({ luggageData, luggageActions }) {
         setCheckedBagItems([...checkedBagItems, ...newItems]);
         setCheckedBagName("");
         setCheckedBagWeight("");
-        setCheckedBagQuantity("1");
+        setCheckedBagQuantity("");
       }
     }
   };
@@ -265,7 +265,7 @@ export default function Planner({ luggageData, luggageActions }) {
         setCheckedBag2Items([...checkedBag2Items, ...newItems]);
         setCheckedBag2Name("");
         setCheckedBag2Weight("");
-        setCheckedBag2Quantity("1");
+        setCheckedBag2Quantity("");
       }
     }
   };

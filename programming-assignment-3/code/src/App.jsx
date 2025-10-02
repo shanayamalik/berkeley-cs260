@@ -22,22 +22,22 @@ function App() {
   // Form state for adding new items to personal item bag
   const [personalItemName, setPersonalItemName] = useState("");
   const [personalItemWeight, setPersonalItemWeight] = useState("");
-  const [personalItemQuantity, setPersonalItemQuantity] = useState("1");
+  const [personalItemQuantity, setPersonalItemQuantity] = useState("");
   
   // Form state for adding new items to carry-on bag
   const [carryOnName, setCarryOnName] = useState("");
   const [carryOnWeight, setCarryOnWeight] = useState("");
-  const [carryOnQuantity, setCarryOnQuantity] = useState("1");
+  const [carryOnQuantity, setCarryOnQuantity] = useState("");
   
   // Form state for adding new items to checked bag
   const [checkedBagName, setCheckedBagName] = useState("");
   const [checkedBagWeight, setCheckedBagWeight] = useState("");
-  const [checkedBagQuantity, setCheckedBagQuantity] = useState("1");
+  const [checkedBagQuantity, setCheckedBagQuantity] = useState("");
   
   // Form state for adding new items to checked bag 2
   const [checkedBag2Name, setCheckedBag2Name] = useState("");
   const [checkedBag2Weight, setCheckedBag2Weight] = useState("");
-  const [checkedBag2Quantity, setCheckedBag2Quantity] = useState("1");
+  const [checkedBag2Quantity, setCheckedBag2Quantity] = useState("");
 
   // Create luggage data object to pass to child components
   const luggageData = {
