@@ -14,8 +14,8 @@ function App() {
   const [checkedBagItems, setCheckedBagItems] = useState([]);
   const [checkedBag2Items, setCheckedBag2Items] = useState([]);
   
-  // Cabin class selection (default to basic-economy)
-  const [cabinClass, setCabinClass] = useState("basic-economy");
+  // Cabin class selection (default to business)
+  const [cabinClass, setCabinClass] = useState("business");
   
   // Weight unit preference (default to lbs)
   const [weightUnit, setWeightUnit] = useState("lbs");
@@ -164,7 +164,7 @@ function App() {
     setCarryOnItems([]);
     setCheckedBagItems([]);
     setCheckedBag2Items([]);
-    setCabinClass("basic-economy");
+    setCabinClass("business");
     setWeightUnit("lbs");
     setPersonalItemName("");
     setPersonalItemWeight("");
