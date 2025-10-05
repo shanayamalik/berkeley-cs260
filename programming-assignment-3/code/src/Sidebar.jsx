@@ -1,6 +1,9 @@
 export function Sidebar({ setPage, currentPage }) {
+  // Dynamic sidebar class based on current page
+  const sidebarClass = currentPage === "planner" ? "sidebar sidebar-compact" : "sidebar sidebar-wide";
+  
   return (
-    <div className="sidebar">
+    <div className={sidebarClass}>
       <h1 className="sidebar-title">Smart Luggage Planner</h1>
       <ul>
         <li>
