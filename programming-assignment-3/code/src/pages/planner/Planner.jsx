@@ -189,6 +189,9 @@ export default function Planner({ luggageData, luggageActions }) {
   // Get suggestions state from props (now managed in App.jsx)
   const { acceptedSuggestions, suggestionsEnabled } = luggageData;
 
+  // Features panel state
+  const [showFeatures, setShowFeatures] = useState(false);
+
   // Get luggage type data
   const personalItemData = LUGGAGE_TYPES.find(type => type.name === "Personal Item");
   const carryOnData = LUGGAGE_TYPES.find(type => type.name === "Carry-On");
@@ -514,6 +517,32 @@ export default function Planner({ luggageData, luggageActions }) {
   return (
     <div className="planner">
       <h1>Planner</h1>
+      
+      {/* Features Panel */}
+      <div className="features-panel">
+        <button 
+          className="features-toggle"
+          onClick={() => setShowFeatures(!showFeatures)}
+          aria-expanded={showFeatures}
+        >
+          ℹ️ New Features Added {showFeatures ? '▼' : '▶'}
+        </button>
+        
+        {showFeatures && (
+          <div className="features-content">
+            <h3>Enhanced Luggage Planner Features:</h3>
+            <ul>
+              <li><strong>Drag & Drop:</strong> Move items between bags by dragging them</li>
+              <li><strong>Inline Editing:</strong> Click the edit icons (✏️) to modify item names and weights directly</li>
+              <li><strong>Smart Packing Suggestions:</strong> Toggle curated packing recommendations with the switch below</li>
+              <li><strong>Persistent Storage:</strong> Your data and preferences are automatically saved</li>
+              <li><strong>Weight Calculations:</strong> Real-time weight tracking with unit conversion (lbs/kg)</li>
+              <li><strong>Cabin Class Integration:</strong> Bag availability changes based on your selected class</li>
+              <li><strong>Visual Feedback:</strong> Clear weight status indicators and interactive elements</li>
+            </ul>
+          </div>
+        )}
+      </div>
       
       <div className="planner-controls">
         <div className="weight-unit-selector">
