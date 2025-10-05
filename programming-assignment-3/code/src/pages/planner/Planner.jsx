@@ -532,17 +532,26 @@ export default function Planner({ luggageData, luggageActions }) {
         </div>
         
         <div className="suggestions-toggle">
-          <label htmlFor="suggestions-toggle" className="unit-label">
+          <label className="unit-label">
             Packing Suggestions:
           </label>
-          <button
-            id="suggestions-toggle"
-            className={`toggle-button ${suggestionsEnabled ? 'enabled' : 'disabled'}`}
+          <div 
+            className={`toggle-switch ${suggestionsEnabled ? 'enabled' : 'disabled'}`}
             onClick={() => setSuggestionsEnabled(!suggestionsEnabled)}
-            title={suggestionsEnabled ? 'Disable suggestions' : 'Enable suggestions'}
+            title={suggestionsEnabled ? 'Toggle suggestions' : 'Toggle suggestions'}
+            role="button"
+            tabIndex="0"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSuggestionsEnabled(!suggestionsEnabled);
+              }
+            }}
           >
-            {suggestionsEnabled ? 'ON' : 'OFF'}
-          </button>
+            <div className="toggle-track">
+              <div className="toggle-handle"></div>
+            </div>
+          </div>
         </div>
         
         <div className="reset-control">
