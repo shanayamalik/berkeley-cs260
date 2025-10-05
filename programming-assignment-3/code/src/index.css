@@ -20,6 +20,7 @@ body {
   border-right: 4px double #ccc;
   padding: 1rem;
   box-sizing: border-box;
+  transition: width 0.3s ease;
 
   ul {
     list-style-type: none;
@@ -49,6 +50,15 @@ body {
       }
     }
   }
+}
+
+/* Dynamic sidebar widths */
+.sidebar-compact {
+  width: 160px;
+}
+
+.sidebar-wide {
+  width: 220px;
 }
 
 .main {
