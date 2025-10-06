@@ -63,8 +63,11 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
     }
   };
 
-  const startEditing = () => {
+  const startEditingName = () => {
     setIsEditingName(true);
+  };
+
+  const startEditingWeight = () => {
     setIsEditingWeight(true);
   };
 
@@ -77,13 +80,6 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
     >
       <div className="item-info">
         <span className="drag-handle">⋮⋮</span>
-        <span 
-          className="edit-icon"
-          onClick={startEditing}
-          title="Click to edit item"
-        >
-          ✏️
-        </span>
         {isEditingName ? (
           <input
             type="text"
@@ -96,11 +92,18 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
           />
         ) : (
           <span 
-            className="item-name" 
-            onDoubleClick={startEditing}
+            className="item-name"
+            onDoubleClick={startEditingName}
             title="Double-click to edit"
           >
             {name}
+            <span 
+              className="edit-icon edit-name-icon"
+              onClick={startEditingName}
+              title="Click to edit name"
+            >
+              ✏️
+            </span>
           </span>
         )}
         {isEditingWeight ? (
@@ -114,16 +117,24 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
               className="edit-input edit-weight-input"
               min="0"
               step="0.1"
+              autoFocus
             />
             <span className="weight-unit">{unit}</span>
           </div>
         ) : (
           <span 
             className="item-weight"
-            onDoubleClick={startEditing}
+            onDoubleClick={startEditingWeight}
             title="Double-click to edit"
           >
             {weight} {unit}
+            <span 
+              className="edit-icon edit-weight-icon"
+              onClick={startEditingWeight}
+              title="Click to edit weight"
+            >
+              ✏️
+            </span>
           </span>
         )}
       </div>
