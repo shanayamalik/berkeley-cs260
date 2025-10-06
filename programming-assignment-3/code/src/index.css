@@ -867,6 +867,16 @@ body {
   background-color: #f3f4f6;
 }
 
+.edit-name-icon, .edit-weight-icon {
+  margin-left: 4px;
+  font-size: 11px;
+}
+
+.item-name, .item-weight {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* Suggestions styling */
 .suggestions-container {
   background: #f8fafc;
