@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { LUGGAGE_TYPES } from '../../data/luggageTypes';
 
 // Reusable component for individual luggage types
@@ -33,6 +34,8 @@ function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
 }
 
 export default function LuggageOverview({ cabinClass, setCabinClass }) {
+  const [showFeatures, setShowFeatures] = useState(false);
+  
   // Helper function to determine if a luggage type is allowed for the current cabin class
   const isLuggageAllowed = (luggageType) => {
     switch (cabinClass) {
@@ -52,6 +55,32 @@ export default function LuggageOverview({ cabinClass, setCabinClass }) {
   return (
     <div className="luggage-overview">
       <h1>Luggage types</h1>
+      
+      {/* Features Panel */}
+      <div className="features-panel">
+        <button 
+          className="features-toggle"
+          onClick={() => setShowFeatures(!showFeatures)}
+          aria-expanded={showFeatures}
+        >
+          ℹ️ New Features Added {showFeatures ? '▼' : '▶'}
+        </button>
+        
+        {showFeatures && (
+          <div className="features-content">
+            <ul>
+              <li><strong>Drag & Drop:</strong> move items between bags by dragging them</li>
+              <li><strong>Inline Editing:</strong> click the edit icon to modify item names and weights directly</li>
+              <li><strong>Smart Packing Suggestions:</strong> toggle on provides packing recommendations</li>
+              <li><strong>Persistent Storage:</strong> your data and preferences are automatically saved</li>
+              <li><strong>Weight Calculations:</strong> real-time weight tracking with unit conversion (lbs/kg)</li>
+              <li><strong>Cabin Class Selection:</strong> bag availability changes based on the selected class</li>
+              <li><strong>Visual Feedback:</strong> clear weight status indicators and interactive elements</li>
+              <li><strong>Visual Summary:</strong> button for chart on Summary page shows weight distribution of items across bags</li>
+            </ul>
+          </div>
+        )}
+      </div>
       
       <div className="planner-controls">
         <div className="cabin-class-selector">
