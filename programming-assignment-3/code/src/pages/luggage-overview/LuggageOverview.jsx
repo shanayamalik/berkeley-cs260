@@ -72,10 +72,10 @@ export default function LuggageOverview({ cabinClass, setCabinClass }) {
               <li><strong>Drag & Drop:</strong> move items between bags by dragging them</li>
               <li><strong>Inline Editing:</strong> click the edit icon to modify item names and weights directly</li>
               <li><strong>Smart Packing Suggestions:</strong> toggle on provides packing recommendations</li>
-              <li><strong>Persistent Storage:</strong> your data and preferences are automatically saved</li>
-              <li><strong>Weight Calculations:</strong> real-time weight tracking with unit conversion (lbs/kg)</li>
-              <li><strong>Cabin Class Selection:</strong> bag availability changes based on the selected class</li>
-              <li><strong>Visual Feedback:</strong> clear weight status indicators and interactive elements</li>
+              <li><strong>Persistent Storage:</strong> bags are saved and loaded from local storage</li>
+              <li><strong>Weight Calculations:</strong> real-time weight tracking with option for unit selection (lbs/kg)</li>
+              <li><strong>Cabin Class Selection:</strong> bag availability and weight limit changes based on the selected class</li>
+              <li><strong>Moving Items Across Bags:</strong> reorder items within a bag, or move items between bags</li>
               <li><strong>Visual Summary:</strong> button for chart on Summary page shows weight distribution of items across bags</li>
             </ul>
           </div>
