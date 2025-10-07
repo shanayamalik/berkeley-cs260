@@ -53,7 +53,7 @@ export default function LuggageOverview({ cabinClass, setCabinClass }) {
 
   return (
     <div className="luggage-overview">
-      <h1>Luggage types</h1>
+      <h1>Luggage Types</h1>
       
       {/* Features Panel */}
       <div className="features-panel">
