@@ -14,7 +14,7 @@ export function Sidebar({ setPage, currentPage }) {
               setPage("luggage-overview");
             }}
           >
-            Luggage types
+            Luggage Types
           </a>
         </li>
         <li>
