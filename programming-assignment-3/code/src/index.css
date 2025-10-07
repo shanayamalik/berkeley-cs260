@@ -52,7 +52,7 @@ body {
   }
 }
 
-/* Dynamic sidebar widths */
+/* sidebar resizes based on current page */
 .sidebar-compact {
   width: 160px;
 }
@@ -290,7 +290,7 @@ body {
 }
 
 /* Sliding Toggle Switch */
-/* Summary Page Visual Insights */
+/* chart toggle button and container */
 .visual-toggle-section {
   margin-top: 2rem;
   text-align: center;
@@ -330,7 +330,29 @@ body {
   height: 200px;
 }
 
-/* Features Panel */
+.empty-chart-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.empty-chart-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-chart-state p {
+  margin: 0;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* collapsible panel showing new features */
 .features-panel {
   margin: 20px 0;
   border: 1px solid #e0e0e0;
@@ -803,7 +825,7 @@ body {
   font-weight: 500;
 }
 
-/* Inline edit styles */
+/* edit icons and input fields for items */
 .edit-input {
   border: 2px solid #3b82f6;
   border-radius: 4px;
@@ -877,7 +899,7 @@ body {
   align-items: center;
 }
 
-/* Suggestions styling */
+/* packing suggestion cards and toggle */
 .suggestions-container {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
