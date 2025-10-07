@@ -8,16 +8,13 @@ import { saveLuggageData, loadLuggageData, clearLuggageData, isLocalStorageAvail
 function App() {
   const [page, setPage] = useState("luggage-overview");
   
-  // Luggage state - lifted up from Planner
+  // all luggage items and form inputs stored here
   const [personalItemItems, setPersonalItemItems] = useState([]);
   const [carryOnItems, setCarryOnItems] = useState([]);
   const [checkedBagItems, setCheckedBagItems] = useState([]);
   const [checkedBag2Items, setCheckedBag2Items] = useState([]);
   
-  // Cabin class selection (default to business)
-  const [cabinClass, setCabinClass] = useState("business");
-  
-  // Weight unit preference (default to lbs)
+  const [cabinClass, setCabinClass] = useState("business"); // starts with business class
   const [weightUnit, setWeightUnit] = useState("lbs");
   
   // Form state for adding new items to personal item bag
@@ -44,7 +41,7 @@ function App() {
   const [acceptedSuggestions, setAcceptedSuggestions] = useState([]);
   const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
 
-  // Load saved data on component mount
+  // loads saved data from browser storage on startup
   useEffect(() => {
     if (isLocalStorageAvailable()) {
       const savedData = loadLuggageData();
@@ -80,7 +77,7 @@ function App() {
     }
   }, []);
 
-  // Auto-save data whenever state changes
+  // saves changes to browser storage automatically
   useEffect(() => {
     if (isLocalStorageAvailable()) {
       const dataToSave = {
