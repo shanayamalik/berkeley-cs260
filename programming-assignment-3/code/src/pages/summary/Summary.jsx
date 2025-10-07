@@ -22,8 +22,8 @@ ChartJS.register(
 );
 
 export default function Summary({ luggageData }) {
-  const [showVisuals, setShowVisuals] = useState(false);
-  // If no luggage data is provided, show loading or empty state
+  const [showVisuals, setShowVisuals] = useState(true);
+  
   if (!luggageData) {
     return (
       <div className="summary">
@@ -42,27 +42,24 @@ export default function Summary({ luggageData }) {
     cabinClass
   } = luggageData;
 
-  // Function to convert weight to consistent unit (lbs) for calculation
+  // convert weights to consistent units for calculations
   const convertToLbs = (weight, unit) => {
     if (unit === "kg") {
-      return weight * 2.20462; // 1 kg = 2.20462 lbs
+      return weight * 2.20462;
     }
-    return weight; // already in lbs
+    return weight;
   };
 
-  // Function to convert weight from lbs to display unit
   const convertFromLbs = (weightInLbs, targetUnit) => {
     if (targetUnit === "kg") {
-      return weightInLbs / 2.20462; // Convert lbs to kg
+      return weightInLbs / 2.20462;
     }
-    return weightInLbs; // keep in lbs
+    return weightInLbs;
   };
 
-  // Calculate total weight across all bags
+  // sum up weight across all luggage types
   const calculateTotalWeight = () => {
     let totalWeightInLbs = 0;
-
-    // Add up all items from all bags
     const allItems = [
       ...personalItemItems,
       ...carryOnItems,
@@ -74,11 +71,9 @@ export default function Summary({ luggageData }) {
       totalWeightInLbs += convertToLbs(parseFloat(item.weight) || 0, item.unit);
     });
 
-    // Convert back to user's preferred unit
     return convertFromLbs(totalWeightInLbs, weightUnit);
   };
 
-  // Calculate weight for a specific bag
   const calculateBagWeight = (items) => {
     let bagWeightInLbs = 0;
     items.forEach(item => {
@@ -87,7 +82,7 @@ export default function Summary({ luggageData }) {
     return convertFromLbs(bagWeightInLbs, weightUnit);
   };
 
-  // Function to get checked bag limit based on cabin class
+  // business/first class gets 2 checked bags
   const getCheckedBagLimit = () => {
     switch (cabinClass) {
       case "business":
@@ -102,7 +97,7 @@ export default function Summary({ luggageData }) {
 
   const totalWeight = calculateTotalWeight();
 
-  // Simple weight distribution data (only for doughnut chart)
+  // creates chart data from luggage items with nice colors
   const getChartData = () => {
     const weights = [
       { label: 'Personal Item', weight: calculateBagWeight(personalItemItems) },
@@ -117,11 +112,11 @@ export default function Summary({ luggageData }) {
         {
           data: weights.map(item => item.weight),
           backgroundColor: [
-            '#FF69B4', // Bright pink
-            '#40E0D0', // Turquoise
-            '#98FB98', // Mint green
-            '#DDA0DD', // Light purple/plum
-            '#87CEEB', // Sky blue
+            '#FF69B4', // bright pink for visual appeal
+            '#40E0D0', // turquoise
+            '#98FB98', // mint green
+            '#DDA0DD', // light purple
+            '#87CEEB', // sky blue
           ],
           borderWidth: 0,
           cutout: '60%',
@@ -209,25 +204,30 @@ export default function Summary({ luggageData }) {
         </div>
       </div>
 
-      {/* Visual Insights Toggle - separate from sections for proper positioning */}
-      {totalWeight > 0 && (
-        <div className="visual-toggle-section">
-          <button 
-            className="visual-toggle-btn"
-            onClick={() => setShowVisuals(!showVisuals)}
-          >
-            {showVisuals ? '✕ Hide Chart' : '📈 View Chart'}
-          </button>
-          
-          {showVisuals && (
-            <div className="simple-chart-container">
-              <div className="chart-wrapper-simple">
+      {/* chart toggle button always visible */}
+      <div className="visual-toggle-section">
+        <button 
+          className="visual-toggle-btn"
+          onClick={() => setShowVisuals(!showVisuals)}
+        >
+          {showVisuals ? '✕ Hide Chart' : '📈 View Chart'}
+        </button>
+        
+        {showVisuals && (
+          <div className="simple-chart-container">
+            <div className="chart-wrapper-simple">
+              {totalWeight > 0 ? (
                 <Doughnut data={getChartData()} options={chartOptions} />
-              </div>
+              ) : (
+                <div className="empty-chart-state">
+                  <div className="empty-chart-icon">📊</div>
+                  <p>Add some items to see the distribution of items across your bags!</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
