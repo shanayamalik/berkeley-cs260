@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { LUGGAGE_TYPES } from "../../data/luggageTypes";
 import Suggestions from "../../components/Suggestions";
 
-// Reusable component for individual items
+// individual luggage item component with drag/drop and inline editing
 function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
-  // Edit state
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingWeight, setIsEditingWeight] = useState(false);
   const [editName, setEditName] = useState(name);
@@ -25,7 +24,7 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
     e.target.classList.remove("dragging");
   };
 
-  // Edit handlers
+  // saves edits if there are actual changes
   const handleSaveItem = () => {
     let updates = {};
     let hasChanges = false;
@@ -150,7 +149,7 @@ function Item({ id, name, weight, unit, onDelete, onUpdate, bagType }) {
 }
 
 export default function Planner({ luggageData, luggageActions }) {
-  // Destructure luggage data from props
+  // get all luggage data and functions from props
   const {
     personalItemItems,
     carryOnItems,
@@ -197,15 +196,15 @@ export default function Planner({ luggageData, luggageActions }) {
     resetAllData
   } = luggageActions;
 
-  // Get suggestions state from props (now managed in App.jsx)
+  // get suggestions toggle state 
   const { acceptedSuggestions, suggestionsEnabled } = luggageData;
 
-  // Get luggage type data
+  // lookup luggage type configs
   const personalItemData = LUGGAGE_TYPES.find(type => type.name === "Personal Item");
   const carryOnData = LUGGAGE_TYPES.find(type => type.name === "Carry-On");
   const checkedBagData = LUGGAGE_TYPES.find(type => type.name === "Checked Bag");
 
-  // Check if checked bag is allowed for current cabin class
+  // business/first class allows checked bags
   const isCheckedBagAllowed = () => {
     switch (cabinClass) {
       case 'basic-economy':

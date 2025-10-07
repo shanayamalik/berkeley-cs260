@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { LUGGAGE_TYPES } from '../../data/luggageTypes';
 
-// Reusable component for individual luggage types
+// shows luggage type cards with weight limits and descriptions
 function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
-  // Convert lbs to kg (1 lb = 0.453592 kg, rounded to nearest 0.5 kg)
-  const maxWeightKg = Math.round(maxWeightLbs * 0.453592 * 2) / 2;
+  const maxWeightKg = Math.round(maxWeightLbs * 0.453592 * 2) / 2; // convert to kg
   
   return (
     <div className="luggage-card">
@@ -36,7 +35,7 @@ function LuggageType({ icon, name, maxWeightLbs, description, bagLimit }) {
 export default function LuggageOverview({ cabinClass, setCabinClass }) {
   const [showFeatures, setShowFeatures] = useState(false);
   
-  // Helper function to determine if a luggage type is allowed for the current cabin class
+  // filters luggage types based on selected cabin class
   const isLuggageAllowed = (luggageType) => {
     switch (cabinClass) {
       case 'basic-economy':
