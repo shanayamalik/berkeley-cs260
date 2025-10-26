@@ -1,183 +1,242 @@
-/* SilverLink Main Styles *//* SilverLink - Main Styles for Senior-Friendly Interface */
+/* SilverLink - Minimalistic Pastel Design inspired by your reference */
 
-
-
-/* TODO: Add senior-friendly styling here *//* Reset and base styles */
-* {
+html,
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
 }
 
-body {
-    font-family: 'Arial', sans-serif;
-    font-size: 18px; /* Larger base font size for seniors */
-    line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
-}
-
-/* Main container */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Large, accessible buttons */
-.btn {
-    font-size: 20px;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 10px;
-    min-width: 200px;
-}
-
-.btn-primary {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-/* High contrast, readable text */
-h1, h2, h3 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
+/* Page headers with gradient text */
 h1 {
-    font-size: 32px;
-    text-align: center;
+    color: #1e293b;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.75rem;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-h2 {
-    font-size: 26px;
+/* Main app layout */
+.app-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
 }
 
-/* Card-based layout for features */
-.feature-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border: 2px solid #e9ecef;
+/* Sidebar styling */
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%);
+    border-right: 1px solid rgba(147, 197, 253, 0.3);
+    box-shadow: 2px 0 12px rgba(59, 130, 246, 0.08);
+    padding: 2.5rem 1rem 1rem 1rem;
+    box-sizing: border-box;
+    transition: width 0.3s ease;
 }
 
-.feature-card:hover {
-    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+.sidebar-header {
+    padding: 0.5rem 0;
+    margin-bottom: 1.25rem;
 }
 
-/* Loading spinner */
-.loading-spinner {
-    text-align: center;
-    padding: 40px;
+.sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1e293b;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
 }
 
-.spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #4CAF50;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
+.sidebar-subtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0.25rem 0 0 0;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Navigation menu */
+.nav-menu {
+    padding: 0;
 }
 
-/* Messages */
-.message {
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-    border-left: 4px solid;
+.nav-menu ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.message-info {
-    background-color: #e7f3ff;
-    border-left-color: #2196F3;
+.nav-item {
+    margin-bottom: 0.125rem;
 }
 
-.message-error {
-    background-color: #ffe7e7;
-    border-left-color: #f44336;
-}
-
-.message-success {
-    background-color: #e7ffe7;
-    border-left-color: #4CAF50;
-}
-
-/* Forms */
-.simple-form {
-    margin: 20px 0;
-}
-
-.form-field {
-    margin-bottom: 20px;
-}
-
-.form-field label {
+.nav-button {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.form-field input,
-.form-field select {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 2px solid #ddd;
+    padding: 0.75rem 0.875rem;
+    text-decoration: none;
+    color: #374151;
+    border: none;
+    background: transparent;
     border-radius: 6px;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    border-color: #4CAF50;
-    outline: none;
-}
-
-/* Back button */
-.back-button {
-    background-color: #6c757d;
-    margin-bottom: 20px;
-}
-
-.back-button:hover {
-    background-color: #5a6268;
-}
-
-/* Simplified steps display */
-.simplified-steps {
+    transition: all 0.15s ease;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
     text-align: left;
 }
 
-.step {
-    background-color: #f8f9fa;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 6px;
-    border-left: 3px solid #4CAF50;
-    font-size: 18px;
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #1f2937;
 }
 
-.tips {
-    background-color: #fff3cd;
-    padding: 15px;
-    border-radius: 6px;
-    margin-top: 15px;
-    border-left: 3px solid #ffc107;
+.nav-button.active {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.nav-icon {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    padding: 3rem;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 16px 0 0 0;
+    box-shadow: -2px 0 20px rgba(0, 0, 0, 0.04);
+    margin-top: 8px;
+}
+
+/* Content headers */
+.content-header h2 {
+    color: #1e293b;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    font-size: 1.75rem;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.content-header p {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Cards with beautiful gradients and shadows */
+.card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(147, 197, 253, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.08);
+    transition: all 0.3s ease;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
+    border-color: rgba(147, 197, 253, 0.4);
+}
+
+/* Button styling */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    color: #374151;
+    border: 1px solid rgba(147, 197, 253, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    border-color: rgba(147, 197, 253, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Welcome content */
+.welcome-content {
+    text-align: center;
+    max-width: 760px;
+    margin: 2rem auto;
+}
+
+.welcome-content h2 {
+    color: #1e293b;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-content p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+        border-right: none;
+        border-top: 1px solid rgba(147, 197, 253, 0.3);
+    }
+    
+    .main-content {
+        order: 1;
+        margin-top: 0;
+        border-radius: 0;
+        padding: 2rem;
+    }
 }
