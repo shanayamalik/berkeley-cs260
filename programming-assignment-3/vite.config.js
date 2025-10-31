@@ -5,9 +5,9 @@ import sirv from "sirv";
 // https://vite.dev/config/
 export default defineConfig({
   root: "./code",
-  base: "/code",
+  base: process.env.NODE_ENV === "production" ? "/berkeley-cs260/" : "/",
   build: {
-    outDir: "../code-dist",
+    outDir: "../dist",
     emptyOutDir: true,
   },
   server: {
@@ -15,7 +15,8 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    {
+    // Only include specification middleware in development
+    ...(process.env.NODE_ENV !== "production" ? [{
       name: "serve-specification-static",
       configureServer(server) {
         const serve = sirv("specification", {
@@ -49,7 +50,7 @@ export default defineConfig({
           serve(req, res, next);
         });
       },
-    },
+    }] : []),
   ],
   customLogger: (() => {
     const logger = createLogger("info");
