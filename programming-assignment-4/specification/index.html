@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Programming Assignment 4: Speedy Smarts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Programming assignment 4: Speedy smarts</h1>
+
+      <h2>Contents</h2>
+
+      <ul>
+        <li>
+          <a href="#Objectives">Objectives</a>
+        </li>
+        <li>
+          <a href="#Submission">Submission</a>
+        </li>
+        <li>
+          <a href="#Starter_code">Starter code</a>
+        </li>
+        <li>
+          <a href="#Collaboration">Collaboration policy</a>
+        </li>
+        <li>
+          <a href="#Autograder">Autograder</a>
+        </li>
+
+        <li>
+          <a href="#Task_1">Task 1 · Email subject generator (4 points)</a>
+        </li>
+        <li>
+          <a href="#Task_2">Task 2 · Planet finder (4 points)</a>
+        </li>
+        <li>
+          <a href="#Task_3">Task 3 · Shopping list images (4 points)</a>
+        </li>
+        <li>
+          <a href="#Task_4">Task 4 · Board game inventory (4 points)</a>
+        </li>
+        <li>
+          <a href="#Report">Report</a>
+        </li>
+      </ul>
+
+      <h2 id="Objectives">Objectives</h2>
+
+      <p>In this assignment, you will:</p>
+
+      <ul>
+        <li>Implement “intelligent UI” features in existing applications</li>
+        <li>
+          Prompt text completion, text-to-image, and vision language models
+        </li>
+        <li>
+          Ponder on how large AI models can affect your UI prototyping process
+        </li>
+      </ul>
+
+      <h2 id="Submission">Submission</h2>
+
+      <p>
+        You will modify the starter code provided to you with the assignment,
+        then submit your code as a zip file. You'll likely want to edit the
+        starter code in spots where the code says "YOUR CODE HERE".
+      </p>
+
+      <ul>
+        <li>submission.zip</li>
+        <ul>
+          <li>src/</li>
+          <ul>
+            <li>(...)</li>
+          </ul>
+          <li>public/</li>
+          <ul>
+            <li>(...)</li>
+          </ul>
+          <li>index.html</li>
+          <li>package.json and package-lock.json</li>
+          <ul>
+            <li>
+              (optional. If you install new libraries, you’ll need to copy these
+              files into your submission folder from outside the
+              <code>code</code> folder.)
+            </li>
+          </ul>
+        </ul>
+      </ul>
+
+      <p>
+        Make sure to zip up the files directly at the top level of the zip
+        archive, rather than placing them in some subdirectory.
+      </p>
+
+      <h2 id="Starter_code">Starter code</h2>
+
+      <p>
+        This assignment includes starter code in the
+        <code>code</code> directory. You should build on top of this code for
+        your assignment submission.
+      </p>
+
+      <p>
+        Please do <strong>not</strong> fork the repository on GitHub or upload
+        your code anywhere public-facing. Remember, students aren’t allowed to
+        directly copy each other’s code for these assignments; if another
+        student copies your code, we won’t be able to tell who copied whom, and
+        you’ll be on the hook for the plagiarism too!
+      </p>
+
+      <h2 id="Autograder">Autograder</h2>
+
+      <p>
+        There’s no autograder for this assignment. When you upload to
+        Gradescope, some tests will run (<strong>all worth zero points</strong>)
+        as a basic check, but they will mostly <em>not</em> check for
+        correctness of your approach (since you have some leeway in exactly how
+        your interface responds to user input, and LLM outputs are not always
+        the same). Course staff will verify your submission manually.
+      </p>
+
+      <section id="Task_1">
+        <h2>Task 1 · Email subject generator (4 points)</h2>
+        <p>
+          <em>
+            Skills: Integrating LLM APIs, prompt design, using text completion
+            models
+          </em>
+          <br />
+          <em>Task 1 expected cost: 5 credits</em>
+        </p>
+        <p>
+          <strong
+            >This task is accompanied by a full
+            <a href="images/task-1-walkthrough.mp4" target="_blank"
+              >walkthrough video</a
+            >
+            (<a href="images/task-1-walkthrough.srt" target="_blank"
+              >subtitles</a
+            >), which will guide you through completing the task, to set you up
+            for success in future tasks</strong
+          >. This walkthrough was made for a previous semester, so you should
+          note the following changes:
+        </p>
+
+        <ul>
+          <li>
+            The assignment now uses <strong>React</strong>, so you’ll need to
+            use React-y ways of listening to user input and updating the page.
+          </li>
+          <li>
+            I recommend using GPT-5-mini for this task, since it’s a newer (and
+            probably better) model. Consider setting the 'reasoning effort' to
+            'minimal' or 'low' to get faster responses.
+          </li>
+        </ul>
+
+        <h3>Introduction</h3>
+        <p>
+          In the task 1 folder, you'll find a simple email composition
+          interface, with a spot to write the body and the subject line of an
+          email.
+        </p>
+        <div class="image-container">
+          <img
+            src="images/email.png"
+            alt="A user interface for composing an email,
+          with a body and subject field. The subject field includes a 'Suggest' button to its right."
+          />
+        </div>
+        <p>
+          The subject line has a “Suggest” button, which will automatically
+          suggest a subject line for the email being written.
+        </p>
+        <p>
+          Well, it's <em>supposed</em> to, anyway. Right now, the “Suggest”
+          button doesn't do anything. We'll need to generate a reasonable
+          subject line using AI when the user clicks the button. Fortunately,
+          prototyping with AI is easier than it has ever been, now that we can
+          instruct AI models with natural language.
+        </p>
+        <h3>Example</h3>
+        <p>
+          We've provided some example emails in the task folder that you can use
+          in your testing. Here's one example:
+        </p>
+        <blockquote>
+          <p>Hello Mr. President,</p>
+          <p>
+            It was great to meet you at the gala last week. Attached, you will
+            find my proposed federal legislation, which, if I recall our
+            conversation accurately, you described as "not entirely unhinged"
+            and "admittedly unique."
+          </p>
+          <p>
+            As we discussed, successful passage of the legislation would
+            completely ban homework in schools and promise universal free ice
+            cream on Fridays. The attached PDF should answer any remaining
+            questions for your staff.
+          </p>
+          <p>Thank you,</p>
+          <p>Sen. Fipp</p>
+        </blockquote>
+        <p>
+          You can try using <a href="https://chatgpt.com/">ChatGPT</a>, an
+          interface connected to a <strong>large language model (LLM)</strong>,
+          to generate a subject header for this kind of email, and you'll
+          probably get a reasonable response:
+        </p>
+        <div class="image-container">
+          <img
+            src="images/chat-example.png"
+            alt="A screenshot of the ChatGPT interface, showing a generated subject line for the email."
+          />
+        </div>
+        <p>
+          We're not limited to talking to these LLMs directly through a chat
+          interface, though. We can also use AI models as components of a larger
+          system. OpenAI provides an <strong>API</strong> that allows code to
+          send text to their LLMs and receive responses. By writing code that
+          incorporates LLM responses into our software, we can make our software
+          smarter without having to train or find specialized AI models.
+        </p>
+        <h3>Using <span class="reagent">reagent</span></h3>
+        <p>
+          We've given you access to the AI models required for this assignment
+          through a website called
+          <a href="https://rea.gent/" class="reagent">reagent</a>. Using
+          <span class="reagent">reagent</span>, you can:
+        </p>
+        <ul>
+          <li>Configure your prompts to AI models</li>
+          <li>Experiment in the web interface</li>
+          <li>Quickly get code that uses these AI models</li>
+          <li>View past and currently-running API calls</li>
+          <li>Track how much your API calls are costing</li>
+        </ul>
+        <p>
+          We've also pre-configured <strong>$0.65</strong> (= 65 “credits”) per
+          student in spending credit on <span class="reagent">reagent</span> so
+          you can complete this assignment without having to configure your own
+          billing credentials or API keys. Note that
+          <strong
+            >if you spend all of these credits, you will need to complete the
+            assignment by configuring your own personal API keys
+            manually</strong
+          >
+          within <span class="reagent">reagent</span>. Be careful not to use up
+          all your credits before completing the assignment, and leave some
+          credits for the autograder to run as well!
+        </p>
+        <p>
+          You can access this pre-configured credit by logging into
+          <span class="reagent">reagent</span> using the GitHub email you
+          specified in the course's introductory survey form at the start of the
+          semester. When you log in, head to the Organizations tab and accept
+          the invitation to the organization for our class (we've invited you
+          based on your GitHub account). If you don't see the invitation, reach
+          out to course staff with your GitHub username so we can get you
+          sorted.
+        </p>
+        <p>
+          The walkthrough video for this task shows you how to use
+          <span class="reagent">reagent</span> for email subject generation.
+        </p>
+        <h3>Implementation</h3>
+        <p>
+          When you are ready to implement the feature, update the JavaScript in
+          the <code>task1</code> folder; the live page is
+          <a href="/code/#/task1">here</a>. We have supplied you with an event
+          listener that gets called when the user presses the “Suggest” button;
+          implement this button-click listener so that the subject line is
+          automatically updated with a suggestion based on the current body of
+          the email.
+        </p>
+        <!-- <p>
+          You'll notice that this event listener is an
+          <code>async</code> function. This will permit you to use the
+          <code>await</code> keyword, in case you want to use it for the request
+          to the LLM API. Remember this detail for your future projects!
+        </p> -->
+        <p>
+          You can test this feature with any of the emails supplied in the
+          <code>task1/emails</code> folder, or an email composition of your own!
+        </p>
+        <p>
+          If you try with <code>test-email-4.txt</code>, you'll find that
+          although the email is written in another language than your prompt,
+          the application still seems to work (although, in my experience,
+          unless you ask specifically, the model will sometimes still provide
+          the actual subject in English despite correctly guessing the meaning
+          of the non-English body text).
+        </p>
+        <p>
+          This is a benefit of using a foundation model like GPT-5-mini: the
+          model can leverage knowledge from its training data even in situations
+          you didn't plan for, as the developer. Of course, the model can
+          <em>also</em> behave in ways you don't <em>want</em> it to behave.
+          Once you've gotten your application working, see if you can fool the
+          model into doing something strange using just the interactions
+          provided by your application.
+        </p>
+        <h3>Report</h3>
+        <ul>
+          <li>Include the prompt(s) you used and a link to your Noggin(s).</li>
+          <ul>
+            <li>
+              Since you'll create your Noggins within the class “organization”,
+              course staff will be able to pull them up during grading. The
+              Noggin URL will look something like:
+            </li>
+            <li><code>https://rea.gent/noggins/abcd-efgh-1234/edit</code></li>
+          </ul>
+        </ul>
+      </section>
+
+      <section id="Task_2">
+        <h2>Task 2 · Planet finder (4 points)</h2>
+        <p>
+          <em> Skills: using the output of text completion models </em>
+          <br />
+          <em>Task 2 expected cost: 15 credits</em>
+        </p>
+        <h3>Introduction</h3>
+        <p>
+          You're a travel agent in the year 2445. The most popular travel
+          destinations these days require interstellar travel, but they're
+          marvelous:
+        </p>
+        <table class="planet-table">
+          <tr>
+            <td>
+              <img src="images/alekhine.png" alt="" />
+            </td>
+            <td>
+              <p><strong>Alekhine</strong></p>
+              <p>
+                Continents — or, more precisely, islands — on the largely
+                aquatic planet of Alekhine are in a perpetual state of
+                rotational drift. Though the largest islands rotate only a few
+                degrees per year, small islands are known to spin freely, some
+                completing a single revolution in just a few hours.
+              </p>
+              <p>
+                A tradition of intellectual curiosity goes back on this planet
+                as far as human settlers do, in large part due to an early
+                demand to bring clever problem-solvers in as settlers. How do
+                you plan a city across an archipelago of individually-rotating
+                islands? How can you maintain utility lines and train tracks?
+                Only by enticing the best city planners, engineers, and even
+                graph theorists did local governments get a hold on the
+                complexity.
+              </p>
+              <p>
+                Now that the basic issues are largely ironed out, the residents
+                of Alekhine have found other ways to spend their time. Tall
+                buildings, many painted a creamy white, host some of the
+                galaxy’s most prestigious academic institutions. Some residents
+                have taken to designing island-scale puzzles for visitors,
+                requiring participants to summon their ingenuity to unpack the
+                complexities of the ground rotating under their feet.
+              </p>
+              <p>
+                Others choose a simpler life, riding the uniquely-circular waves
+                on custom surfboards or tending to extravagant gardens that
+                don’t require plants to be manually rotated. On Alekhine, humans
+                have conquered the strange dynamic geology to their own benefit.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="images/janon.png" alt="" />
+            </td>
+            <td>
+              <p><strong>Janon</strong></p>
+              <p>
+                The planet Janon is filled to the brim with nature, both oddly
+                familiar and completely bewildering to natives of Earth.
+                Equalizing wind currents leave most of the planet at an equally
+                tropical temperature, lush with fractal tree-like plants, dotted
+                with reservoirs of mostly-fresh water, and populated with beasts
+                both mighty and meek. Compared to organisms on Earth, animals
+                tend to be less astute (and none is nearly as intelligent as
+                Earth’s primates are), but plants seem to flourish in
+                coordinated patterns, leaving some to believe that they possess
+                some limited intelligence of their own.
+              </p>
+              <p>
+                Human outposts are hard to come by, since building them involves
+                cutting through dense jungle in most parts of the world. Those
+                settlements that do exist tend to be densely populated, with
+                tightly-packed tall buildings that look over canopies of trees
+                off in the distance.
+              </p>
+              <p>
+                Janon is known for its exquisite cuisine, a trait unfortunately
+                not coincidental with its rich wildlife; animals’
+                naturally-evolved instincts on the planet are no match for the
+                skills of even a rudimentary hunter. Already some of the most
+                delectable species on the planet are considered endangered, just
+                a few generations after humanity systematically catalogued which
+                meats were safe to eat, which were toxic, and which seem to just
+                give you the runs.
+              </p>
+              <p>
+                The crown jewel of Janon is Valoret, a city built in a rare
+                clearing occupying around a hundred thousand acres. Local
+                cuisine from around the planet is imported into the city, kept
+                fresh only by the efficiency of a one-of-a-kind aerial logistics
+                system that is held aloft by the globe’s natural wind currents.
+                Beyond the clearing, suburbs expand outwards into the
+                surrounding rainforest, connected by an underground
+                transportation system that keeps the aboveground biosphere
+                largely untouched.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="images/guilin.png" alt="" />
+            </td>
+            <td>
+              <p>
+                <strong>Guilin</strong>
+              </p>
+              <p>
+                Owing to its regular seismic activity, the planet Guilin is a
+                haven for those who enjoy hot springs and impressive geyser
+                displays. Downward erosion caused by fast-moving water has
+                crafted tall stone towers in many regions on the planet, not
+                unlike the world’s namesake back on Earth.
+              </p>
+              <p>
+                The largest springs have been commercialized in resorts not
+                unlike water parks, and sizable cities analogous to Earth’s
+                beach towns have sprung up in support of these resorts. Those
+                looking for a quieter place to appreciate the scenery will find
+                no shortage of more private springs, especially far from the
+                more densely-populated areas.
+              </p>
+              <p>
+                The natural spires of Guilin have been a foundation for
+                thrill-seeking activities like bungee jumping and rock climbing,
+                but they also serve as serene outlooks for the beautiful vistas
+                of the planet’s features, especially where elevators have been
+                carved into the side of the stone for easier access to the
+                summits.
+              </p>
+              <p>
+                Guilin’s natural features aren’t limited to just spires and hot
+                springs. It doesn’t take much travel to explore a myriad of
+                geographic wonders far surpassing anything Earth has to offer.
+                The planet’s public transit is limited, however, since the
+                difficult terrain limits what kinds of infrastructure can be
+                built. Bring your own hovercraft!
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="images/jayne.png" alt="" />
+            </td>
+            <td>
+              <p>
+                <strong>Jayne</strong>
+              </p>
+              <p>
+                The planet Jayne, despite its hot weather and limited access to
+                drinking water, is a monument to manual handiwork and a marvel
+                of modern sculpture. Every historical figure, even those of
+                middling significance, is personally commemorated by a
+                life-sized statue. No one knows how many statues are present on
+                the planet, but current estimates suggest that Jayne’s largest
+                city adds dozens to the count every day. There are figures here
+                enshrined in stone who don’t even meet the notability standards
+                of Galactic Wikipedia.
+              </p>
+              <p>
+                For reasons that are fuzzy even to the most dedicated
+                historians, Jayne’s cities have universally adopted a policy of
+                redistributing wealth through a monthly ceremony during which
+                golden coins are dropped from the sky by aerial vehicles. Some
+                question the distribution mechanism, but no one is willing to
+                reform the system if it means breaking tradition.
+              </p>
+              <p>
+                If you happen to be present during a distribution, even as a
+                tourist, you’re welcome to take what you can grab! Some
+                penny-pinching visitors have been known to break even on their
+                visits to the planet.
+              </p>
+              <p>
+                Traditionally, the exact timing of the monthly money-drop comes
+                as a surprise to residents. When the gold is dropped during just
+                the right twilight, some say, not without a hint of nostalgia,
+                that the tumbling coins off in the distance twinkle like
+                fireflies.
+              </p>
+            </td>
+          </tr>
+        </table>
+        <em style="text-align: center; width: 100%; display: block">
+          Images produced with SDXL v1.0. You’ll play with Stable Diffusion in
+          the next task!
+        </em>
+        <p>
+          You're looking to build a website to
+          <strong>help people choose their next travel destination</strong>.
+          We've built a <a href="/code/#/task2">basic site</a> with links to
+          information pages about each destination, but you need to make them
+          smart.
+        </p>
+        <p>
+          The main page includes a text box where the user can type out their
+          query, with the hope of finding a good match for their travel
+          destination. For example, a user typing something like:
+        </p>
+        <blockquote>
+          I want a place like a museum, where I can see sculptures and learn
+          about people from history.
+        </blockquote>
+        <p>
+          might be told they should visit the planet <strong>Jayne</strong>,
+          which is filled with statues of historical figures.
+        </p>
+        <p>
+          Your job is to <strong>implement this recommendation system</strong>:
+        </p>
+        <ul>
+          <li>
+            When the user types their query and clicks “Help me choose”, they
+            should be <strong>directed to the web page section</strong> for the
+            planet most associated with their query. We have provided a
+            JavaScript function to navigate to another sub-page (you won't need
+            to actually navigate to a new URL; just call the provided function
+            with the appropriate argument). In your intelligent UI,
+            <strong
+              >this redirection should happen automatically after the query is
+              submitted</strong
+            >, without any further interaction from the user.
+            <!-- This requirement ensures that the LLM output is parsed, rather than just allowing a chat response to be shown to the user (who would then need to click on the associated planet link). -->
+          </li>
+          <li>
+            You can accomplish this with a prompt to an LLM like gpt-5-mini (as
+            we did in the previous task). In
+            <span class="reagent">reagent</span>, you should make a new Noggin
+            for this task.
+          </li>
+          <ul>
+            <li>
+              You can insert each planet's description right into the LLM
+              prompt, which will make sure that the provided details are
+              available when the LLM is deciding which planet to recommend to
+              the user. There's no need to make this extend past just the four
+              planet descriptions provided, so it's okay to hardcode the LLM
+              prompt.
+            </li>
+            <ul>
+              <li>
+                You may also choose to use multiple prompts for this task,
+                rather than one big one. The details are up to you!
+              </li>
+            </ul>
+            <li>
+              This time, since you're not showing the response directly to the
+              user, but rather <em>using</em> the response in your UI code, you
+              want to make sure the LLM returns some text in a way you can
+              parse. This may require a combination of clever prompting and
+              JavaScript code to make sure the response can be used to show the
+              user one of the subpages. You may also find the “structured
+              output” option in <span class="reagent">reagent</span> to be
+              useful.
+            </li>
+            <ul>
+              <li>
+                Try to make sure the model <em>always</em> offers a suggestion
+                to the user.
+              </li>
+              <li>
+                Try to make sure the model always offers just
+                <em>one</em> suggestion to the user; make sure your prompt and
+                subsequent response-parsing logic is hardened so that the chat
+                model doesn't waffle between two options.
+              </li>
+            </ul>
+            <li>
+              For <strong>one point</strong> of extra credit,
+              <strong>in addition</strong> to redirecting the user to the right
+              sub-page for their recommended planet, show the user a brief (one
+              or two sentence) explanation for <em>why</em> they might enjoy
+              this planet, given their query. We won't grade this for strict
+              aesthetic value, but you should make sure to design something
+              reasonable for this to earn full credit. As in previous
+              assignments, extra credit will not cause your grade to exceed
+              20/20.
+            </li>
+            <li>Each request is likely to cost less than 0.1 credits.</li>
+          </ul>
+        </ul>
+        <p>
+          Here are some queries you can try once you've gotten everything hooked
+          up:
+        </p>
+        <ul>
+          <li>
+            <em>I want a place where I can study mathematics.</em>
+          </li>
+          <ul>
+            <li>likely suggestion: Alekhine</li>
+          </ul>
+          <li>
+            <em>My favorite place on Earth is the Grand Canyon</em>
+          </li>
+          <ul>
+            <li>likely suggestion: Guilin</li>
+          </ul>
+          <li>
+            <em>I’m a botanist</em>
+          </li>
+          <ul>
+            <li>likely suggestion: Janon</li>
+          </ul>
+          <li>
+            <em>I’m poor and can’t afford a big vacation</em>
+          </li>
+          <ul>
+            <li>likely suggestion: Jayne</li>
+          </ul>
+          <li>
+            <em
+              >I’m a big fan of escape rooms and other challenges like that</em
+            >
+          </li>
+          <ul>
+            <li>likely suggestion: Alekhine</li>
+          </ul>
+          <li>
+            <em>I need a spa day.</em>
+          </li>
+          <ul>
+            <li>likely suggestion: Guilin</li>
+          </ul>
+          <li>
+            <em> J’aime bien manger des repas bizarres </em>
+          </li>
+          <ul>
+            <li>(I really like to eat strange meals)</li>
+            <li>likely suggestion: Janon</li>
+          </ul>
+        </ul>
+        <p>
+          Try your own queries, too! As you can see, the model can respond even
+          to queries that don't quite match the wording (or even the language)
+          in your original prompt. It's okay if you don't get a 100% success
+          rate on these queries, and sometimes the model will respond
+          differently when you make the same query more than once. For our
+          prototype, this imperfection is okay!
+        </p>
+        <p>
+          When you're testing your software, remember to practice good
+          <strong>data hygiene</strong>. That means, if you give the model
+          <strong>examples</strong> in your prompt, make sure that you're
+          testing your application using <strong>different</strong> examples.
+          The whole thing becomes moot if the model can just look up the user's
+          exact query in the provided examples!
+        </p>
+
+        <h3>Report</h3>
+
+        <ul>
+          <li>Include the prompt(s) you used and a link to your Noggin(s).</li>
+          <li>Please note whether you completed the extra credit task.</li>
+        </ul>
+      </section>
+
+      <section id="Task_3">
+        <h2>Task 3 · Shopping list images (4 points)</h2>
+
+        <p>
+          <em>Skills: text-to-image models</em>
+          <br />
+          <em>Task 3 expected cost: 20 credits</em>
+        </p>
+
+        <h3>Introduction</h3>
+
+        <p>
+          Inside the <code>task3</code> directory, you'll find a
+          <a href="/code/#/task3"> simple “shopping list” app </a>. When the
+          user types in an item name, the item gets added to the list.
+        </p>
+
+        <div class="image-container">
+          <img src="images/image-gen.png" alt="A shopping list app" />
+        </div>
+
+        <p>
+          In the app, there's a spot for an image to be rendered in the shopping
+          list. Use a <strong>text-to-image (TTI) model</strong> to generate an
+          image automatically for whatever the user types. These models take in
+          some text <strong>prompt</strong> as an input and respond with some
+          image as output.
+        </p>
+
+        <p>
+          We recommend using SDXL Lightning, which you'll have access to through
+          <span class="reagent">reagent</span> (as
+          <code>replicate/bytedance_sdxl-lightning-4step</code>). You can also
+          try other models, like FLUX, Stable Diffusion, or the base SDXL model
+          (which all have different speeds, costs, and quality). A typical image
+          costs around 0.25 credits to generate with the Lightning model, so you
+          don't want to overdo it when you're prototyping, lest you run out of
+          credits in the class organization.
+        </p>
+
+        <p>
+          In <span class="reagent">reagent</span>, if you're worried about
+          spending your credits too early, you can also create a Noggin using
+          the <code>test/identicon</code> model, which will not use any credits,
+          generating just a simple placeholder image for testing. These Noggins
+          will not be backed by AI, so they won't generate images reflective of
+          the prompt. Make sure to
+          <strong>switch to using a real TTI model</strong> (by making a new
+          Noggin) when you're ready to submit your work!
+        </p>
+
+        <h3>Style</h3>
+
+        <p>
+          First, <strong>pick a style</strong> for your shopping list items.
+          Text-to-image models can generate images in a variety of styles, if
+          you're clever about how you construct your prompt (these models can be
+          quite picky):
+        </p>
+
+        <table class="image-style-table">
+          <tr>
+            <td>
+              <img src="images/oj-watercolor.png" />
+            </td>
+            <td>
+              <img src="images/oj-cinematic.png" />
+            </td>
+            <td>
+              <img src="images/oj-anime.png" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a
+                href="https://stable-diffusion-art.com/sdxl-styles/#Artstyle_Watercolor"
+                >watercolor painting <strong>orange juice</strong>. vibrant,
+                beautiful, painterly, detailed, textural, artistic</a
+              >
+            </td>
+            <td>
+              <a href="https://stable-diffusion-art.com/sdxl-styles/#Cinematic"
+                >cinematic film still <strong>orange juice</strong>. shallow
+                depth of field, vignette, highly detailed, high budget, bokeh,
+                cinemascope, moody, epic, gorgeous, film grain, grainy</a
+              >
+            </td>
+            <td>
+              <a href="https://stable-diffusion-art.com/sdxl-styles/#Anime"
+                >anime artwork <strong>orange juice</strong>. anime style, key
+                visual, vibrant, studio anime, highly detailed</a
+              >
+            </td>
+          </tr>
+        </table>
+        <em style="text-align: center; width: 100%; display: block"
+          >images produced by SDXL 1.0, with detailed prompts as linked above
+        </em>
+        <p>
+          You can find prompt templates online that will make it easier to ask
+          the model to adhere to a particular style. For the SDXL model, I'm a
+          fan of the prompts available on the website linked in the table above,
+          but feel free to search around or experiment! Note that prompts to
+          text-to-image models look quite different from prompts to large
+          language models, so it's good to look at examples before writing your
+          own.
+        </p>
+
+        <p>
+          We recommend sticking with the default large image size, even if
+          you're planning to render images smaller. These models start acting
+          weird at smaller sizes.
+        </p>
+
+        <h3>Implementation</h3>
+
+        <p>
+          Update the code in the <code>task3</code> folder to insert a generated
+          image when creating a new shopping list item.
+        </p>
+
+        <p>
+          With <span class="reagent">reagent</span>, the response to your API
+          call will be a redirect to the generated image. You can either get the
+          raw contents of the image with <code>fetch</code> and
+          <code>response.blob()</code>, or you can
+          <strong>use the API call URL directly</strong> in an
+          <code>&lt;img&gt;</code> tag's <code>src</code> attribute. For
+          example:
+        </p>
+
+        <div style="margin-left: 40px">
+          https://noggin.rea.gent/lengthy-prawn-9387?key=rg_v1_tp…cz_ngk&prompt=...
+          <div style="margin-left: 40px">will redirect to:</div>
+          https://objects.rea.gent/noggin-run-outputs/0b…58.png,
+          <div style="margin-left: 40px">
+            so the browser will render this as an image.
+          </div>
+        </div>
+
+        <p>
+          Keep in mind that these image models can be a little slow to generate
+          (on the order of a few seconds), so be patient once you've added a new
+          shopping list item. This can affect how you design your interactions
+          using text-to-image models!
+        </p>
+
+        <p>
+          Although a simple image database lookup might suffice for everyday
+          shopping list items, using generative AI can help react flexibly to
+          any inputs from a user. A traditional system wouldn't know what to do
+          with “DJ costume for my cat”, but SDXL Lightning has an idea:
+        </p>
+
+        <div class="image-container">
+          <img
+            style="max-width: 300px"
+            src="images/cat.png"
+            alt="A generated
+          image of a cat in a DJ costume"
+          />
+        </div>
+
+        <p>
+          Sometimes, you’ll run into an overeager safety filter that prevents
+          your image from being displayed. In
+          <span class="reagent">reagent</span>, you can check this in the “Use”
+          tab for your Noggin. For this assignment, that’s okay; just try again
+          (maybe with a different prompt).
+        </p>
+
+        <h3>Report</h3>
+
+        <ul>
+          <li>Include the prompt(s) you used and a link to your Noggin(s).</li>
+        </ul>
+      </section>
+
+      <section id="Task_4">
+        <h2>Task 4 · Board game inventory (4 points)</h2>
+
+        <p>
+          <em>Skills: vision-language models, parsing model output</em>
+          <br />
+          <em>Task 4 expected cost: 20 credits</em>
+        </p>
+
+        <h3>Introduction</h3>
+        <p>
+          You've just gotten a job at a local board game cafe! The cafe owner
+          wants to introduce a new recommendation system for customers to find a
+          fun game to play with their friends.
+        </p>
+        <p>
+          First, though, the staff needs to take inventory, keeping track of
+          which games are owned by the cafe, alongside some basic information
+          about each game, like the number of recommended players, the average
+          playtime, and the suggested minimum age of the game.
+        </p>
+
+        <div class="image-container">
+          <img src="images/pandemic.jpg" alt="" />
+        </div>
+        <span
+          style="
+            width: 100%;
+            text-align: center;
+            display: block;
+            font-size: 0.8em;
+          "
+          >Pandemic is a game for 2-4 players aged 10+, and a single play takes
+          45 minutes.
+        </span>
+
+        <p>
+          Your manager has made this your job! In the <code>task4</code> folder,
+          you'll find the <a href="/code/#/task4">inventory interface</a> you're
+          expected to use.
+        </p>
+
+        <div class="image-container">
+          <img src="images/game-ui.png" alt="" />
+        </div>
+        <span
+          style="
+            width: 100%;
+            text-align: center;
+            display: block;
+            font-size: 0.8em;
+          "
+          >Here's how you'd fill out that form!</span
+        >
+
+        <p>
+          “Work smart, not hard,“ they always say, — so instead of typing in
+          every game's data manually, you've decided to add an 🪄
+          <strong>AI feature</strong> that helps you fill out the inventory
+          interface.
+        </p>
+
+        <p>
+          The end goal is for you to be able to
+          <strong>take a photo of a board game box</strong> and have it
+          <strong>automatically populate the appropriate information</strong> in
+          the inventory UI. The user should
+          <strong>still be given an opportunity to review</strong> the
+          information before adding the game to the inventory system (before
+          submitting the form), so you should just use the photo to pre-fill the
+          form.
+        </p>
+
+        <h3>Implementation</h3>
+
+        <p>Here's what you'll need to do:</p>
+
+        <ol>
+          <li>
+            Choose a <strong>vision language model</strong> to use in your
+            project.
+          </li>
+          <ol type="a">
+            <li>
+              We find that the upper-end GPT models with vision (like
+              <code>gpt-5</code>) are not too expensive and are good at a wide
+              variety of tasks, including those that involve reading text.
+            </li>
+            <li>
+              You can also try any of the Anthropic Claude models; we've found
+              that the Sonnet 3.5 model seems to work well here. The cheaper
+              vision-enabled models (<em>e.g.,</em> <code>gpt-5-mini</code> and
+              Claude's <code>haiku</code> model) are worth trying, but they may
+              not perform as well.
+            </li>
+            <!-- TODO: add a better open-source multimodal model? -->
+            <!-- <li>
+              An open-source model you can try is LLaVA (in
+              <span class="reagent">reagent</span> as
+              <code>replicate/yorickvp_llava-13b</code>), although we've found
+              it's not as good at tasks that involve reading text.
+            </li> -->
+          </ol>
+          <li>
+            Come up with a <strong>prompt</strong> that causes the language
+            model to take in a photo and
+            <strong>outputs the relevant information</strong> in a way you can
+            use in your own software.
+          </li>
+          <ol type="a">
+            <li>
+              We recommend asking the model to respond in <strong>JSON</strong>,
+              and explaining the specific format you're looking for in your
+              prompt. You can also use the
+              <strong>Structured data output</strong> feature of
+              <span class="reagent">reagent</span> with some models (like GPT-5)
+              to request that the model adhere to a particular JSON format
+              (click on the “Freeform Text” dropdown under “Model output”):
+              <div class="image-container">
+                <img src="images/struc.png" alt="" />
+              </div>
+              But even models without this “structured data” feature enabled are
+              likely to respond well if you simply ask them to output in a
+              particular format.
+            </li>
+          </ol>
+          <li>
+            Modify the provided starter code. When the user uploads a photo,
+            <strong>send that photo to the vision language model</strong> with
+            the prompt you wrote. When the language model responds, use that
+            response to pre-fill the form.
+          </li>
+          <ol type="a">
+            <li>
+              When the user selects a file, we use the
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
+                >FileReader API</a
+              >
+              to read the contents of the selected image file from the user’s
+              computer. In particular, we read the image as a
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs"
+                >data URL</a
+              >.
+
+              <div
+                style="
+                  font-size: 11pt;
+                  background-color: #e8e2f5;
+                  padding: 10px;
+                  border-radius: 5px;
+                  margin-top: 10px;
+                  border: 1px solid #b39ddb;
+                  margin: 12px 0;
+                "
+              >
+                A data URL, which starts with <code>data:</code> instead of a
+                request protocol like <code>http:</code>, can be used in many
+                places where other URLs work (like in links,
+                <code>&lt;img&gt;</code> src attributes, CSS background images,
+                <code>&lt;audio&gt;</code> tags, etc.). The difference from
+                typical URLs is that, instead of linking to some asset that the
+                browser will retrieve using an HTTP request, data URLs
+                <em>contain</em> the entire asset inside the URL, encoding the
+                binary byte data with
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Glossary/Base64"
+                  >base-64 encoding</a
+                >. A data URL looks something like this:<br />
+                <br />
+                <blockquote style="font-style: normal">
+                  <code style="color: #1565c0">data:</code
+                  ><code style="color: #e65100">image/png;</code
+                  ><code style="color: #880e4f">base64,</code
+                  ><code>iVBORw0KGgoAAAANSUhEUgAAAAEAA...</code><br />
+                </blockquote>
+                <br />
+                First is the <code style="color: #1565c0">data:</code> prefix
+                specifying that this is a data URL. Then, a
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Glossary/MIME_type"
+                  >MIME type</a
+                >
+                (<code style="color: #e65100">image/png</code>) that tells the
+                browser what kind of file this is (like a file extension does).
+                The text <code style="color: #880e4f">base64</code> chooses the
+                encoding type, followed by the actual encoded data.
+              </div>
+            </li>
+            <li>
+              Most APIs (including those offered by
+              <span class="reagent">reagent</span>) let you use a data URL to
+              send an image to the model.
+            </li>
+            <ol type="i">
+              Because GPT and Claude models allow you to intersperse text and
+              images, you can create an image variable the same way as a text
+              variable. Just make sure to change the variable type in the right
+              pane!
+
+              <div class="image-container">
+                <img
+                  style="width: 350px"
+                  src="images/image-variable.png"
+                  alt=""
+                />
+              </div>
+
+              Start with a “low-quality” image variable and see if it works for
+              your purposes before jumping to “high” quality, since it’s often
+              sufficient (and will be cheaper to run). Note that only the OpenAI
+              GPT models support this quality selector in
+              <span class="reagent">reagent</span>
+              at the moment.
+            </ol>
+            <li>
+              Once you receive a response from the model, you can use the
+              <code>JSON.parse(str)</code> function in JavaScript to convert
+              from a string to a JSON object.
+            </li>
+            <ol type="i">
+              In some cases, it will be technically possible for the model not
+              to respond in parsable JSON, for example if the response is
+              truncated or if the response does not follow your prompt
+              instructions. If this happens, it is okay in this assignment for
+              your application to simply throw an error, but you should try to
+              prevent it from happening in the first place!
+            </ol>
+            <li>
+              <strong>If any requested information is not in the photo</strong>
+              (<em>e.g.,</em> if the board game box doesn’t include an ‘expected
+              game length’ datum), do not pre-fill anything into that form
+              field. Try to make sure the model doesn’t just make stuff up! This
+              may require both some prompt tuning and some work in your code.
+            </li>
+          </ol>
+        </ol>
+
+        <p>
+          See the <code>board-game-images</code> folder we’ve provided for some
+          example images you can use. If you have board games at home, try those
+          too!
+        </p>
+
+        <p>
+          Notice that, by prompting the model with natural language, we were
+          able to tune which task the model performs without having to write any
+          code. This can let you build new intelligent behaviors into your
+          software quickly during your prototyping process!
+        </p>
+
+        <h3>Report</h3>
+
+        <ul>
+          <li>Include the prompt(s) you used and a link to your Noggin(s).</li>
+        </ul>
+      </section>
+      <section id="Report">
+        <h2>Report (4 points)</h2>
+
+        <p>
+          In the root of your submission zip file, please submit a PDF report
+          with links to your Noggins and answers to the following questions:
+        </p>
+
+        <ol>
+          <li>
+            What surprised you the most about using foundation models (LLMs,
+            text-to-image models, VLMs) as a backend for your software
+            prototypes? Why?
+          </li>
+          <li>
+            <p>
+              We’ve seen in this homework how we can use LLMs to power lots of
+              features within our software, rather than just as chat interfaces;
+              in fact, we didn’t build <em>any</em> chat interactions in these
+              tasks.
+            </p>
+
+            <p>
+              Consider this kind of “intelligent” user interface, where we
+              design a UI that coordinates with an intelligent backend in some
+              way while collecting inputs and displaying outputs to the user.
+            </p>
+
+            <p>
+              Suggest <strong>two new design principles</strong> that we might
+              want to adopt when crafting this kind of interface. Think on the
+              level of
+              <a
+                href="https://www.nngroup.com/articles/ten-usability-heuristics/"
+                >Nielsen’s usability heuristics</a
+              >
+              (<em>e.g.,</em> “design for recognition rather than recall”, or
+              “consistency and standards”) or
+              <a href="https://erichorvitz.com/chi99horvitz.pdf"
+                >Eric Horvitz’s principles for mixed-initiative user
+                interfaces</a
+              >. Your invented design principles can be about anything related
+              to designing these interfaces (<em>e.g.,</em> rules of thumb for
+              implementing UIs, for providing feedback to users, for designing
+              prompts for an LLM, etc.). Provide a justification for each design
+              principle, informed by your experience developing these interfaces
+              so far.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              In task 4, we saw that it can be quick to prototype using a vision
+              language model. Speculate on some of the
+              <strong>downsides</strong> of building software (either prototype
+              software or end-user software) backed by a vision-language model,
+              especially the kind of software we built in this task.
+            </p>
+
+            <p>
+              Did you run into any trouble during this task? Was there any
+              surprising behavior that might be a cause for concern? Is there
+              anything you might run into down the road, if you deploy software
+              built in this way? Consider alternative ways you might implement
+              smart features, or alternatives to smart features in an
+              application like this.
+            </p>
+
+            <p>
+              This is pretty open-ended, so don’t fret if you’re not confident
+              in your speculations! Outline
+              <strong>at least two downsides</strong> you have identified.
+            </p>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

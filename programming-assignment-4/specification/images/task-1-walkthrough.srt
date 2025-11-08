@@ -1,0 +1,639 @@
+1
+00:00:00,000 --> 00:00:07,000
+Hello, this video will be a walkthrough of how you can do Task 1 using reagent.
+
+2
+00:00:07,000 --> 00:00:13,000
+So you'll go click on Task 1. This is just that index HTML file in the starter code.
+
+3
+00:00:13,000 --> 00:00:17,000
+And you'll get this kind of email composition style interface.
+
+4
+00:00:17,000 --> 00:00:23,000
+There's this big text area for the body and also a spot where you can put the subject of your email.
+
+5
+00:00:23,000 --> 00:00:25,760
+I'm going to grab an example email from
+
+6
+00:00:25,760 --> 00:00:33,359
+the starter code. This is that test-email-1.txt, and I'll just paste that into the body. And the
+
+7
+00:00:33,359 --> 00:00:39,119
+idea of this application is that we should be able to press the suggest button and instead of
+
+8
+00:00:39,119 --> 00:00:44,000
+nothing happening, which is what just happened, it should populate the subject line with a
+
+9
+00:00:44,000 --> 00:00:45,679
+kind of reasonable subject
+
+10
+00:00:45,679 --> 00:00:47,920
+for the body of the email.
+
+11
+00:00:47,920 --> 00:00:51,579
+So to do that, we're going to add some AI magic.
+
+12
+00:00:51,579 --> 00:00:55,520
+We'll do that using reagent, which is linked in your homework.
+
+13
+00:00:55,520 --> 00:00:56,840
+First, log in.
+
+14
+00:00:56,840 --> 00:00:58,320
+You'll need to log in with GitHub
+
+15
+00:00:58,320 --> 00:01:00,259
+and make sure this is the same GitHub account
+
+16
+00:01:00,259 --> 00:01:04,200
+that you've told course staff about in the past.
+
+17
+00:01:04,200 --> 00:01:06,000
+You'll want to go to the Organizations tab,
+
+18
+00:01:06,000 --> 00:01:10,000
+and you'll see that you have an invitation from your class.
+
+19
+00:01:10,000 --> 00:01:15,000
+If you don't, you need to contact your course staff and get that figured out.
+
+20
+00:01:15,000 --> 00:01:20,000
+Click on the check mark, and then go to Noggins.
+
+21
+00:01:20,000 --> 00:01:30,000
+Now, a Noggin is a custom AI tool within this software reagent that will create an API that you can use within your application.
+
+22
+00:01:30,000 --> 00:01:32,000
+I'll show you what that means.
+
+23
+00:01:32,000 --> 00:01:35,000
+First, we'll go to “New Noggin”.
+
+24
+00:01:35,000 --> 00:01:39,000
+And I'll just type Task 1, because that's the task we're doing.
+
+25
+00:01:39,000 --> 00:01:44,000
+And you'll want to create a Noggin owned by your class organization.
+
+26
+00:01:44,000 --> 00:01:47,299
+Now, you'll notice when we do that,
+
+27
+00:01:47,299 --> 00:01:52,000
+we have a limit to how much we're allowed to spend in this organization
+
+28
+00:01:52,000 --> 00:01:57,599
+based on the amount of money that we've been kind of allotted to the,
+
+29
+00:01:57,599 --> 00:01:59,400
+in the organization.
+
+30
+00:01:59,400 --> 00:02:02,140
+So I'm going to budget just five credits.
+
+31
+00:02:02,140 --> 00:02:05,040
+That's five US cents for this task.
+
+32
+00:02:05,040 --> 00:02:07,359
+We're not going to need any more than that.
+
+33
+00:02:07,359 --> 00:02:09,439
+And then I'll choose an AI model.
+
+34
+00:02:09,439 --> 00:02:13,680
+Which models show up will depend on how your organization is configured,
+
+35
+00:02:13,680 --> 00:02:17,039
+but I'm going to use this GPT-4o-mini model,
+
+36
+00:02:17,039 --> 00:02:21,039
+which is a pretty cheap model that is more than good enough for this task.
+
+37
+00:02:21,039 --> 00:02:21,919
+I'll hit create.
+
+38
+00:02:23,759 --> 00:02:26,479
+And there's a lot going on on this page. Most of it you don't
+
+39
+00:02:26,479 --> 00:02:31,439
+have to worry about right now. The model parameters you might want to play around with a bit. Later
+
+40
+00:02:31,439 --> 00:02:36,000
+we'll look at how you can play with the model output as well. But the most important thing
+
+41
+00:02:36,000 --> 00:02:41,039
+is going to be this chat prompt section. The system prompt is for more general
+
+42
+00:02:41,039 --> 00:02:46,800
+instructions, like “Make sure to respond in English”, or things like that.
+
+43
+00:02:46,800 --> 00:02:54,159
+But here we'll use the chat prompt to tell the model what to do. This is a lot like ChatGPT.
+
+44
+00:02:54,159 --> 00:03:02,080
+If I just say, “Tell me a joke”, this is actually using the same LLM that powers ChatGPT.
+
+45
+00:03:02,080 --> 00:03:07,759
+I go to the Use tab up herem, and click Run, and hey, it tells us a joke.
+
+46
+00:03:07,759 --> 00:03:12,639
+That's... I don't know, that's a decent joke. LLMs aren't great at telling jokes, but this one's a
+
+47
+00:03:12,639 --> 00:03:22,000
+classic. Now, if I go back into the chat prompt, I can say, I don't know, “Tell me a knock knock joke”.
+
+48
+00:03:23,120 --> 00:03:28,099
+And if I try this, you'll see that that prompt is updated and, eh,
+
+49
+00:03:28,439 --> 00:03:34,199
+I don't know, that's a decent joke too. Now, one thing we can do in a chat prompt is actually
+
+50
+00:03:34,199 --> 00:03:40,860
+add multiple chat turns in the prompt. Let me show you what that means. Let me grab that
+
+51
+00:03:40,860 --> 00:03:47,840
+knock, knock joke we just got. And what I want to kind of tell the LLM is that I don't care about this,
+
+52
+00:03:47,840 --> 00:03:54,080
+sure, here you go. And I also want the joke in a particular format. So I'm going to go here
+
+53
+00:03:54,080 --> 00:04:01,199
+and just click on “Switch the chat speaker”. You can also press Shift-Enter and paste in that
+
+54
+00:04:01,199 --> 00:04:08,240
+response. Now, say I want it to have this kind of A, B,
+
+55
+00:04:08,240 --> 00:04:12,759
+A, B, kind of a format.
+
+56
+00:04:12,759 --> 00:04:14,240
+I'll press Shift-Enter.
+
+57
+00:04:14,240 --> 00:04:17,040
+Now tell me another one.
+
+58
+00:04:17,040 --> 00:04:19,360
+What this will do is going to show the model,
+
+59
+00:04:19,360 --> 00:04:22,759
+hey, here's what it looked like last time you responded to this prompt.
+
+60
+00:04:22,759 --> 00:04:31,360
+So maybe the model is more likely to respond that way the next time. If I click run, that's what we see, right? The same format,
+
+61
+00:04:31,360 --> 00:04:41,360
+and another classic joke. Now, reagent doesn't just let us talk to the LLM directly, it also
+
+62
+00:04:41,360 --> 00:04:46,000
+lets us create a prompt template that we can then use as an API.
+
+63
+00:04:46,000 --> 00:04:54,000
+This one should be about, I'm going to add a template variable.
+
+64
+00:04:54,000 --> 00:04:59,000
+You can click on this button here or just type a dollar sign, topic.
+
+65
+00:04:59,000 --> 00:05:03,000
+I hit enter there and I'll just add a period.
+
+66
+00:05:03,000 --> 00:05:06,480
+Now if I go to the use tab, you'll see we have this
+
+67
+00:05:07,120 --> 00:05:18,240
+field that we can fill out. I'll say baseball. Uh, it's not a great joke, right? But as you can see,
+
+68
+00:05:18,240 --> 00:05:24,079
+we were able to kind of fill in the prompt. Uh, if I wanted a joke about uh,
+
+69
+00:05:24,079 --> 00:05:30,000
+computer science. I could type that in and that would fill in the prompt there as well.
+
+70
+00:05:30,000 --> 00:05:35,000
+Wait, yeah, these, like I said, LLMs, not actually great at jokes.
+
+71
+00:05:35,000 --> 00:05:39,000
+Let's go on to something that LLMs are good at.
+
+72
+00:05:39,000 --> 00:05:44,000
+The task at hand.
+
+73
+00:05:44,000 --> 00:05:57,160
+So we talked about how we can see this, what we want is to create a subject for this email based on the body, so that when we click on suggest, we'll see it show up right here.
+
+74
+00:05:59,079 --> 00:06:08,220
+I've written this email. Please suggest a reasonable subject line for it.
+
+75
+00:06:08,220 --> 00:06:11,040
+And I'll create a variable.
+
+76
+00:06:11,040 --> 00:06:13,379
+I'm going to bump up the maximum length just a little.
+
+77
+00:06:13,379 --> 00:06:18,279
+This is in characters, just because 500 is a little short.
+
+78
+00:06:18,279 --> 00:06:23,180
+And then I'm going to grab this email, and let's see how it does.
+
+79
+00:06:23,180 --> 00:06:26,000
+I'll hit run.
+
+80
+00:06:27,879 --> 00:06:28,000
+Yeah, that's about right.
+
+81
+00:06:30,959 --> 00:06:31,620
+That's a good subject line for the email I just pasted in.
+
+82
+00:06:34,259 --> 00:06:34,560
+Now, when we use this in our application,
+
+83
+00:06:38,100 --> 00:06:38,699
+I'm not going to want it to put “Subject:” inside the field.
+
+84
+00:06:40,959 --> 00:06:43,600
+So I'm going to ask it not to do that.
+
+85
+00:06:50,000 --> 00:06:56,000
+Please make sure not to include any prefix like subject. Just include the subject line you're predicting.
+
+86
+00:07:00,000 --> 00:07:04,000
+And now when I try, yeah, looks like that fixed the problem.
+
+87
+00:07:04,000 --> 00:07:10,720
+So what's interesting about reagent is that if we go to this use tab, this actually creates
+
+88
+00:07:10,720 --> 00:07:14,560
+an API that we can call directly.
+
+89
+00:07:14,560 --> 00:07:30,319
+If I go grab this URL and paste it in up here, I can say, hey, do you want to get lunch? And we'll get that subject line right here in the response from the API.
+
+90
+00:07:31,120 --> 00:07:36,240
+Now, you'll notice that there's an API key kind of built into this API. This is what
+
+91
+00:07:36,240 --> 00:07:42,319
+authenticates the request so that you're actually allowed to use the API. It's generally
+
+92
+00:07:42,319 --> 00:07:48,959
+not a great idea to just throw an API key right into your own code,
+
+93
+00:07:48,959 --> 00:07:56,319
+but as the reagent UI points out here, it's not a huge deal to, like if this API key got leaked,
+
+94
+00:07:56,319 --> 00:08:01,519
+the only thing you'd be able to do with it is generate an email subject line, which is what we
+
+95
+00:08:01,519 --> 00:08:09,000
+wanted to happen anyway. But just keep in mind that normally you do want to be a little more careful with how you use these API keys.
+
+96
+00:08:13,000 --> 00:08:17,000
+So I'm going to go back into the code for Task 1.
+
+97
+00:08:17,000 --> 00:08:22,000
+And first, let's just get used to how we can actually modify the page.
+
+98
+00:08:22,000 --> 00:08:26,720
+I'll scroll down to where it says, your code here.
+
+99
+00:08:27,759 --> 00:08:31,279
+Now already we've included this event listener.
+
+100
+00:08:31,519 --> 00:08:34,320
+When the button gets clicked, that button that says, you know,
+
+101
+00:08:34,320 --> 00:08:40,240
+suggest me a subject line, we will put the value of that main text area,
+
+102
+00:08:40,240 --> 00:08:43,279
+the body of the email, into a variable.
+
+103
+00:08:43,840 --> 00:08:48,000
+So I can, for example, console.log, email, body,
+
+104
+00:08:48,000 --> 00:08:50,000
+and I'll just save that.
+
+105
+00:08:50,000 --> 00:08:53,000
+And if I open up my console,
+
+106
+00:08:53,000 --> 00:08:56,000
+what I'll find when I refresh,
+
+107
+00:08:56,000 --> 00:08:59,000
+and here, let me just go grab that email again,
+
+108
+00:08:59,000 --> 00:09:01,000
+paste it in, right?
+
+109
+00:09:01,000 --> 00:09:04,000
+We have that information right here.
+
+110
+00:09:07,200 --> 00:09:09,600
+Now, I can also use this line of code,
+
+111
+00:09:09,600 --> 00:09:15,440
+setting dot value equal to a string, test subject,
+
+112
+00:09:17,440 --> 00:09:20,720
+and now when I refresh and click, that works too.
+
+113
+00:09:22,879 --> 00:09:27,740
+So now we're going to go get that API that we just created within reagent,
+
+114
+00:09:27,740 --> 00:09:33,559
+and we'll use it in our code. If I go back to the Noggin and go over to this JavaScript section,
+
+115
+00:09:33,559 --> 00:09:39,019
+reagent gives us a little bit of JavaScript code. We can copy that. It's okay if you don't
+
+116
+00:09:39,019 --> 00:09:50,379
+know exactly how this code works. Get rid of that line. The most important part of this little snippet
+
+117
+00:09:50,379 --> 00:09:56,200
+reagent gave us is where it says fill variables here. This is where we'll be
+
+118
+00:09:56,200 --> 00:10:02,799
+able to fill in that email variable that we created in our prompt. So I'm
+
+119
+00:10:02,799 --> 00:10:06,000
+going to fill it with the value of this email body variable.
+
+120
+00:10:06,000 --> 00:10:17,000
+I just type email body and now after the Noggin has been used the response variable will contain the response from the Noggin.
+
+121
+00:10:17,000 --> 00:10:22,000
+So we'll just go ahead and console.log response just so that we see that happen.
+
+122
+00:10:22,000 --> 00:10:27,000
+Now if I refresh I'll go ahead and grab this email again.
+
+123
+00:10:27,000 --> 00:10:33,000
+And when I click Suggest, it takes a second, but we get this subject back.
+
+124
+00:10:33,000 --> 00:10:38,000
+Now, if you go into reagent, you're actually able to see that subject,
+
+125
+00:10:38,000 --> 00:10:41,000
+that API call being made right here.
+
+126
+00:10:41,000 --> 00:10:44,000
+So I'll do it with another email just to prove that.
+
+127
+00:10:48,279 --> 00:10:57,820
+If I click on suggest again, we get another response and here we can see this call that we
+
+128
+00:10:57,820 --> 00:11:02,139
+actually made from within our code shows up right here in reagent. So keep that in
+
+129
+00:11:02,139 --> 00:11:09,360
+mind. It can be useful if you're noticing you're having some trouble, it's not behaving how you expect. This is a way that you can see exactly
+
+130
+00:11:09,360 --> 00:11:15,600
+what is being sent to the model and exactly what the model responded. Now finally, we can just
+
+131
+00:11:15,600 --> 00:11:24,879
+take that response and put it into here. And that should be everything. Let me grab another
+
+132
+00:11:24,879 --> 00:11:27,139
+email, just paste that into the body. Let me grab another email.
+
+133
+00:11:27,139 --> 00:11:29,179
+Just paste that into the body.
+
+134
+00:11:29,179 --> 00:11:34,720
+And when I click suggest immediately, well, not immediately, but pretty quickly, it suggests
+
+135
+00:11:34,720 --> 00:11:38,019
+a subject line for this body of this email.
+
+136
+00:11:38,019 --> 00:11:39,159
+And we can try other things.
+
+137
+00:11:39,159 --> 00:11:43,679
+This one's in Spanish.
+
+138
+00:11:43,679 --> 00:11:47,200
+It's talking about a job interview. And yeah, look, it's talking about a job interview.
+
+139
+00:11:49,440 --> 00:11:53,519
+And yeah, look, it's talking about a job interview. You'll find that it's not super consistent whether it responds in English or Spanish.
+
+140
+00:11:53,519 --> 00:11:57,679
+In fact, if you run it more than once, it looks like we got the same result,
+
+141
+00:11:57,679 --> 00:12:01,279
+but sometimes you'll actually be able to get it to respond in different ways.
+
+142
+00:12:01,279 --> 00:12:05,600
+If you want a little more variety, you can drag up this temperature variable,
+
+143
+00:12:05,600 --> 00:12:08,960
+or if you want it to be totally consistent, drag it all the way down to zero.
+
+144
+00:12:10,720 --> 00:12:15,759
+Now if I refresh, we'll see, I have not been spending a lot of money on this. This particular
+
+145
+00:12:15,759 --> 00:12:23,360
+API is pretty cheap. This is 0.03 US cents that we have spent on all of the requests we've
+
+146
+00:12:23,360 --> 00:12:29,600
+made so far. So you can even dial this budget down just by clicking on that pencil.
+
+147
+00:12:29,600 --> 00:12:34,019
+If later in the homework you realize you're using more money than you are expecting,
+
+148
+00:12:34,019 --> 00:12:38,960
+you can probably take some of the budget away from this to free up some budget for
+
+149
+00:12:38,960 --> 00:12:40,460
+other noggins.
+
+150
+00:12:40,460 --> 00:12:49,000
+A couple other things to mention is that if you want to create an image variable, you can do it by just changing the type of the variable over here.
+
+151
+00:12:49,000 --> 00:12:53,000
+And maybe set in image quality. Low is normally good enough.
+
+152
+00:12:53,000 --> 00:13:01,000
+And then you'll be able to upload images into the prompt, and you'll see later in the homework how you can do that in your code as well.
+
+153
+00:13:01,000 --> 00:13:06,080
+And also, if you want to change the output structure, here let me change this back to a text
+
+154
+00:13:06,080 --> 00:13:13,919
+variable, you can switch in some models, not all of them support this, from freeform text to structured
+
+155
+00:13:13,919 --> 00:13:22,159
+data. And reagent has this interface that lets you say, I don't know, we'll do subject, freeform text.
+
+156
+00:13:22,159 --> 00:13:25,200
+This isn't a great example, but you will see one later in your homework.
+
+157
+00:13:26,080 --> 00:13:32,639
+And now, if I paste an email into this, what we'll see is we actually get this kind of JSON object
+
+158
+00:13:32,639 --> 00:13:38,639
+that contains the format that you saw there. So later in the homework when you need to do that,
+
+159
+00:13:38,639 --> 00:13:45,919
+that's how you'll do it. But that's all. You have successfully implemented Task 1, and I hope you
+
+160
+00:13:45,919 --> 00:13:47,840
+enjoy the rest of them.

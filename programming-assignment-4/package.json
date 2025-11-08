@@ -1,0 +1,29 @@
+{
+  "name": "code",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "react:dev": "vite --root code/src/react --base /code/src/react/",
+  "react:build": "vite build --root code/src/react --base /code/src/react/ --outDir ../../react-dist",
+  "react:preview": "vite preview --root code/src/react --base /code/src/react/ --outDir ../../react-dist"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^7.9.5",
+    "react-router-dom": "^7.9.5",
+    "sirv": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "globals": "^16.4.0",
+    "vite": "^7.1.6"
+  }
+}
