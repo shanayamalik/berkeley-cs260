@@ -213,14 +213,44 @@ function Header() {
 function Home() {
   const navigate = useNavigate();
   const [suggestInput, setSuggestInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const suggest = useCallback(async () => {
-    // YOUR CODE HERE: use the value of suggestInput to determine the best planet
-    // and navigate to its blurb page.
+    if (!suggestInput.trim()) {
+      return;
+    }
 
-    // for example:
-    navigate("/task2/planet/alekhine");
-  }, [suggestInput]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("https://noggin.rea.gent/specific-cod-7980", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer rg_v1_7y2acrianxj75bgbypmjtf20pdw3ewhr5neb_ngk",
+        },
+        body: JSON.stringify({ query: suggestInput }),
+      });
+
+      const data = await response.text();
+      const result = JSON.parse(data);
+      
+      // Extract planet name and explanation
+      const planetName = result.planet.toLowerCase();
+      const explanationText = result.explanation || "";
+      
+      // Navigate to the planet page with explanation in state
+      navigate(`/task2/planet/${planetName}`, {
+        state: { explanation: explanationText }
+      });
+    } catch (error) {
+      console.error("Error getting planet recommendation:", error);
+      // Fallback: navigate to a default planet if there's an error
+      alert("Sorry, we couldn't process your request. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [suggestInput, navigate]);
 
   return (
     <div className="home">
@@ -237,13 +267,15 @@ function Home() {
             aria-label="What are you looking for?"
             value={suggestInput}
             onChange={(e) => setSuggestInput(e.target.value)}
+            disabled={isLoading}
           />
           <button
             className="btn btn-outline-primary"
             type="submit"
             onClick={suggest}
+            disabled={isLoading || !suggestInput.trim()}
           >
-            Help me choose
+            {isLoading ? "Thinking..." : "Help me choose"}
           </button>
         </form>
       </div>
@@ -275,29 +307,46 @@ function Home() {
 }
 
 function PlanetBlurb({ name }) {
+  const location = useLocation();
+  const explanation = location.state?.explanation;
+  
   const planet = planets.find((p) => p.name.toLowerCase() === name);
   if (!planet) return <div>Planet not found.</div>;
   return (
-    <div
-      className="planet-blurb"
-      style={{
-        backgroundColor: "white",
-        padding: "2rem",
-        boxShadow: "0 0 1rem rgba(0,0,0,0.1)",
-        display: "flex",
-        gap: "4rem",
-        alignItems: "center",
-      }}
-    >
-      <div className="planet-image" style={{ flex: 1 }}>
-        <img
-          src={planet.image}
-          alt={`A depiction of the planet ${planet.name}, produced by SXDL 1.0`}
-          style={{ maxWidth: "100%" }}
-        />
-      </div>
-      <div className="planet-info" style={{ flex: 2 }}>
-        {planet.blurb}
+    <div>
+      {explanation && (
+        <div 
+          className="alert alert-info" 
+          style={{ 
+            marginBottom: '1.5rem',
+            fontSize: '0.95rem',
+            padding: '1rem 1.25rem'
+          }}
+        >
+          <strong>🌟 Why this planet?</strong> {explanation}
+        </div>
+      )}
+      <div
+        className="planet-blurb"
+        style={{
+          backgroundColor: "white",
+          padding: "2rem",
+          boxShadow: "0 0 1rem rgba(0,0,0,0.1)",
+          display: "flex",
+          gap: "4rem",
+          alignItems: "center",
+        }}
+      >
+        <div className="planet-image" style={{ flex: 1 }}>
+          <img
+            src={planet.image}
+            alt={`A depiction of the planet ${planet.name}, produced by SXDL 1.0`}
+            style={{ maxWidth: "100%" }}
+          />
+        </div>
+        <div className="planet-info" style={{ flex: 2 }}>
+          {planet.blurb}
+        </div>
       </div>
     </div>
   );
