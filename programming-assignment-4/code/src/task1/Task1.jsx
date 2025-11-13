@@ -3,6 +3,32 @@ import { useState } from "react";
 export default function Task1() {
   const [subjectField, setSubjectField] = useState("");
   const [bodyField, setBodyField] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSuggest = async () => {
+    // Don't proceed if body is empty
+    if (!bodyField.trim()) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("https://noggin.rea.gent/compulsory-primate-3187?key=rg_v1_oxjm5fxi94o6k8i069oexk0ibhpmlc002gex_ngk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: bodyField }),
+      });
+
+      const data = await response.text();
+      setSubjectField(data);
+    } catch (error) {
+      console.error("Error generating subject line:", error);
+      // Optionally, you could set an error state here to show to the user
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -20,8 +46,10 @@ export default function Task1() {
         <button
           className="btn btn-outline-primary"
           type="button"
+          onClick={handleSuggest}
+          disabled={isLoading || !bodyField.trim()}
         >
-          Suggest
+          {isLoading ? "Generating..." : "Suggest"}
         </button>
       </div>
       <h2>Body</h2>
