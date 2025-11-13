@@ -14,9 +14,12 @@ export default function Task1() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://noggin.rea.gent/compulsory-primate-3187?key=rg_v1_oxjm5fxi94o6k8i069oexk0ibhpmlc002gex_ngk", {
+      const response = await fetch("https://noggin.rea.gent/compulsory-primate-3187", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer rg_v1_oxjm5fxi94o6k8i069oexk0ibhpmlc002gex_ngk",
+        },
         body: JSON.stringify({ email: bodyField }),
       });
 
