@@ -186,24 +186,48 @@ function Header() {
   return (
     <header
       style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        padding: '1.5rem 1rem',
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "flex-start",
+        alignItems: "center",
       }}
     >
-      <h1>Planet finder</h1>
+      <h1 style={{ 
+        fontSize: '1.25rem', 
+        fontWeight: '600',
+        margin: 0,
+        color: '#111827'
+      }}>
+        Planet Finder
+      </h1>
       {!isHome && (
         <button
-          className="btn btn-secondary"
           onClick={() => {
-            if (isHome) navigate("/");
-            else
-              navigate("../..", {
-                relative: "path",
-              });
+            navigate("../..", {
+              relative: "path",
+            });
+          }}
+          style={{
+            padding: '0.5rem 1rem',
+            fontSize: '0.875rem',
+            fontWeight: '500',
+            color: '#374151',
+            backgroundColor: 'transparent',
+            border: '1px solid #d1d5db',
+            borderRadius: '0.375rem',
+            cursor: 'pointer',
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#f9fafb';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
           }}
         >
-          Back
+          ← Back
         </button>
       )}
     </header>
@@ -253,55 +277,154 @@ function Home() {
   }, [suggestInput, navigate]);
 
   return (
-    <div className="home">
-      <div className="query">
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem 1rem' }}>
+      {/* Search Section */}
+      <div style={{ marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: '600', marginBottom: '0.5rem' }}>
+          Find Your Perfect Planet
+        </h1>
+        <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+          Tell us what you're looking for in your next interstellar destination
+        </p>
+        
         <form
-          className="input-group mb-4"
-          id="suggest-form"
           onSubmit={(e) => e.preventDefault()}
+          style={{ marginBottom: '2rem' }}
         >
-          <input
-            type="text"
-            className="form-control"
-            placeholder="What are you looking for?"
-            aria-label="What are you looking for?"
-            value={suggestInput}
-            onChange={(e) => setSuggestInput(e.target.value)}
-            disabled={isLoading}
-          />
-          <button
-            className="btn btn-outline-primary"
-            type="submit"
-            onClick={suggest}
-            disabled={isLoading || !suggestInput.trim()}
-          >
-            {isLoading ? "Thinking..." : "Help me choose"}
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <input
+              type="text"
+              placeholder="Describe your ideal vacation..."
+              value={suggestInput}
+              onChange={(e) => setSuggestInput(e.target.value)}
+              disabled={isLoading}
+              style={{
+                flex: 1,
+                padding: '0.875rem 1rem',
+                fontSize: '0.9375rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '0.5rem',
+                outline: 'none',
+                transition: 'border-color 0.15s, box-shadow 0.15s',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+            <button
+              type="submit"
+              onClick={suggest}
+              disabled={isLoading || !suggestInput.trim()}
+              style={{
+                padding: '0.875rem 1.75rem',
+                fontSize: '0.9rem',
+                fontWeight: '500',
+                color: isLoading || !suggestInput.trim() ? '#9ca3af' : '#3b82f6',
+                backgroundColor: 'transparent',
+                border: '1px solid',
+                borderColor: isLoading || !suggestInput.trim() ? '#e5e7eb' : '#3b82f6',
+                borderRadius: '0.5rem',
+                cursor: isLoading || !suggestInput.trim() ? 'not-allowed' : 'pointer',
+                transition: 'all 0.15s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoading && suggestInput.trim()) {
+                  e.target.style.backgroundColor = '#eff6ff';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isLoading && suggestInput.trim()) {
+                  e.target.style.backgroundColor = 'transparent';
+                }
+              }}
+            >
+              {isLoading ? "Thinking..." : "Help me choose"}
+            </button>
+          </div>
         </form>
       </div>
-      {planets.map((planet) => (
-        <div
-          className="card mb-3"
-          role="button"
-          key={planet.name}
-          onClick={() => navigate(`/task2/planet/${planet.name.toLowerCase()}`)}
-        >
-          <div className="row g-0">
-            <div className="col-md-4">
-              <img
-                src={planet.image}
-                className="img-fluid rounded-start"
-                alt={`A depiction of the planet ${planet.name}, produced by SXDL 1.0`}
-              />
-            </div>
-            <div className="col-md-8">
-              <div className="card-body">
-                <h2 className="card-title">{planet.name}</h2>
+
+      {/* Planet Cards */}
+      <div>
+        <h2 style={{ 
+          fontSize: '1.125rem', 
+          fontWeight: '600', 
+          marginBottom: '1rem',
+          color: '#374151'
+        }}>
+          Or browse all destinations
+        </h2>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(2, 1fr)', 
+          gap: '1rem' 
+        }}>
+          {planets.map((planet) => (
+            <div
+              key={planet.name}
+              role="button"
+              onClick={() => navigate(`/task2/planet/${planet.name.toLowerCase()}`)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                borderRadius: '0.75rem',
+                border: '1px solid #e5e7eb',
+                backgroundColor: 'white',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <div style={{ 
+                width: '100%', 
+                height: '200px',
+                overflow: 'hidden',
+                backgroundColor: '#f9fafb'
+              }}>
+                <img
+                  src={planet.image}
+                  alt={`A depiction of the planet ${planet.name}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                  }}
+                />
+              </div>
+              <div style={{ 
+                padding: '1.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <h3 style={{ 
+                  fontSize: '1.25rem', 
+                  fontWeight: '600',
+                  margin: 0,
+                  color: '#111827'
+                }}>
+                  {planet.name}
+                </h3>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
@@ -309,42 +432,100 @@ function Home() {
 function PlanetBlurb({ name }) {
   const location = useLocation();
   const explanation = location.state?.explanation;
+  const [isExplanationOpen, setIsExplanationOpen] = useState(false);
   
   const planet = planets.find((p) => p.name.toLowerCase() === name);
   if (!planet) return <div>Planet not found.</div>;
   return (
-    <div>
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem 1rem' }}>
       {explanation && (
         <div 
-          className="alert alert-info" 
           style={{ 
             marginBottom: '1.5rem',
-            fontSize: '0.95rem',
-            padding: '1rem 1.25rem'
+            border: '1px solid #e5e7eb',
+            borderRadius: '0.5rem',
+            overflow: 'hidden',
           }}
         >
-          <strong>🌟 Why this planet?</strong> {explanation}
+          <button
+            onClick={() => setIsExplanationOpen(!isExplanationOpen)}
+            style={{
+              width: '100%',
+              padding: '0.875rem 1rem',
+              backgroundColor: '#eff6ff',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              color: '#111827',
+              transition: 'background-color 0.15s',
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#dbeafe';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#eff6ff';
+            }}
+          >
+            <span>💡 Why this planet?</span>
+            <span style={{ 
+              fontSize: '0.75rem',
+              transition: 'transform 0.3s ease',
+              transform: isExplanationOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              display: 'inline-block',
+            }}>
+              ▾
+            </span>
+          </button>
+          {isExplanationOpen && (
+            <div 
+              style={{ 
+                padding: '1rem 1.25rem',
+                backgroundColor: 'white',
+                fontSize: '0.9375rem',
+                color: '#374151',
+                borderTop: '1px solid #e5e7eb',
+              }}
+            >
+              {explanation}
+            </div>
+          )}
         </div>
       )}
       <div
-        className="planet-blurb"
         style={{
-          backgroundColor: "white",
-          padding: "2rem",
-          boxShadow: "0 0 1rem rgba(0,0,0,0.1)",
-          display: "flex",
-          gap: "4rem",
-          alignItems: "center",
+          backgroundColor: 'white',
+          borderRadius: '0.75rem',
+          border: '1px solid #e5e7eb',
+          display: 'flex',
+          gap: '2rem',
+          alignItems: 'center',
+          padding: '2rem',
         }}
       >
-        <div className="planet-image" style={{ flex: 1 }}>
+        <div style={{ 
+          flex: '0 0 320px',
+          overflow: 'hidden',
+          borderRadius: '0.5rem',
+        }}>
           <img
             src={planet.image}
-            alt={`A depiction of the planet ${planet.name}, produced by SXDL 1.0`}
-            style={{ maxWidth: "100%" }}
+            alt={`A depiction of the planet ${planet.name}`}
+            style={{ 
+              width: '100%', 
+              height: 'auto',
+              display: 'block',
+            }}
           />
         </div>
-        <div className="planet-info" style={{ flex: 2 }}>
+        <div style={{ 
+          flex: 1, 
+          fontSize: '0.9rem',
+          lineHeight: '1.6'
+        }}>
           {planet.blurb}
         </div>
       </div>
