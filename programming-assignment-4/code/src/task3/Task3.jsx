@@ -81,9 +81,9 @@ export default function Task3() {
 
   async function generateImage(itemName) {
     try {
-      // Use the URL directly with the item as a query parameter
+      // Use the SDXL Lightning Noggin URL with the item as a query parameter
       // This URL will redirect to the generated image
-      const imageUrl = `https://noggin.rea.gent/ethical-yak-6746?key=rg_v1_qi128xp4dz0azhabwevu817my3w8cl32rawz_ngk&item=${encodeURIComponent(itemName)}`;
+      const imageUrl = `https://noggin.rea.gent/fine-scorpion-2166?key=rg_v1_d4byyuwvs7cxj4vwch5bi0f3aas4sgkh48p4_ngk&item=${encodeURIComponent(itemName)}`;
       return imageUrl;
     } catch (error) {
       console.error("Error generating image:", error);
