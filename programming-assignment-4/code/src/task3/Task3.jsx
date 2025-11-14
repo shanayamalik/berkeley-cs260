@@ -13,64 +13,90 @@ const initialItems = [
 
 function ShoppingListItem({ title, image, onDelete, isLoading }) {
   return (
-    <div className="card mb-3">
-      <div className="row g-0">
-        <div className="col-md-4">
-          {isLoading ? (
-            <div 
-              style={{ 
-                height: 240, 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                backgroundColor: '#f3f4f6'
-              }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div 
-                  style={{ 
-                    width: 40, 
-                    height: 40, 
-                    border: '4px solid #e5e7eb',
-                    borderTop: '4px solid #3b82f6',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite',
-                    margin: '0 auto'
-                  }}
-                />
-                <style>{`
-                  @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                  }
-                `}</style>
-                <p style={{ marginTop: 12, color: '#6b7280', fontSize: '0.875rem' }}>
-                  Generating image...
-                </p>
-              </div>
-            </div>
-          ) : (
-            <img
-              className="img-fluid rounded-start"
-              src={image}
-              alt={`Image of ${title}`}
-              style={{ maxHeight: 240 }}
-            />
-          )}
+    <div 
+      style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '1rem',
+        padding: '0.75rem',
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        border: '1px solid #e5e7eb',
+        marginBottom: '0.75rem'
+      }}
+    >
+      {isLoading ? (
+        <div 
+          style={{ 
+            width: 80,
+            height: 80,
+            flexShrink: 0,
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            backgroundColor: '#f9fafb',
+            borderRadius: '6px'
+          }}
+        >
+          <div 
+            style={{ 
+              width: 24, 
+              height: 24, 
+              border: '3px solid #e5e7eb',
+              borderTop: '3px solid #3b82f6',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}
+          />
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
         </div>
-        <div className="col-md-6">
-          <div className="card-body">
-            <h2 className="card-title">{title}</h2>
-          </div>
-        </div>
-        <div className="col-md-2 text-center">
-          <div className="card-body">
-            <button className="btn btn-danger" onClick={onDelete}>
-              Delete
-            </button>
-          </div>
-        </div>
+      ) : (
+        <img
+          src={image}
+          alt={`Image of ${title}`}
+          style={{ 
+            width: 80,
+            height: 80,
+            objectFit: 'cover',
+            borderRadius: '6px',
+            flexShrink: 0
+          }}
+        />
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 500, color: '#111827' }}>
+          {title}
+        </h3>
       </div>
+      <button 
+        onClick={onDelete}
+        style={{
+          padding: '0.375rem 0.75rem',
+          fontSize: '0.875rem',
+          color: '#dc2626',
+          backgroundColor: 'white',
+          border: '1px solid #fecaca',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          transition: 'all 0.2s',
+          flexShrink: 0
+        }}
+        onMouseOver={(e) => {
+          e.target.style.backgroundColor = '#fef2f2';
+          e.target.style.borderColor = '#fca5a5';
+        }}
+        onMouseOut={(e) => {
+          e.target.style.backgroundColor = 'white';
+          e.target.style.borderColor = '#fecaca';
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 }
@@ -127,22 +153,60 @@ export default function Task3() {
   }
 
   return (
-    <div className="container">
-      <header>
-        <h1>Shopping list</h1>
+    <div className="container" style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem 1rem' }}>
+      <header style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '1.875rem', fontWeight: 600, color: '#111827', margin: 0 }}>
+          Shopping list
+        </h1>
       </header>
       <div className="home" id="home-page">
-        <div className="query">
-          <form className="input-group mb-4" onSubmit={handleSubmit}>
+        <div className="query" style={{ marginBottom: '1.5rem' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem' }}>
             <input
               type="text"
-              className="form-control"
               placeholder="What do you need to buy?"
               aria-label="What do you need to buy?"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              style={{
+                flex: 1,
+                padding: '0.625rem 0.875rem',
+                fontSize: '0.9375rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                outline: 'none',
+                transition: 'all 0.2s'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
             />
-            <button className="btn btn-outline-primary" type="submit">
+            <button 
+              type="submit"
+              style={{
+                padding: '0.625rem 1.25rem',
+                fontSize: '0.9375rem',
+                color: '#3b82f6',
+                backgroundColor: 'white',
+                border: '1px solid #3b82f6',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#eff6ff';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = 'white';
+              }}
+            >
               Add to list
             </button>
           </form>
