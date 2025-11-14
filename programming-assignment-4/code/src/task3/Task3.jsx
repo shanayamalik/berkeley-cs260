@@ -11,17 +11,52 @@ const initialItems = [
   },
 ];
 
-function ShoppingListItem({ title, image, onDelete }) {
+function ShoppingListItem({ title, image, onDelete, isLoading }) {
   return (
     <div className="card mb-3">
       <div className="row g-0">
         <div className="col-md-4">
-          <img
-            className="img-fluid rounded-start"
-            src={image}
-            alt={`Image of ${title}`}
-            style={{ maxHeight: 240 }}
-          />
+          {isLoading ? (
+            <div 
+              style={{ 
+                height: 240, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                backgroundColor: '#f3f4f6'
+              }}
+            >
+              <div style={{ textAlign: 'center' }}>
+                <div 
+                  style={{ 
+                    width: 40, 
+                    height: 40, 
+                    border: '4px solid #e5e7eb',
+                    borderTop: '4px solid #3b82f6',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto'
+                  }}
+                />
+                <style>{`
+                  @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                  }
+                `}</style>
+                <p style={{ marginTop: 12, color: '#6b7280', fontSize: '0.875rem' }}>
+                  Generating image...
+                </p>
+              </div>
+            </div>
+          ) : (
+            <img
+              className="img-fluid rounded-start"
+              src={image}
+              alt={`Image of ${title}`}
+              style={{ maxHeight: 240 }}
+            />
+          )}
         </div>
         <div className="col-md-6">
           <div className="card-body">
@@ -44,19 +79,45 @@ export default function Task3() {
   const [items, setItems] = useState(initialItems);
   const [input, setInput] = useState("");
 
-  function handleSubmit(e) {
+  async function generateImage(itemName) {
+    try {
+      // Use the URL directly with the item as a query parameter
+      // This URL will redirect to the generated image
+      const imageUrl = `https://noggin.rea.gent/ethical-yak-6746?key=rg_v1_qi128xp4dz0azhabwevu817my3w8cl32rawz_ngk&item=${encodeURIComponent(itemName)}`;
+      return imageUrl;
+    } catch (error) {
+      console.error("Error generating image:", error);
+      // Return a placeholder if image generation fails
+      return "https://via.placeholder.com/240x240?text=Image+Failed";
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // YOUR CODE HERE
-
-    // Create an item:
-    const item = {
-      title: "NOT IMPLEMENTED",
+    // Create an item with loading state
+    const newItem = {
+      title: input,
       image: "",
+      isLoading: true,
     };
 
-    // then, add the item to the list!
+    // Add the item to the list immediately (optimistic UI)
+    const newItemIndex = items.length;
+    setItems((prevItems) => [...prevItems, newItem]);
+
+    // Generate image in the background
+    const imageUrl = await generateImage(input);
+
+    // Update the item with the generated image
+    setItems((prevItems) =>
+      prevItems.map((item, idx) =>
+        idx === newItemIndex
+          ? { ...item, image: imageUrl, isLoading: false }
+          : item
+      )
+    );
 
     setInput("");
   }
@@ -92,6 +153,7 @@ export default function Task3() {
               key={idx}
               title={item.title}
               image={item.image}
+              isLoading={item.isLoading || false}
               onDelete={() => handleDelete(idx)}
             />
           ))}
