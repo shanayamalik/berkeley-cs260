@@ -32,10 +32,12 @@ function ShoppingListItem({ title, image, onDelete, isLoading }) {
             height: 80,
             flexShrink: 0,
             display: 'flex', 
+            flexDirection: 'column',
             alignItems: 'center', 
             justifyContent: 'center',
             backgroundColor: '#f9fafb',
-            borderRadius: '6px'
+            borderRadius: '6px',
+            gap: '0.25rem'
           }}
         >
           <div 
@@ -48,6 +50,9 @@ function ShoppingListItem({ title, image, onDelete, isLoading }) {
               animation: 'spin 1s linear infinite'
             }}
           />
+          <span style={{ fontSize: '0.625rem', color: '#9ca3af', fontWeight: 500 }}>
+            Generating...
+          </span>
           <style>{`
             @keyframes spin {
               0% { transform: rotate(0deg); }
@@ -108,8 +113,16 @@ export default function Task3() {
   async function generateImage(itemName) {
     try {
       // Use the SDXL Lightning Noggin URL with the item as a query parameter
-      // This URL will redirect to the generated image
       const imageUrl = `https://noggin.rea.gent/fine-scorpion-2166?key=rg_v1_d4byyuwvs7cxj4vwch5bi0f3aas4sgkh48p4_ngk&item=${encodeURIComponent(itemName)}`;
+      
+      // Preload the image to ensure it's fully loaded before we display it
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = imageUrl;
+      });
+      
       return imageUrl;
     } catch (error) {
       console.error("Error generating image:", error);
