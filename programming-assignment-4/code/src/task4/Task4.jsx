@@ -176,23 +176,23 @@ export default function Task4() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
-      <header style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.875rem', fontWeight: 600, color: '#111827', margin: 0 }}>
+    <div className="container" style={{ maxWidth: '700px', margin: '0 auto', padding: '1.5rem 1rem' }}>
+      <header style={{ marginBottom: '1.5rem' }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#111827', margin: 0 }}>
           Game inventory
         </h1>
       </header>
 
-      <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#374151', marginBottom: '1rem' }}>
+      <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#374151', marginBottom: '0.75rem' }}>
         Add new game
       </h2>
-      <div className="upload-form mb-4">
+      <div className="upload-form" style={{ marginBottom: '1.25rem' }}>
         <form
           onSubmit={handleUpload}
           style={{
             display: "flex",
             gap: "0.5rem",
-            marginBottom: '1.5rem'
+            marginBottom: '1.25rem'
           }}
         >
           <input 
@@ -202,8 +202,8 @@ export default function Task4() {
             className="form-control"
             style={{
               flex: 1,
-              padding: '0.625rem 0.875rem',
-              fontSize: '0.9375rem',
+              padding: '0.5rem 0.75rem',
+              fontSize: '0.875rem',
               border: '1px solid #d1d5db',
               borderRadius: '6px',
             }}
@@ -212,8 +212,8 @@ export default function Task4() {
             type="submit"
             disabled={uploading}
             style={{
-              padding: '0.625rem 1.25rem',
-              fontSize: '0.9375rem',
+              padding: '0.5rem 1rem',
+              fontSize: '0.875rem',
               color: uploading ? '#9ca3af' : '#3b82f6',
               backgroundColor: 'white',
               border: uploading ? '1px solid #d1d5db' : '1px solid #3b82f6',
@@ -235,89 +235,195 @@ export default function Task4() {
         </form>
       </div>
 
-      <div className="new-game-form mb-4">
-        <form onSubmit={handleAddGame}>
-          <div className="form-group row mb-4">
-            <label htmlFor="game-name" className="col-sm-2 col-form-label">
+      <div className="new-game-form" style={{ marginBottom: '2rem' }}>
+        <form onSubmit={handleAddGame} style={{ 
+          backgroundColor: 'white', 
+          padding: '1.5rem', 
+          borderRadius: '8px', 
+          border: '1px solid #e5e7eb' 
+        }}>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label style={{ 
+              display: 'block', 
+              fontSize: '0.875rem', 
+              fontWeight: 500, 
+              color: '#374151', 
+              marginBottom: '0.5rem' 
+            }}>
               Game title
             </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                required
-                value={form.name}
-                onChange={handleFormChange}
-              />
-            </div>
+            <input
+              type="text"
+              name="name"
+              required
+              value={form.name}
+              onChange={handleFormChange}
+              style={{
+                width: '100%',
+                padding: '0.625rem 0.875rem',
+                fontSize: '0.9375rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                outline: 'none',
+                transition: 'all 0.2s'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
           </div>
 
-          <div className="form-group row mb-4">
-            <label htmlFor="min-players" className="col-sm-2 col-form-label">
-              Min Players
-            </label>
-            <div className="col-sm-4">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '0.875rem', 
+                fontWeight: 500, 
+                color: '#374151', 
+                marginBottom: '0.5rem' 
+              }}>
+                Min Players
+              </label>
               <input
                 type="number"
                 name="minPlayers"
-                className="form-control"
                 min="1"
                 value={form.minPlayers}
                 onChange={handleFormChange}
+                style={{
+                  width: '100%',
+                  padding: '0.625rem 0.875rem',
+                  fontSize: '0.9375rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
               />
             </div>
-            <label htmlFor="max-players" className="col-sm-2 col-form-label">
-              Max Players
-            </label>
-            <div className="col-sm-4">
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '0.875rem', 
+                fontWeight: 500, 
+                color: '#374151', 
+                marginBottom: '0.5rem' 
+              }}>
+                Max Players
+              </label>
               <input
                 type="number"
                 name="maxPlayers"
-                className="form-control"
                 min="1"
                 value={form.maxPlayers}
                 onChange={handleFormChange}
+                style={{
+                  width: '100%',
+                  padding: '0.625rem 0.875rem',
+                  fontSize: '0.9375rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
               />
             </div>
           </div>
 
-          <div className="form-group row mb-4">
-            <label htmlFor="min-age" className="col-sm-2 col-form-label">
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label style={{ 
+              display: 'block', 
+              fontSize: '0.875rem', 
+              fontWeight: 500, 
+              color: '#374151', 
+              marginBottom: '0.5rem' 
+            }}>
               Minimum Age
             </label>
-            <div className="col-sm-10">
-              <input
-                type="number"
-                name="minAge"
-                className="form-control"
-                min="0"
-                value={form.minAge}
-                onChange={handleFormChange}
-              />
-            </div>
+            <input
+              type="number"
+              name="minAge"
+              min="0"
+              value={form.minAge}
+              onChange={handleFormChange}
+              style={{
+                width: '100%',
+                padding: '0.625rem 0.875rem',
+                fontSize: '0.9375rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                outline: 'none',
+                transition: 'all 0.2s'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
           </div>
 
-          <div className="form-group row mb-4">
-            <label
-              htmlFor="expected-playtime"
-              className="col-sm-4 col-form-label"
-            >
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ 
+              display: 'block', 
+              fontSize: '0.875rem', 
+              fontWeight: 500, 
+              color: '#374151', 
+              marginBottom: '0.5rem' 
+            }}>
               Expected playtime (minutes)
             </label>
-            <div className="col-sm-8">
-              <input
-                type="number"
-                name="expectedPlaytime"
-                className="form-control"
-                min="0"
-                value={form.expectedPlaytime}
-                onChange={handleFormChange}
-              />
-            </div>
+            <input
+              type="number"
+              name="expectedPlaytime"
+              min="0"
+              value={form.expectedPlaytime}
+              onChange={handleFormChange}
+              style={{
+                width: '100%',
+                padding: '0.625rem 0.875rem',
+                fontSize: '0.9375rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                outline: 'none',
+                transition: 'all 0.2s'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
           </div>
 
-          <div className="col-sm-12 text-end">
+          <div style={{ textAlign: 'right' }}>
             <button 
               type="submit" 
               style={{
