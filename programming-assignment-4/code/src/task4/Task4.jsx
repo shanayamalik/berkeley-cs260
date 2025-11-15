@@ -99,36 +99,139 @@ export default function Task4() {
     e.preventDefault();
     setUploading(true);
 
-    // YOUR CODE HERE
-    const file = await readDataUrlFromFileInput(e.target.file);
+    try {
+      // Read the uploaded image as a data URL
+      const dataUrl = await readDataUrlFromFileInput(e.target.file);
 
-    setUploading(false);
+      // Send the image to the Noggin for analysis
+      const response = await fetch(
+        'https://noggin.rea.gent/jolly-horse-5272',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer rg_v1_wtk1z1nsycmb3765r398phmykhpi08nobuwt_ngk',
+          },
+          body: JSON.stringify({
+            game_image: dataUrl,
+          }),
+        }
+      );
+
+      const responseText = await response.text();
+      console.log("Raw response from Noggin:", responseText);
+      
+      // Check for HTTP errors before parsing
+      if (!response.ok) {
+        console.error("Noggin HTTP error:", response.status, responseText);
+        throw new Error(`Failed to analyze image: server returned an error (status ${response.status})`);
+      }
+      
+      // Parse the JSON response
+      const data = JSON.parse(responseText);
+      console.log("Parsed data:", data);
+
+      // Pre-fill the form with extracted data (only if values exist and aren't null)
+      setForm((f) => ({
+        ...f,
+        name: (data.title && data.title !== null) ? data.title : f.name,
+        minAge: (data.min_age && data.min_age !== null) ? String(data.min_age) : f.minAge,
+        expectedPlaytime: (data.playtime && data.playtime !== null) ? String(data.playtime) : f.expectedPlaytime,
+      }));
+
+      // Parse players field (e.g., "2-4" -> minPlayers: 2, maxPlayers: 4)
+      if (data.players && data.players !== null) {
+        const playersMatch = data.players.match(/(\d+)\s*-\s*(\d+)/);
+        if (playersMatch) {
+          // Range format: "2-4"
+          setForm((f) => ({
+            ...f,
+            minPlayers: playersMatch[1],
+            maxPlayers: playersMatch[2],
+          }));
+        } else if (data.players.match(/(\d+)\+/)) {
+          // "Plus" format: "2+"
+          const minMatch = data.players.match(/(\d+)\+/);
+          setForm((f) => ({
+            ...f,
+            minPlayers: minMatch[1],
+          }));
+        } else if (data.players.match(/^\d+$/)) {
+          // Single number: "4"
+          setForm((f) => ({
+            ...f,
+            minPlayers: data.players,
+            maxPlayers: data.players,
+          }));
+        }
+      }
+
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+      console.error("Error details:", error.message);
+      alert(`Failed to analyze image: ${error.message}\n\nPlease try again or fill out the form manually.`);
+    } finally {
+      setUploading(false);
+    }
   }
 
   return (
-    <div className="container">
-      <header>
-        <h1>Game inventory</h1>
+    <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
+      <header style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '1.875rem', fontWeight: 600, color: '#111827', margin: 0 }}>
+          Game inventory
+        </h1>
       </header>
 
-      <h2>Add new game</h2>
+      <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#374151', marginBottom: '1rem' }}>
+        Add new game
+      </h2>
       <div className="upload-form mb-4">
         <form
           onSubmit={handleUpload}
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "1rem",
+            gap: "0.5rem",
+            marginBottom: '1.5rem'
           }}
         >
-          <input type="file" name="file" className="form-control" />
-          <input
-            type="submit"
-            value={uploading ? "Processing..." : "AI 🪄"}
-            className="btn btn-primary"
-            disabled={uploading}
+          <input 
+            type="file" 
+            name="file" 
+            accept="image/*"
+            className="form-control"
+            style={{
+              flex: 1,
+              padding: '0.625rem 0.875rem',
+              fontSize: '0.9375rem',
+              border: '1px solid #d1d5db',
+              borderRadius: '6px',
+            }}
           />
+          <button
+            type="submit"
+            disabled={uploading}
+            style={{
+              padding: '0.625rem 1.25rem',
+              fontSize: '0.9375rem',
+              color: uploading ? '#9ca3af' : '#3b82f6',
+              backgroundColor: 'white',
+              border: uploading ? '1px solid #d1d5db' : '1px solid #3b82f6',
+              borderRadius: '6px',
+              cursor: uploading ? 'not-allowed' : 'pointer',
+              fontWeight: 500,
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseOver={(e) => {
+              if (!uploading) e.target.style.backgroundColor = '#eff6ff';
+            }}
+            onMouseOut={(e) => {
+              if (!uploading) e.target.style.backgroundColor = 'white';
+            }}
+          >
+            {uploading ? "Processing..." : "AI 🪄"}
+          </button>
         </form>
       </div>
 
@@ -215,7 +318,28 @@ export default function Task4() {
           </div>
 
           <div className="col-sm-12 text-end">
-            <input type="submit" value="Add game" className="btn btn-primary" />
+            <button 
+              type="submit" 
+              style={{
+                padding: '0.625rem 1.25rem',
+                fontSize: '0.9375rem',
+                color: '#3b82f6',
+                backgroundColor: 'white',
+                border: '1px solid #3b82f6',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s',
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#eff6ff';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = 'white';
+              }}
+            >
+              Add game
+            </button>
           </div>
         </form>
       </div>
